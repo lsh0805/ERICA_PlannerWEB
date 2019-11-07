@@ -1,3 +1,6 @@
+# Planner WEB
+계획 및 일정 관리 웹 애플리케이션 입니다.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

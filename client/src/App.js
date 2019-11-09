@@ -35,7 +35,7 @@ const useStyles = theme => ({
     }
   },
   topBarLogo: {
-  },
+  }, 
   nav_link: {
     fontSize: 18,
     margin: theme.spacing(1, 4),

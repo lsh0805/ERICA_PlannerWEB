@@ -1,0 +1,30 @@
+body {background: #ffffff;}
+Link {text-decoration: none;}
+
+/* Top bar 레이아웃 */
+#bar_space {height: 64px;}
+.bar_right {width: 25%; text-align: center;}
+.bar_nav {text-align: center;}
+.bar_left {width: 25%; text-align: center; }
+
+/* Top bar 아이템 */
+.bar_left .logo {font-size: 20px; font-weight: bold;}
+.bar_nav .item {
+    margin: 0 22px 0 22px; 
+    color: #000000; 
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+.bar_nav .item:hover {
+    color: #50BCDF;
+}
+
+@media (max-width: 1100px){
+    .bar_right {width: auto; text-align: right;}
+    .bar_nav {width: 50%;}
+    .bar_left {width: auto; text-align: left;}
+}
+
+@media (max-width: 860px){
+    #top_bar .bar_nav {display: none;}
+}

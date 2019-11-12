@@ -2,17 +2,22 @@
     "name": "planner_web",
     "version": "1.0.0",
     "scripts": {
-        "start": "cross-env NODE_PATH=src react-scripts start",
-        "build": "cross-env NODE_PATH=src react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject",
-        "client": "cd client && npm start",
-        "server": "node server.js",
-        "dev": "concurrently --kill-others-on-fail \"npm server\" \"npm client\""
+        "client": "cd ../client && npm start",
+        "server": "nodemon server.js",
+        "dev": "concurrently --kill-others-on-fail \"npm run-script server\" \"npm run-script client\""
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
-        "express": "^4.17.1"
+        "bookshelf": "^1.0.1",
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "knex": "^0.20.1",
+        "mysql": "^2.17.1",
+        "mysql2": "^2.0.0",
+        "passport": "^0.4.0",
+        "passport-local": "^1.0.0",
+        "sequelize": "^5.21.2"
     },
     "devDependencies": {
         "concurrently": "^4.0.1"

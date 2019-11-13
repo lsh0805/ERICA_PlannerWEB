@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +15,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent  from '@material-ui/core/SnackbarContent';
+import ErrorIcon from '@material-ui/icons/Error';
+
 // ERROR TPYES
 
 const ERR_ALREADY_USED_EMAIL = 1;
@@ -66,17 +71,38 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  error_toast: {
+        backgroundColor: "teal",
+        color: "#FF0000",
+      },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  },  
+//   error_help: {
+//     margin: theme.spacing(1, 0, 0, 0.2),
+//     color: "#FF0000",
+//   },
 }));
 
 export default function Register() {
     let history = useHistory();
     let location = useLocation();
-    const [register_state, regSetState] = useState({
-        loginFailed: false,
-        err: ""
+    const [error_box, setError] = useState({
+        nickname: "",
+        email: "",
+        password: "",
+        password_check: ""
     });
     const [input_state, inputSetState] = useState({
         email: "",
@@ -85,8 +111,6 @@ export default function Register() {
         nickname: "",
         alarm: false,
     });
-    // TODO: 서버에서 입력 데이터 올바른 것인지 DB에서 검색한 결과를 토대로
-    // 인풋박스 아래에 오류메시지 출력하는 기능 추가.
     function handleChange(e) {
         inputSetState((prevStatus) => {
             console.log(e.target);
@@ -113,14 +137,34 @@ export default function Register() {
             document.cookie = 'key=' + btoa(JSON.stringify(loginData));
 
             console.log("회원가입 완료");
-            history.push('/');
+            window.location.replace('/');
             return true;
         }).catch((error) => {
-            console.log(error);
+            createToast(error.response.data.err);
             return false;
         });
     }
+    const enterKey = (key) =>{
+        if(key.keyCode == 13)
+            handleRegister();
+    }
+    const [toast, setOpen] = useState({
+        open: false,
+        message: ""
+    });
+    const createToast = (msg) => {
+        setOpen({
+          open: true,
+          message: msg
+        });
+    };
     
+    const handleClose = () => {
+        setOpen({
+            open: false,
+            message: ""
+        });
+    };
     const classes = useStyles();
     return(
     <Container component="main" xs={20} maxWidth="xs">
@@ -132,8 +176,8 @@ export default function Register() {
         <Typography component="h1" variant="h5">
           회원가입
         </Typography>
-        <div className={classes.form}>
-          <Grid container spacing={2}>
+        <div className={classes.form} onKeyDown={enterKey}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -142,9 +186,11 @@ export default function Register() {
                 id="nickname"
                 label="닉네임"
                 name="nickname"
+                autocapitalize="off"
+                autoComplete="nope"
                 onChange={ handleChange }
-                autoComplete="name"
               />
+            {/* <div id="input_nickname_error" class="error_help" className={classes.error_help}>{error_box.nickname}</div> */}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -154,10 +200,12 @@ export default function Register() {
                 id="email"
                 label="이메일 주소"
                 name="email"
+                autocapitalize="off"
                 onChange={ handleChange }
-                autoComplete="email"
+                autoComplete="nope"
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
@@ -167,8 +215,9 @@ export default function Register() {
                 label="비밀번호"
                 type="password"
                 id="password"
+                autocapitalize="off"
                 onChange={ handleChange }
-                autoComplete="current-password"
+                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -180,8 +229,9 @@ export default function Register() {
                 label="비밀번호 (확인)"
                 type="password"
                 id="password_check"
+                autocapitalize="off"
                 onChange={ handleChange }
-                autoComplete="current-password"
+                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12}>
@@ -211,6 +261,17 @@ export default function Register() {
             </Grid>
           </Grid>
         </div>
+        <Snackbar
+            open={toast.open}
+            onClose={handleClose}
+            autoHideDuration={3000}
+            >
+            <SnackbarContent style={{backgroundColor:'#D32F2F', color: '#FFFFFF'}}
+            message={<span id="input_error_message" className={classes.message}>
+                <ErrorIcon className={clsx(classes.icon, classes.iconVariant)} />
+                {toast.message}</span>}
+            />
+        </Snackbar>
       </div>
       <Box mt={5}>
         <Copyright />

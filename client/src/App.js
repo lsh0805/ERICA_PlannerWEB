@@ -1,13 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Snackbar from '@material-ui/core/Snackbar';
-import Fade from '@material-ui/core/Fade';
 import { Route } from 'react-router-dom';
 import { Main, Login, Register } from 'pages';
 import { Topbar } from 'components';
 import axios from 'axios';
+import clsx from 'clsx';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent  from '@material-ui/core/SnackbarContent';
+import ErrorIcon from '@material-ui/icons/Error';
+import { makeStyles } from '@material-ui/core/styles';
 
 function App() {
+    const useStyles = makeStyles(theme => ({
+        icon: {
+          fontSize: 20,
+        },
+        iconVariant: {
+          opacity: 0.9,
+          marginRight: theme.spacing(1),
+        },
+        error_toast: {
+              backgroundColor: "teal",
+              color: "#FF0000",
+            },
+        message: {
+          display: 'flex',
+          alignItems: 'center',
+        },  
+      }));
+
     // 새로 고침 시 쿠키 값이 유호한지 판단함.
     useEffect(() => {
         
@@ -33,32 +54,42 @@ function App() {
         axios.get('/api/account/getInfo')
         .then(() => {})
         .catch((err) => {
-                createToast();
+                createToast("세션이 만료되었습니다. 다시 로그인 해주세요.");
                 console.log(err);
             }
         );
     }, []);
-    const [open, setOpen] = useState(false);
-    const createToast = () => {
+    const [toast, setOpen] = useState({
+        open: false,
+        message: ""
+    });
+    const createToast = (msg) => {
         setOpen({
-          open: true
+          open: true,
+          message: msg
         });
     };
     
     const handleClose = () => {
-        setOpen(false);
+        setOpen({
+            open: false,
+            message: ""
+        });
     };
+    const classes = useStyles();
     return (
         <div>
             <Snackbar
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Fade}
-                ContentProps={{
-                'session_expired': 'session_expired_toast',
-                }}
-                message={<span id="session_expired_toast">세션이 만료되었습니다. 다시 로그인 해주세요.</span>}
+            open={toast.open}
+            onClose={handleClose}
+            autoHideDuration={3000}
+            >
+            <SnackbarContent className={classes.error_toast}
+            message={<span id="session_expired_error" className={classes.message}>
+                <ErrorIcon className={clsx(classes.icon, classes.iconVariant)} />
+                {toast.message}</span>}
             />
+            </Snackbar>
             {/* 라우팅 */}
             <Route path="/" component={Topbar}/>
             <Route exact path="/" component={Main}/>

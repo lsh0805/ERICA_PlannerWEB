@@ -1,6 +1,6 @@
 /*
-    ACCOUNT REGISTER: POST /api/account/signup
-    BODY SAMPLE: { "email": "test@test.com", "password": "test", "nickname": "test_name" }
+    ACCOUNT REGISTER: POST /api/account/register
+    BODY SAMPLE: { "email": "test@test.com", "password": "test", "nickname": "test_name", "alarm": false }
 */
 const { Account } = require('../models');
 const bcrypt = require('bcryptjs');
@@ -9,9 +9,10 @@ var response = function(res, err){
     this.err = err;
 }
 
-module.exports = {
+module.exports = {  
     validateEmail: async function (email) {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let row = undefined;
         if(!re.test(email))
             return new response(false, "올바른 이메일 형식이 아닙니다.");
         let err = null;
@@ -84,8 +85,9 @@ module.exports = {
                             password: hash,
                             email: data.email,
                             alarm: data.alarm
+                        }).then(account => {
+                            resolve(account);
                         });
-                        resolve({success : true});
                     });
                     if(err){
                         reject(err);

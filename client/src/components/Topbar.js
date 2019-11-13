@@ -62,7 +62,10 @@ const Topbar = () => {
     let history = useHistory();
     let location = useLocation();
     const classes = useStyles(); 
-    const [isLoggedIn, setLogin] = React.useState(false);
+    const [loginInfo, setLoginInfo] = React.useState({
+        isLoggedIn : false,
+        userName: "",
+    });
     const [state, setState] = React.useState({
         top: false,
         left: false,
@@ -70,46 +73,22 @@ const Topbar = () => {
         right: false,
     });
     useEffect(() => {
-        console.log(1111);
-        // 쿠키 값 가져옴
-        function getCookie(name) {
-            var value = "; " + document.cookie;
-            var parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
-        }
-
-        // 쿠키로 로그인 정보 가져옴
-        let loginData = getCookie('key');
-
-        // 로그인 정보가 없을 시 login = false
-        if(typeof loginData === "undefined"){ 
-            setLogin(false);
-            return;
-        }
-
-        // 로그인 데이터를 base64로 디코딩하고 JSON으로 parse
-        loginData = JSON.parse(atob(loginData));
-        console.log(loginData);
-        // 로그인 하지 않았다면 login = false
-        if(!loginData.isLoggedIn){ 
-            setLogin(false);
-            return;
-        }
-
-        // 로그인 했다면 login = true;
-        setLogin(true);
-    });
+        
+        axios.get('/api/account/getInfo').then((res) => {
+            setLoginInfo({isLoggedIn: true, userName: res.username})
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
     const handleLogout = () => {
         let { from } = location.state || { from: { pathname: "/" } };
         axios.get('/api/account/logout').then(() => {
             let loginData = {
                 isLoggedIn: false,
-                username: ''
+                username: '',
             };
-
             document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-            setLogin(false);
-            history.push(from);
+            setLoginInfo({isLoggedIn: false, userName: ""});
         }).catch((err) => {
             console.log(err);
         });
@@ -170,7 +149,6 @@ const Topbar = () => {
             </Link>
         </div>
     );
-    
     return (
       <React.Fragment>
         <AppBar color="default" elevation={0} className={classes.appBar}>
@@ -188,7 +166,7 @@ const Topbar = () => {
                 <Link to="/" className="item">게시판</Link>
             </nav>
             <div className="bar_right">
-                { isLoggedIn ? logoutUI : loginUI }
+                { loginInfo.isLoggedIn ? logoutUI : loginUI }
             </div>
           </Toolbar>
         </AppBar>

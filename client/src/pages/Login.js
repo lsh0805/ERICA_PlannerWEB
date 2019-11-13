@@ -14,6 +14,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent  from '@material-ui/core/SnackbarContent';
+import ErrorIcon from '@material-ui/icons/Error';
 
 const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
 const AUTH_LOGIN_FAILURE = "AUTH_LOGIN_FAILURE";
@@ -52,9 +56,24 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  error_toast: {
+        backgroundColor: "teal",
+        color: "#FF0000",
+      },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  },  
 }));
 
 export default function Login() {
@@ -81,24 +100,43 @@ export default function Login() {
     }
     // API REQUEST
     const handleLogin = () => {
-        let { from } = location.state || { from: { pathname: "/" } };
+        // let { from } = location.state || { from: { pathname: "/" } };
         let data = input_state;
         axios.post('/api/account/login', data)
         .then((response) => {
             // create session data
             let loginData = {
                 isLoggedIn: true,
-                email: data.email
+                userName: data.nickName
             };
 
             document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-
             console.log("로그인 완료");
-            history.push(from);
+            window.location.replace('/');
             return true;
         }).catch((error) => {
-            console.log(error);
+            createToast(error.response.data.err);
             return false;
+        });
+    }
+    const enterKey = (key) =>{
+        if(key.keyCode == 13)
+            handleLogin();
+    }
+    const [toast, setOpen] = useState({
+        open: false,
+        message: ""
+    });
+    function createToast(msg) {
+        setOpen({
+            open: true,
+            message: msg
+        });
+    }
+    function handleClose() {
+        setOpen({
+            open: false,
+            message: ""
         });
     }
   return (
@@ -111,7 +149,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           로그인
         </Typography>
-        <div className={classes.form} noValidate>
+        <div className={classes.form} onKeyDown={enterKey}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -120,7 +158,7 @@ export default function Login() {
             id="email"
             label="이메일주소"
             name="email"
-            autoComplete="email"
+            autoComplete="true"
             onChange={ handleChange }
             autoFocus
           />
@@ -134,7 +172,7 @@ export default function Login() {
             type="password"
             id="password"
             onChange={ handleChange }
-            autoComplete="current-password"
+            autoComplete="true"
           />
           <FormControlLabel
             control={<Checkbox name="keepLogin" color="primary" onChange={ handleChange } />}
@@ -145,7 +183,7 @@ export default function Login() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={ handleLogin }
+            onClick={handleLogin}
             className={classes.submit}
           >
             로그인하기
@@ -162,6 +200,17 @@ export default function Login() {
               </Link>
             </Grid>
           </Grid>
+          <Snackbar
+            open={toast.open}
+            onClose={handleClose}
+            autoHideDuration={3000}
+            >
+            <SnackbarContent style={{backgroundColor:'#D32F2F', color: '#FFFFFF'}}
+            message={<span id="input_error_message" className={classes.message}>
+                <ErrorIcon className={clsx(classes.icon, classes.iconVariant)} />
+                {toast.message}</span>}
+            />
+            </Snackbar>
         </div>
       </div>
       <Box mt={8}>

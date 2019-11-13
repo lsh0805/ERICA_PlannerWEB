@@ -1,35 +1,39 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const mysqlStore = require('express-mysql-session')(session);
 const fs = require('fs');
 const app = express();
 const api = require('./routes');
 const sequelize = require('./models').sequelize;
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 sequelize.sync();
 
 const port = 5000;
-app.use('/api', api);
 
-// /* support client-side routing */
-// app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, './../client/public/index.html'));
-// });
-
+const conf = fs.readFileSync('./config/config.json');
+const options = (JSON.parse(conf)).options;
+var sessionStore = new mysqlStore(options);
 const sessionData = fs.readFileSync('./config/session.json');
 const sessionSecret = JSON.parse(sessionData);
 
 app.use(session({
+    key: 'key',
     secret: sessionSecret.secret,
     resave: false,
+    store: sessionStore,
     saveUninitialized: true
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/', (req, res, next) => {
-    console.log(req.session);
-    res.send("Hello, World!");
+
+app.get('/', (req, res) =>{
+    console.log(req.session.id);
+    res.send(req.session.id);
 });
+
+app.use('/api', api);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

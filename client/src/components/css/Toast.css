@@ -1,0 +1,8 @@
+.toast_wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 14dsapx;
+}
+.toast {
+  margin-right: 10px;
+}

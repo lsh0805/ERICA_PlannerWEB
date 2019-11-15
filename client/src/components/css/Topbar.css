@@ -3,12 +3,13 @@ Link {text-decoration: none;}
 
 /* Top bar 레이아웃 */
 #bar_space {height: 64px;}
-.bar_right {width: 25%; text-align: center;}
-.bar_nav {text-align: center;}
-.bar_left {width: 25%; text-align: center; }
+.bar_right {width: 25%;}
+.bar_left {width: 25%; display: flex; align-items: center;}
 
 /* Top bar 아이템 */
 .bar_left .logo {font-size: 20px; font-weight: bold;}
+.bar_left .menu_button {display: inline-block; margin-left: 30px; display: flex; align-items: center;}
+
 .bar_nav .item {
     margin: 0 22px 0 22px; 
     color: #000000; 

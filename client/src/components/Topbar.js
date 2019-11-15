@@ -12,7 +12,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/Topbar.css'
 import axios from 'axios';
 
@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   topBar: {
     justifyContent: `space-around`,
+    alignItems: 'center',
     flexWrap: 'wrap',
     [theme.breakpoints.down(1100)]: {
         justifyContent: `space-between`,
@@ -59,8 +60,6 @@ const useStyles = makeStyles(theme => ({
 
 
 const Topbar = () => {
-    let history = useHistory();
-    let location = useLocation();
     const classes = useStyles(); 
     const [loginInfo, setLoginInfo] = React.useState({
         isLoggedIn : false,
@@ -73,81 +72,77 @@ const Topbar = () => {
         right: false,
     });
     useEffect(() => {
-        
-        axios.get('/api/account/getInfo').then((res) => {
-            setLoginInfo({isLoggedIn: true, userName: res.username})
-        }).catch((err) => {
-            console.log(err);
-        });
+      axios.get('/api/account/getInfo').then((res) => {
+          setLoginInfo({isLoggedIn: true, userName: res.username})
+      });
     }, []);
     const handleLogout = () => {
-        let { from } = location.state || { from: { pathname: "/" } };
-        axios.get('/api/account/logout').then(() => {
-            let loginData = {
-                isLoggedIn: false,
-                username: '',
-            };
-            document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-            setLoginInfo({isLoggedIn: false, userName: ""});
-        }).catch((err) => {
-            console.log(err);
-        });
+      axios.get('/api/account/logout').then(() => {
+        let loginData = {
+            isLoggedIn: false,
+            username: '',
+        };
+        document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+        setLoginInfo({isLoggedIn: false, userName: ""});
+      }).catch((err) => {
+          console.log(err);
+      });
     }
     const toggleDrawer = (side, open) => event => {
-        if (event.type === 'keydown' && (event.key ===  'Tab' || event.key === 'Shift')) {
-          return;
-        }
-        setState({ ...state, [side]: open }); //TODO: state 객체의 property로 side: open값을 추가하는 것인가? 알아보기 (ES6문법 공부)
+      if (event.type === 'keydown' && (event.key ===  'Tab' || event.key === 'Shift')) {
+        return;
+      }
+      setState({ ...state, [side]: open });
     };
     
     const sideList = side => (
-        <div
-          className={classes.list}
-          role="presentation"
-          onClick={toggleDrawer(side, false)}
-          onKeyDown={toggleDrawer(side, false)}
-        >
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-    </div>
+      <div
+        className={classes.list}
+        role="presentation"
+        onClick={toggleDrawer(side, false)}
+        onKeyDown={toggleDrawer(side, false)}
+      >
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </div>
     );
     const loginUI = (
-        <div>
-            <Link to="/login" className="">
-                <Button color="primary" variant="outlined" className={classes.button}>
-                    로그인
-                </Button>
-            </Link>
-            <Link to="/register" className="">
-                <Button color="primary" variant="outlined" className={classes.button}>
-                    회원가입
-                </Button>
-            </Link>
-        </div>
+      <div>
+        <Link to="/login" className="">
+          <Button color="primary" variant="outlined" className={classes.button}>
+              로그인
+          </Button>
+      </Link>
+        <Link to="/register" className="">
+          <Button color="primary" variant="outlined" className={classes.button}>
+              회원가입
+          </Button>
+        </Link>
+      </div>
     );
     const logoutUI = (
-        <div>
-            <Link to="/logout" className="">
-                <Button color="primary" variant="outlined" className={classes.button} onClick={handleLogout}>
-                    로그아웃
-                </Button>
-            </Link>
-        </div>
+      <div>
+        <Link to="/logout" className="">
+          <Button color="primary" variant="outlined" className={classes.button} onClick={handleLogout}>
+              로그아웃
+          </Button>
+        </Link>
+      </div>
     );
     return (
       <React.Fragment>
@@ -155,9 +150,9 @@ const Topbar = () => {
           <Toolbar id="top_bar" className={classes.topBar}>
             <div className="bar_left">
                 <Link to="/" className="logo">로고</Link>
-                <Button>
-                    <MenuIcon onClick={toggleDrawer('left', true)}></MenuIcon>
-                </Button>
+                <a href="#" className="menu_button">
+                  <MenuIcon variant="text" color="primary" onClick={toggleDrawer('left', true)}></MenuIcon>
+                </a>
             </div>
             <nav className="bar_nav">
                 <Link to="/" className="item">설명</Link>

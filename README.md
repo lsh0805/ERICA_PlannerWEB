@@ -1,71 +1,20 @@
-# Planner WEB
-계획 및 일정 관리 웹 애플리케이션 입니다.
+# NEXT LEVEL
+한양대학교 ERICA Open Source Software Project :rocket:  
+2019044211 임승현
+
+## NEXT LEVEL 프로젝트 소개
+![로고_이미지](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/client/src/img/logo.png)  
+
+&nbsp;계획 및 일정 관리 웹 애플리케이션 입니다.  
+
+&nbsp;자신이 해야 할 일들에 대해서 계획표를 작성하고, 일들을 마쳤을 때 경험치를 얻을 수 있습니다. 남들과 경쟁하는 것이 아니기 때문에 경험치량은 직접 설정할 수 있습니다. 기간별로 경험치 추이 그래프를 확인할 수 있어 자신이 얼마나 성장했는지 시각적으로 확인할 수 있습니다.
+
+
+## 개발 계기
+&nbsp;저는 평소에 RPG 게임을 하여 게임 속 캐릭터를 성장시켜나가는 과정이 너무나 재밌어서 한때는 게임에만 몰두하여 밤을 새우곤 했습니다.
+
+&nbsp;하지만 현실에서는 업무나 과제를 수행했을 때 자신이 얼마큼 성장했는 지가 추상적입니다. 그래서 "현실에서도 자신이 수행했던 일들에 대해서 눈으로 볼 수 있다면 동기부여도 되고 성취감도 증가해서 게임에서 하는 것만큼 노력할 수 있지 않을까?"라는 생각으로 개발을 하게 됐습니다.
+
+&nbsp;또한 웹은 해본 적이 없어서 이번 프로젝트를 계기로 프론트 앤드와 백 앤드에 대해서 공부해보고자 했습니다. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

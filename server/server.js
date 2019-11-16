@@ -21,11 +21,13 @@ const sessionData = fs.readFileSync('./config/session.json');
 const sessionSecret = JSON.parse(sessionData);
 
 app.use(session({
-    key: 'key',
+    key: 'connect.sid',
     secret: sessionSecret.secret,
     resave: false,
     store: sessionStore,
-    saveUninitialized: true
+    saveUninitialized: true,
+    httpOnly: false,
+    secure: false
 }));
 
 

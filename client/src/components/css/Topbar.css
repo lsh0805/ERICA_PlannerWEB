@@ -3,12 +3,12 @@ Link {text-decoration: none;}
 
 /* Top bar 레이아웃 */
 #bar_space {height: 64px;}
-.bar_right {width: 25%;}
+.bar_right {width: 25%; text-align: right;}
 .bar_left {width: 25%; display: flex; align-items: center;}
 
 /* Top bar 아이템 */
 .bar_left .logo {font-size: 20px; font-weight: bold;}
-.bar_left .menu_button {display: inline-block; margin-left: 30px; display: flex; align-items: center;}
+.bar_left .menu_button { display: none;}
 
 .bar_nav .item {
     margin: 0 22px 0 22px; 
@@ -20,6 +20,32 @@ Link {text-decoration: none;}
     color: #50BCDF;
 }
 
+/* Side Navigation */
+#nav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2000;
+  top: 53px;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;}
+
+#nav a{
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.4s;
+  white-space: nowrap;
+}
+#nav a:hover{
+  color: #FFFFFF;
+}
+
 @media (max-width: 1100px){
     .bar_right {width: auto; text-align: right;}
     .bar_nav {width: 50%;}
@@ -27,5 +53,6 @@ Link {text-decoration: none;}
 }
 
 @media (max-width: 860px){
-    #top_bar .bar_nav {display: none;}
+  .bar_left .menu_button { margin-left: 30px; display: flex; align-items: center;}
+  #top_bar .bar_nav {display: none;}
 }

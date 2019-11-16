@@ -1,0 +1,52 @@
+/* 푸터 영역 레이아웃 */
+#footer { border-top: #222 3px solid; width: 100%; background-color: #444; text-align: center;  color: #ddd; font-size: 12px; position: relative; display: inline-block;}
+#footer ul {padding: 0;}
+a:hover {text-decoration: none;}
+
+/* 푸터 영역 로고 */
+#footer .logo {margin-top: 30px;}
+
+/* 푸터 영역 기타 링크 */
+#footer .other_link {margin-top: 35px; height: 100%;}
+#footer .other_link li {display: inline; margin: 0 17px 0 17px;}
+#footer .other_link li a{position: relative; display: inline-block; background-color: #5E8BF2; border-radius: 20%; text-align: center;
+  width: 50px; height: 50px; color: #fff; font-size: 30px; line-height: 1.6; transition: all 0.3s ease;}
+#footer .other_link li a span{
+  position: absolute;
+  left: 50%; top: -40px;
+  transform: translateX(-50%);
+  font-size: 12px;
+  background: #5E8BF2;
+  padding: 3px 9px;
+  border-radius: 6px 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+#footer .other_link li a span:before{
+  content:'';
+  position: absolute;
+  left: 50%;bottom: -5px;
+  margin-left: -5px;
+  border-top: 5px solid #5E8BF2;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+#footer .other_link li a:hover {
+  box-shadow:
+    0 0 0 4px rgba(0, 72, 168, 0.9) inset,
+    0 0 0 100px rgba(0, 0, 0, 0.1) inset;
+}
+#footer .other_link li a:hover span{
+  opacity: 1;
+  top: -33px;
+}
+#footer .link_icon{
+  font-size: 50sp;
+}
+
+/* 푸터 영역 제작자 정보  */
+#footer .author_info {
+  display: inline-block;
+  text-align: center;
+  margin: 30px 0 30px 0px;
+}

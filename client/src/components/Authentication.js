@@ -7,15 +7,14 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './css/Toast.css'
-import { MdErrorOutline } from 'react-icons/md';
+import './css/Toast.css';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
  
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -58,19 +57,6 @@ const useStyles = makeStyles(theme => ({
     },  
   }));
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const Authentication = (props) => {
   const [input_state, inputSetState] = useState({
     email: "",
@@ -98,7 +84,7 @@ const Authentication = (props) => {
   const handleLogin = () => {
     props.onLogin(input_state.email, input_state.password, input_state.keepLogin).then((response) => {
       if(!toast.isActive(ERROR_LOGIN) && !response.success){
-      toast.error(<div className="toast_wrapper"><MdErrorOutline className="toast"/>{response.error}</div>, {
+      toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{response.error}</div>, {
           ...getToastAttr(ERROR_LOGIN)
         });
       }
@@ -107,7 +93,7 @@ const Authentication = (props) => {
   const handleRegister = () => {
     props.onRegister(input_state.email, input_state.nickname, input_state.password, input_state.password_check, input_state.alarm).then((response) => {
       if(!toast.isActive(ERROR_REGISTER) && !response.success){
-        toast.info(<div className="toast_wrapper"><MdErrorOutline className="toast"/>{response.error}</div>, {
+        toast.info(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{response.error}</div>, {
           ...getToastAttr(ERROR_REGISTER)
         });
       }
@@ -282,9 +268,6 @@ const Authentication = (props) => {
             { props.mode ? loginView : registerView }
           </div>
         </div>
-        <Box mt={5}>
-          <Copyright />
-        </Box>
       </Container>
     </div>
     );

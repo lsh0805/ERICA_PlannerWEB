@@ -1,39 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import './css/Topbar.css'
+import logo from '../img/logo.png'
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
-  '@global': {
-    ul: {
-      margin: 0,
-      padding: 0,
-    },
-    li: {
-      listStyle: 'none',
-    },
-    a: {
-        textDecoration: 'none'
-    },
-    body:{
-        height: 2000,
-    }
-  },
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    zIndex: theme.zIndex.drawer + 1000,
   },
   menuIcon: {
     verticalAlign: 'center',
@@ -57,25 +37,23 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
-
-
 const Topbar = () => {
     const classes = useStyles(); 
-    const [loginInfo, setLoginInfo] = React.useState({
+    const [loginInfo, setLoginInfo] = useState({
         isLoggedIn : false,
         userName: "",
     });
-    const [state, setState] = React.useState({
-        top: false,
-        left: false,
-        bottom: false,
-        right: false,
-    });
+    const [isOpenedSideNav, setSideNavOpen] = useState(false);
+    function offNav() {
+      window.innerWidth > 860 && isOpenedSideNav && setSideNavOpen(false);
+    }
+    window.addEventListener('resize', offNav);
     useEffect(() => {
       axios.get('/api/account/getInfo').then((res) => {
           setLoginInfo({isLoggedIn: true, userName: res.username})
       });
     }, []);
+
     const handleLogout = () => {
       axios.get('/api/account/logout').then(() => {
         let loginData = {
@@ -88,39 +66,11 @@ const Topbar = () => {
           console.log(err);
       });
     }
-    const toggleDrawer = (side, open) => event => {
-      if (event.type === 'keydown' && (event.key ===  'Tab' || event.key === 'Shift')) {
+    const toggleSideNav = (open) => event => {
+      if (event.type === 'keydown' && (event.key ===  'Tab' || event.key === 'Shift'))
         return;
-      }
-      setState({ ...state, [side]: open });
+      setSideNavOpen(open);
     };
-    
-    const sideList = side => (
-      <div
-        className={classes.list}
-        role="presentation"
-        onClick={toggleDrawer(side, false)}
-        onKeyDown={toggleDrawer(side, false)}
-      >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
     const loginUI = (
       <div>
         <Link to="/login" className="">
@@ -145,32 +95,37 @@ const Topbar = () => {
       </div>
     );
     return (
-      <React.Fragment>
-        <AppBar color="default" elevation={0} className={classes.appBar}>
-          <Toolbar id="top_bar" className={classes.topBar}>
-            <div className="bar_left">
-                <Link to="/" className="logo">로고</Link>
-                <a href="#" className="menu_button">
-                  <MenuIcon variant="text" color="primary" onClick={toggleDrawer('left', true)}></MenuIcon>
-                </a>
-            </div>
-            <nav className="bar_nav">
-                <Link to="/" className="item">설명</Link>
-                <Link to="/" className="item">사용법</Link>
-                <Link to="/" className="item">공지사항</Link>
-                <Link to="/" className="item">게시판</Link>
-            </nav>
-            <div className="bar_right">
-                { loginInfo.isLoggedIn ? logoutUI : loginUI }
-            </div>
-          </Toolbar>
-        </AppBar>
-        <div id="bar_space"></div>
-        <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
-            {sideList('left')}
-        </Drawer>
-      </React.Fragment>
-    );
+    <React.Fragment>
+      <AppBar position="fixed" color="default" elevation={0} className={classes.appBar}>
+        <Toolbar id="top_bar" className={classes.topBar}>
+          <div className="bar_left">
+              <Link to="/" className="logo"><img src={logo} style={{width: 80}} alt="로고"/></Link>
+              <a href="#" className="menu_button">
+                {isOpenedSideNav ? <CloseIcon variant="text" color="primary" onClick={toggleSideNav(false)}/>: 
+                <MenuIcon variant="text" color="primary" onClick={toggleSideNav(true)}/>}
+              </a>
+          </div>
+          <nav className="bar_nav">
+              <Link to="/" className="item">설명</Link>
+              <Link to="/" className="item">사용법</Link>
+              <Link to="/" className="item">공지사항</Link>
+              <Link to="/" className="item">게시판</Link>
+          </nav>
+          <div className="bar_right">
+              { loginInfo.isLoggedIn ? logoutUI : loginUI }
+          </div>
+        </Toolbar>
+      </AppBar>
+      <div id="bar_space"></div>
+      
+      <nav id="nav" style={{width: (isOpenedSideNav ? "250px" : "0px")}}>
+        <Link to="/" className="item">설명</Link>
+        <Link to="/" className="item">사용법</Link>
+        <Link to="/" className="item">공지사항</Link>
+        <Link to="/" className="item">게시판</Link>
+      </nav>
+    </React.Fragment>
+  );
   }
 
 export default Topbar;

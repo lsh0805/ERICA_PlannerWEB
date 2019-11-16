@@ -1,17 +1,17 @@
-body {background: #ffffff;}
-Link {text-decoration: none;}
+/* 블릿기호 초기화 */
+ul,li,ol {list-style: none;}
 
-/* Top Bar 레이아웃 */
-.bar_right {width: 25%;text-align: center;}
-.bar_nav {width: 50%; text-align: center;}
-.bar_left {width: 25%; text-align: center;}
-
-@media (max-width: 1100px){
-    .bar_right {width: auto;}
-    .bar_nav {width: auto;}
-    .bar_left {width: auto;}
+ul{
+  margin: 0px;
+  padding: 0,
+}
+a {
+  text-decoration: none;
+}
+body{
+    margin: 0;
 }
 
-@media (max-width: 860px){
-    #top_bar .bar_nav {display: none;}
-}
+
+/* 컨텐츠 영역 레이아웃 */
+.contents { height: 600px;}

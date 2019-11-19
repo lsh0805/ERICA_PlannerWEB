@@ -28,9 +28,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   button: {
+    width: 65,
+    height: 40,
     fontWeight: 800,
-    fontSize: 18,
-    margin: theme.spacing(0, 1.5),
+    fontSize: 13,
+    margin: theme.spacing(0, 0.5),
+    padding: theme.spacing(0, 0.5),
     transition: 'all 0.3s ease',
     '&:hover': {
         color: '#0000FF',
@@ -118,7 +121,7 @@ const Topbar = () => {
       </AppBar>
       <div id="bar_space"></div>
       
-      <nav id="nav" style={{width: (isOpenedSideNav ? "250px" : "0px")}}>
+      <nav id="nav" style={{width: (isOpenedSideNav ? "170px" : "0px")}}>
         <Link to="/" className="item">설명</Link>
         <Link to="/" className="item">사용법</Link>
         <Link to="/" className="item">공지사항</Link>

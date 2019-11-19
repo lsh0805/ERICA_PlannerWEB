@@ -22,7 +22,7 @@ export default function App() {
           <BrowserRouter>
             {/* 라우팅 */}
             <Route path="/" component={Topbar}/>
-            <div class="contents">
+            <div className="contents">
               <Route exact path="/" component={Main}/>
               <Route path="/register" component={Register}/>
               <Route path="/login" component={Login}/>

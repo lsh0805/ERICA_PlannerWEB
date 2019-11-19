@@ -8,7 +8,7 @@
 ### Notice
 * **[!]** 서버 호스팅 비용이 유료이기 때문에 웹 서버를 항상 가동 해놓을 수 없는 점 양해 부탁드립니다.
 * **[!]** 해당 웹은 [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 방식으로 다음과 같이 비밀번호가 암호화되어 운영자 또한 유저들의 비밀번호를 확인할 수 없습니다.<br>
-![DB 비밀번호 이미지](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/client/.github/img/database_table_hash.png)
+![DB 비밀번호 이미지](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/.github/img/database_table_hash.png)
 * **[!]** 해당 프로젝트는 아직 개발단계에 있습니다.
 
 ## NEXT LEVEL 프로젝트 소개

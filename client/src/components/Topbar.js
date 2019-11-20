@@ -9,6 +9,9 @@ import { Link } from 'react-router-dom';
 import './css/Topbar.css'
 import logo from '../img/logo.png'
 import axios from 'axios';
+import * as cookie from '../module/cookie';
+import { getRateEXP } from '../module/level';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -20,12 +23,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0, 4, 0, 0),
   },
   topBar: {
-    justifyContent: `space-around`,
+    justifyContent: `space-between`,
     alignItems: 'center',
     flexWrap: 'wrap',
-    [theme.breakpoints.down(1100)]: {
-        justifyContent: `space-between`,
-    }
   },
   button: {
     width: 65,
@@ -44,7 +44,9 @@ const Topbar = () => {
     const classes = useStyles(); 
     const [loginInfo, setLoginInfo] = useState({
         isLoggedIn : false,
-        userName: "",
+        username: "",
+        level: 0,
+        exp: 0,
     });
     const [isOpenedSideNav, setSideNavOpen] = useState(false);
     function offNav() {
@@ -53,18 +55,14 @@ const Topbar = () => {
     window.addEventListener('resize', offNav);
     useEffect(() => {
       axios.get('/api/account/getInfo').then((res) => {
-          setLoginInfo({isLoggedIn: true, userName: res.username})
+        setLoginInfo({isLoggedIn: true, username: res.data.info.username, level: res.data.info.level, exp: res.data.info.exp});
       });
     }, []);
 
     const handleLogout = () => {
       axios.get('/api/account/logout').then(() => {
-        let loginData = {
-            isLoggedIn: false,
-            username: '',
-        };
-        document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-        setLoginInfo({isLoggedIn: false, userName: ""});
+        cookie.setCookie(false, '');
+        setLoginInfo({isLoggedIn: false, username: "", level: 0, exp: 0});
       }).catch((err) => {
           console.log(err);
       });
@@ -75,7 +73,7 @@ const Topbar = () => {
       setSideNavOpen(open);
     };
     const loginUI = (
-      <div>
+      <div className="loginUI">
         <Link to="/login" className="">
           <Button color="primary" variant="outlined" className={classes.button}>
               로그인
@@ -89,8 +87,26 @@ const Topbar = () => {
       </div>
     );
     const logoutUI = (
-      <div>
-        <Link to="/logout" className="">
+      <div className="logoutUI">
+        <Link to="/planner" className="userUI">
+          <div className="row1">
+            <div className="user_name">
+              {loginInfo.username}
+            </div>
+            <div className="user_stat">
+              <div className="level">
+                Lv.{loginInfo.level}
+              </div>
+              <div className="exp">
+                exp:{getRateEXP(loginInfo.level, loginInfo.exp)}%
+              </div>
+            </div>
+          </div>
+          <div className="row2">
+            <LinearProgress variant="determinate" value={getRateEXP(loginInfo.level, loginInfo.exp)} className="exp_bar"/>
+          </div>
+        </Link>
+        <Link to="/logout" className="logout_btn">
           <Button color="primary" variant="outlined" className={classes.button} onClick={handleLogout}>
               로그아웃
           </Button>
@@ -112,7 +128,9 @@ const Topbar = () => {
               <Link to="/" className="item">설명</Link>
               <Link to="/" className="item">사용법</Link>
               <Link to="/" className="item">공지사항</Link>
-              <Link to="/" className="item">게시판</Link>
+              <Link to="/planner/info" className="item">내 정보</Link>
+              <Link to="/planner/todo" className="item">일정</Link>
+              <Link to="/planner/achievement" className="item">과제</Link>
           </nav>
           <div className="bar_right">
               { loginInfo.isLoggedIn ? logoutUI : loginUI }
@@ -125,7 +143,9 @@ const Topbar = () => {
         <Link to="/" className="item">설명</Link>
         <Link to="/" className="item">사용법</Link>
         <Link to="/" className="item">공지사항</Link>
-        <Link to="/" className="item">게시판</Link>
+        <Link to="/planner/info" className="item">내 정보</Link>
+        <Link to="/planner/todo" className="item">일정</Link>
+        <Link to="/planner/achievement" className="item">과제</Link>
       </nav>
     </React.Fragment>
   );

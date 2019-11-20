@@ -3,11 +3,11 @@ Link {text-decoration: none;}
 
 /* Top bar 레이아웃 */
 #bar_space {height: 64px;}
-.bar_right {width: 25%; text-align: right;}
-.bar_left {width: 25%; display: flex; align-items: center;}
+.bar_right {width: 25%; text-align: center;}
+.bar_left {width: 25%; display: flex; align-items: center; justify-content: space-around;}
 
 /* Top bar 아이템 */
-.bar_left .logo {font-size: 20px; font-weight: bold;}
+.bar_left .logo {display: inline-block; font-size: 20px; font-weight: bold;}
 .bar_left .menu_button { display: none;}
 
 .bar_nav .item {
@@ -46,13 +46,50 @@ Link {text-decoration: none;}
   color: #FFFFFF;
 }
 
-@media (max-width: 1100px){
-    .bar_right {width: auto; text-align: right;}
-    .bar_nav {width: 50%;}
-    .bar_left {width: auto; text-align: left;}
+/* 로그아웃 UI */
+.logoutUI{
+  display: inline-flex;
+  align-items: center;
+}
+.logoutUI .userUI{
+  color: #000000;
+  min-width: 120px;
+  text-align: left;
+}
+.logoutUI .userUI .user_name{
+  font-weight: bold;
+}
+.logoutUI .userUI .user_stat{
+  display: flex;
+  justify-content: space-between;
+}
+.logoutUI .userUI .user_stat .level{
+  display: inline-block;
+}
+.logoutUI .userUI .user_stat .exp{
+  display: inline-block;
+}
+.logoutUI .userUI .row2{
+  margin-top: 5px;
+}
+.logoutUI .logout_btn{
+  display: inline-block;
+  margin-left: 5px;
 }
 
-@media (max-width: 860px){
-  .bar_left .menu_button { margin-left: 30px; display: flex; align-items: center;}
+@media (max-width: 1400px){
+  .bar_right {width: auto; text-align: right;}
+  .bar_nav {width: auto;}
+  .bar_left {width: auto; text-align: left;}
+}
+
+@media (max-width: 1100px){
+  .topBar {justify-content: flex-start;}
+  .bar_right {width: auto; text-align: right;}
+  .bar_left {width: auto; text-align: left;}
+}
+
+@media (max-width: 960px){
+  .bar_left .menu_button { margin-left: 30px; display: block;}
   #top_bar .bar_nav {display: none;}
 }

@@ -26,7 +26,7 @@ app.use(session({
     resave: false,
     store: sessionStore,
     saveUninitialized: true,
-    httpOnly: false,
+    httpOnly: true,
     secure: false
 }));
 

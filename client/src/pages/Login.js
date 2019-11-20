@@ -2,7 +2,7 @@ import React from 'react';
 import { Authentication } from '../components';
 import { connect } from 'react-redux';
 import { loginRequest } from 'actions/authentication';
-
+import * as cookie from '../module/cookie';
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -13,13 +13,7 @@ class Login extends React.Component {
     return this.props.loginRequest(email, password, keepLogin).then(() =>{
       if(this.props.status === "SUCCESS"){
         // create session data
-        let loginData = {
-          isLoggedIn: true,
-          userName: this.props.nickName
-        };
-
-        document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-        console.log("로그인 완료");
+        cookie.setCookie(true, email);
         window.location.replace('/');
         return {success: true};
       }else{
@@ -46,7 +40,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loginRequest:(email, password, keepLogin)=> {
-          return dispatch(loginRequest(email, password, keepLogin));
+        return dispatch(loginRequest(email, password, keepLogin));
       }
   };
 };

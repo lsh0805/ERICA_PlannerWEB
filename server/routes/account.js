@@ -9,7 +9,9 @@ router.post('/login', (req, res) => {
         // Alter session
         req.session.loginInfo = {
             _id: account.id,
-            username: account.nickname
+            username: account.nickname,
+            level: account.level,
+            exp: account.exp,
         };
         res.json({ 'success' : true});
     }).catch((err) => {
@@ -35,7 +37,9 @@ router.post('/register', (req, res) =>{
     register.execute(req.body).then((account) => {
         req.session.loginInfo = {
             _id: account.id,
-            username: account.nickname
+            username: account.nickname,
+            level: account.level,
+            exp: account.exp,
         };
         res.json({'success': true});
     }).catch((err) => {

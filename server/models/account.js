@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
     },
     email: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(350),
         allowNull: false,
         unique: true,
     },
@@ -36,5 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
       timestamps: false,
+      charset: 'utf8',
+      collate: 'utf8_unicode_ci'
   });
 };

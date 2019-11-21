@@ -1,11 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('plan', {
-    id:{
-      type: DataTypes.INTEGER,
-      unique: true,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     author: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -50,5 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
       timestamps: false,
+      charset: 'utf8',
+      collate: 'utf8_unicode_ci'
   });
 };

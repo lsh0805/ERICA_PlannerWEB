@@ -93,3 +93,12 @@ Link {text-decoration: none;}
   .bar_left .menu_button { margin-left: 30px; display: block;}
   #top_bar .bar_nav {display: none;}
 }
+@media (max-width: 600px){
+  #bar_space {height: 56px;}
+  .logoutUI .userUI{
+    display: none;
+  }
+  @media (max-height: 600px){
+    #bar_space {height: 48px;}
+  }
+}

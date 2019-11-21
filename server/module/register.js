@@ -15,6 +15,8 @@ module.exports = {
         let row = undefined;
         if(!re.test(email))
             return new response(false, "올바른 이메일 형식이 아닙니다.");
+        else if(email.length > 320)
+            return new response(false, "이메일은 320글자 이하이어야 합니다.");
         let err = null;
         await Account.findOne({
             where: {email: email}
@@ -34,6 +36,8 @@ module.exports = {
             return new response(false, "닉네임에는 특수문자를 포함시킬 수 없습니다.");
         else if(nickname.length < 3)
             return new response(false, "닉네임은 3글자 이상이어야 합니다.");
+        else if(nickname.length > 8)
+            return new response(false, "닉네임은 8글자 이하이어야 합니다.");
         let err = null;
         await Account.findOne({
             where: {nickname: nickname}

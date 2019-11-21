@@ -17,11 +17,6 @@ import './css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
  
 const useStyles = makeStyles(theme => ({
-    '@global': {
-      body: {
-        backgroundColor: theme.palette.common.white,
-      },
-    },
     paper: {
       marginTop: theme.spacing(8),
       display: 'flex',
@@ -47,8 +42,8 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(3, 0, 2),
     },
     error_toast: {
-        backgroundColor:'#D32F2F',
-        color: '#FFFFFF'
+      backgroundColor:'#D32F2F',
+      color: '#FFFFFF'
     },
     message: {
       display: 'flex',
@@ -256,7 +251,6 @@ const Authentication = (props) => {
   return (
     <div>
       <Container component="main" xs={20} maxWidth="xs">
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

@@ -8,8 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import './css/Topbar.css'
 import logo from '../img/logo.png'
-import axios from 'axios';
-import * as cookie from '../module/cookie';
 import { getRateEXP } from '../module/level';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -40,32 +38,18 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
-const Topbar = () => {
+const Topbar = (props) => {
     const classes = useStyles(); 
-    const [loginInfo, setLoginInfo] = useState({
-        isLoggedIn : false,
-        username: "",
-        level: 0,
-        exp: 0,
-    });
+    
     const [isOpenedSideNav, setSideNavOpen] = useState(false);
     function offNav() {
       window.innerWidth > 860 && isOpenedSideNav && setSideNavOpen(false);
     }
     window.addEventListener('resize', offNav);
-    useEffect(() => {
-      axios.get('/api/account/getInfo').then((res) => {
-        setLoginInfo({isLoggedIn: true, username: res.data.info.username, level: res.data.info.level, exp: res.data.info.exp});
-      });
-    }, []);
+    
 
     const handleLogout = () => {
-      axios.get('/api/account/logout').then(() => {
-        cookie.setCookie(false, '');
-        setLoginInfo({isLoggedIn: false, username: "", level: 0, exp: 0});
-      }).catch((err) => {
-          console.log(err);
-      });
+      props.handleLogout();
     }
     const toggleSideNav = (open) => event => {
       if (event.type === 'keydown' && (event.key ===  'Tab' || event.key === 'Shift'))
@@ -88,29 +72,29 @@ const Topbar = () => {
     );
     const logoutUI = (
       <div className="logoutUI">
-        <Link to="/planner" className="userUI">
+        <Link to="/planner/info" className="userUI">
           <div className="row1">
             <div className="user_name">
-              {loginInfo.username}
+              {props.loginInfo.username}
             </div>
             <div className="user_stat">
               <div className="level">
-                Lv.{loginInfo.level}
+                Lv.{props.loginInfo.level}
               </div>
               <div className="exp">
-                exp:{getRateEXP(loginInfo.level, loginInfo.exp)}%
+                EXP: {getRateEXP(props.loginInfo.level, props.loginInfo.exp)}%
               </div>
             </div>
           </div>
           <div className="row2">
-            <LinearProgress variant="determinate" value={getRateEXP(loginInfo.level, loginInfo.exp)} className="exp_bar"/>
+            <LinearProgress variant="determinate" value={getRateEXP(props.loginInfo.level, props.loginInfo.exp)} className="exp_bar"/>
           </div>
         </Link>
-        <Link to="/logout" className="logout_btn">
-          <Button color="primary" variant="outlined" className={classes.button} onClick={handleLogout}>
+        <div className="logout_btn">
+          <Button color="primary" variant="outlined" className={classes.button} onClick={props.handleLogout}>
               로그아웃
           </Button>
-        </Link>
+        </div>
       </div>
     );
     return (
@@ -133,7 +117,7 @@ const Topbar = () => {
               <Link to="/planner/achievement" className="item">과제</Link>
           </nav>
           <div className="bar_right">
-              { loginInfo.isLoggedIn ? logoutUI : loginUI }
+              { props.loginInfo.isLoggedIn ? logoutUI : loginUI }
           </div>
         </Toolbar>
       </AppBar>

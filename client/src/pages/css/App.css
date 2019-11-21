@@ -14,4 +14,4 @@ body{
 
 
 /* 컨텐츠 영역 레이아웃 */
-.contents { height: 600px;}
+.contents { min-height: 600px;}

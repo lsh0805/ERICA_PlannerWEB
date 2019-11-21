@@ -1,0 +1,13 @@
+/* 레이아웃 */
+#todo .container{
+  padding: 20px 100px 20px 100px;
+  text-align: center;
+}
+
+
+/* 미디어 쿼리 */
+@media (max-width: 600px){
+  #todo .container{
+    padding: 0;
+  }
+}

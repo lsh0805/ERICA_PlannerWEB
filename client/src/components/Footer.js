@@ -1,7 +1,6 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import ShopIcon from '@material-ui/icons/Shop';
 import { faGithub, faGooglePlay, faBlogger } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './css/Footer.css'

@@ -5,6 +5,6 @@ import Root from './Root';
 import AuthRoute from './AuthRoute';
 import Chart from './Chart';
 import PlanItem from './PlanItem';
-import PlanItemBox from './PlanItemBox';
+import PlanList from './PlanList';
 
-export { Root, Footer, Topbar, Authentication, AuthRoute, Chart, PlanItem, PlanItemBox };
+export { Root, Footer, Topbar, Authentication, AuthRoute, Chart, PlanItem, PlanList };

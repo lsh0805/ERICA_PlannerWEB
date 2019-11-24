@@ -1,0 +1,40 @@
+/* Plan box 영역 */
+#todo .plan_box{
+  margin-bottom: 10px;
+}
+/* Plan box Header */
+#todo .plan_box .plan_header{
+  text-align: center;
+  background-color: #A5F2F3;
+}
+#todo .plan_box .plan_header .date{
+  font-size: 25px;
+  font-weight: bold;
+}
+#todo .plan_box .plan_header .right_toolbox{
+  text-align: right;
+}
+#todo .plan_box .plan_header .tool{
+  margin: 0 7px 0 7px;
+  cursor: pointer;
+}
+
+/* Plan box Sizing */
+#todo .plan_box_sizing_row{
+  display: block;
+  width: 100%;
+  border-radius: 0;
+  background-color: #A5F2F3;
+  cursor: pointer;
+}
+#todo .plan_box_sizing_row:hover{
+  background-color: #ADD8E6;
+}
+#todo .plan_box_sizing_btn{
+  transition: 0.3 ease;
+}
+
+/* Plan Item Container */
+#todo .plan_item_container{
+  overflow-y: hidden;
+}

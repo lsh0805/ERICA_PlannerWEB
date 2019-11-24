@@ -21,13 +21,14 @@ export default function App() {
   const [loginInfo, setLoginInfo] = useState({
     loaded: false,
     isLoggedIn : false,
+    email: "",
     username: "",
     level: 0,
     exp: 0,
   });
   useEffect(() => {
     axios.get('/api/account/getInfo').then((res) => {
-      setLoginInfo({loaded: true, isLoggedIn: true, username: res.data.info.username, level: res.data.info.level, exp: res.data.info.exp});
+      setLoginInfo({loaded: true, isLoggedIn: true, email: res.data.info.email, username: res.data.info.username, level: res.data.info.level, exp: res.data.info.exp});
     }).catch(err => {
       setLoginInfo({loaded: true});
     })
@@ -35,7 +36,7 @@ export default function App() {
   const handleLogout = () =>{
     axios.get('/api/account/logout').then(() => {
       cookie.setCookie(false, '');
-      setLoginInfo({loaded: true, isLoggedIn: false, username: "", level: 0, exp: 0});
+      setLoginInfo({loaded: true, isLoggedIn: false, email: "", username: "", level: 0, exp: 0});
     }).catch((err) => {
         console.log(err);
     });

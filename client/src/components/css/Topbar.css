@@ -11,13 +11,15 @@ Link {text-decoration: none;}
 .bar_left .menu_button { display: none;}
 
 .bar_nav .item {
-    margin: 0 22px 0 22px; 
-    color: #000000; 
-    font-size: 18px;
-    transition: all 0.3s ease;
+  font-family: 'Spoqa Han Sans', 'sans-serif';
+  font-weight: normal;
+  margin: 0 22px 0 22px; 
+  color: #000000; 
+  font-size: 18px;
+  transition: all 0.3s ease;
 }
 .bar_nav .item:hover {
-    color: #50BCDF;
+  color: #50BCDF;
 }
 
 /* Side Navigation */

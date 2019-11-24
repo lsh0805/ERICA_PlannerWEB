@@ -71,9 +71,6 @@ const Authentication = (props) => {
     return {
       toastId: type,
       position: toast.POSITION.BOTTOM_CENTER,
-      // bodyClassName: css({
-      //   backgroundColor: "#000"
-      // })
     }
   }
   const handleLogin = () => {

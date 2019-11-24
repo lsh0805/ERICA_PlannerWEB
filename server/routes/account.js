@@ -9,6 +9,7 @@ router.post('/login', (req, res) => {
         // Alter session
         req.session.loginInfo = {
             _id: account.id,
+            email: account.email,
             username: account.nickname,
             level: account.level,
             exp: account.exp,
@@ -37,6 +38,7 @@ router.post('/register', (req, res) =>{
     register.execute(req.body).then((account) => {
         req.session.loginInfo = {
             _id: account.id,
+            email: account.email,
             username: account.nickname,
             level: account.level,
             exp: account.exp,

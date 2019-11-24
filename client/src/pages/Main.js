@@ -8,7 +8,7 @@ const Main = () => {
       <div className="banner">
         <div className="container">
           <div className="title">
-            Next Level
+            NEXT LEVEL
           </div>
           <div className="describe">
             설명

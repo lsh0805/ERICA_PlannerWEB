@@ -12,9 +12,10 @@ import * as cookie from '../module/cookie';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from 'reducers';
-import thunk from 'redux-thunk';
+import thunk  from 'redux-thunk';
+import {composeWithDevTools} from 'redux-devtools-extension'
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 toast.configure();
 
 export default function App() {

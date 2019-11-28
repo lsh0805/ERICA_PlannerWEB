@@ -2,21 +2,45 @@ import React, {useState, useEffect} from 'react';
 import './css/Todo.css'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Paper from '@material-ui/core/Paper';
-import {PlanList} from 'components';
-import axios from 'axios';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {PlanListContainer} from 'components';
 import * as planTypes from '../components/PlannerTypes';
 import Button from '@material-ui/core/Button';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPlanListRequest, postPlanRequest, deletePlanRequest, updatePlanRequest } from 'actions/planner';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Todo = (props) => {
+  // Redux hooks
+  const dispatch = useDispatch();
+  const [planList, get] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get] , []);
+
+  const onEditCompleteClick = (title, exp, id, completed) => {
+    dispatch(updatePlanRequest(title, exp, id, completed)).then(() => {
+    });
+  }
+  const onDeleteClick = (id) => {
+    dispatch(deletePlanRequest(id));
+  }
+  /* POST data = {title, exp, date, completed, month, year, ...} */
+  const onCreateClick = (data) => {
+    console.log(data);
+    data = {...data, title: "일정 설명", exp: 10};
+    dispatch(postPlanRequest(data));
+  }
+
   const getClearDate = (d) => {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
+  // State
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState([getClearDate(new Date()), getClearDate(new Date())]);
+  const [type, setType] = useState(planTypes.DAILY_PLAN);
+
+  
   const onDateChange = (date) => {
     if((date[1] - date[0])  / (60 * 60 * 24) / 1000 >= 7){
       toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
@@ -28,22 +52,17 @@ const Todo = (props) => {
       return [getClearDate(date[0]), getClearDate(date[1])];
     });
   }
-  const getDateFormat = (d) => {
-    let year = d.getFullYear();
-    let month = d.getMonth() + 1;
-    let date = d.getDate();
-    return year + "-" + month + "-" + date;
-  }
-  const mapToComponents = (date) => {
-    let diff = (date[1] - date[0])  / (60 * 60 * 24) / 1000;
-    var arr = new Array(diff);
-    for(let i = 0; i <= diff; i++){
-      let newDate = new Date(date[0]);
-      newDate.setDate(date[0].getDate() + i);
-      arr[i] = <PlanList key={i} author={props.loginInfo.email} date={getDateFormat(newDate)} type={planTypes.DAILY_PLAN}/>;
-    }
-    return arr;
-  };
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getPlanListRequest(props.loginInfo.email, type, {
+      dateStart: date[0],
+      dateEnd: date[1],
+    })).then(() => {
+      setLoading(false);
+    }).catch(err => {
+      console.log(err);
+    });
+  }, [date]);
   const periodView = (
     <Paper className="section period_section">
       <div className="section_title">기간 일정</div>
@@ -58,7 +77,15 @@ const Todo = (props) => {
             className="date_range_picker"
           />
         </div>
-          {mapToComponents(date)}
+          {loading ? <CircularProgress/> : 
+          <PlanListContainer 
+          author={props.loginInfo.email} 
+          planList={planList} 
+          type={planTypes.DAILY_PLAN}  
+          date={date}
+          onEditComplete={onEditCompleteClick} 
+          onDelete={onDeleteClick}
+          onCreate={onCreateClick}/>}
       </div>
     </Paper>
   );

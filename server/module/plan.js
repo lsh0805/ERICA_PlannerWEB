@@ -1,17 +1,15 @@
 const { Plan } = require('../models');
+const { Account } = require('../models');
+const { exp } = require('./exp.js');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
 var response = function(res, err, row = undefined){
     this.res = res;
     this.err = err;
     this.row = row;
 }
 
-const dataFormat = (data => {
-  return {
-    
-  }
-});
 module.exports = {  
   check: async function(id){
     return new Promise((resolve, reject) => {
@@ -44,25 +42,75 @@ module.exports = {
       });
     });
   },
+  getUserData: async function(email){
+    return new Promise((resolve, reject) => {
+        // Find id in DB
+        Account.findOne({
+            where: {email: email}
+        }).then(function(row){
+          if(!row)
+            return reject(new response(false, "해당 이메일에 해당하는 유저가 존재하지 않습니다."));
+          return resolve(new response(true, null, row));
+        }).catch(function(error) {
+          return reject(new response(false, error));
+        });
+    });
+  },
   update: async function(data){
     let check_res = await this.check(data.id);
-    return new Promise((resolve, reject) => {
-      if(check_res.res === true){
+    let email = check_res.row.author;
+    let user_res = await this.getUserData(email);
+    let user_level = user_res.row.level;
+    let user_exp = user_res.row.exp + check_res.row.exp;
+    let max_exp = exp.getMaxEXP(user_level);
+    console.log(email);
+    // 일정을 완수한 경우
+    if(check_res.row.completed === 0 && data.completed === 1){
+      return new Promise((resolve, reject) => {
         Plan.update(
           {
             ...data
           },
           { where : { id: data.id } }
-        ).then(async () => {
-          let check_res = await this.check(data.id);
-          return resolve(new response(true, null, check_res.row));
+        ).then(() => {
+          if(user_exp >= max_exp){
+            user_level++;
+            user_exp -= max_exp;
+          }
+          console.log("DSASAAAAAAAAAAAAAAAAAAAAAAAAAAAADSADSADSADS");
+          Account.update({
+            level: user_level,
+            exp: user_exp,
+          }, {where: {email: email } }
+          ).then(async () => {
+            let check_res = await this.check(data.id);
+            return resolve(new response(true, null, check_res.row));
+          }).catch(err => {
+            return reject(new response(false, err));
+          });
         }).catch((err) => {
           return reject(new response(false, err));
         });
-      }else{
-        return reject(new response(false, "해당하는 행을 찾을 수 없습니다."));
-      }
-    });
+      });
+    }else{
+      return new Promise((resolve, reject) => {
+        if(check_res.res === true){
+          Plan.update(
+            {
+              ...data
+            },
+            { where : { id: data.id } }
+          ).then(async () => {
+            let check_res = await this.check(data.id);
+            return resolve(new response(true, null, check_res.row));
+          }).catch((err) => {
+            return reject(new response(false, err));
+          });
+        }else{
+          return reject(new response(false, "해당하는 행을 찾을 수 없습니다."));
+        }
+      });
+    }
   },
   delete: async function(data){
     let check_res = new response(false, null);

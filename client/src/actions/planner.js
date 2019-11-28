@@ -10,7 +10,10 @@ import {
   PLAN_GET_FAILURE,
   PLAN_UPDATE,
   PLAN_UPDATE_SUCCESS,
-  PLAN_UPDATE_FAILURE
+  PLAN_UPDATE_FAILURE,
+  PLAN_COMPLETE,
+  PLAN_COMPLETE_FAILURE,
+  PLAN_COMPLETE_SUCCESS,
 } from './ActionTypes';
 import axios from 'axios';
 import * as planTypes from '../components/PlannerTypes';
@@ -41,11 +44,11 @@ export function getPlanListRequest(author, type, where){
 /* POST data = {title, exp, date, completed, month, year, ...} */
 export function postPlanRequest(data){
   return (dispatch) => {
-    dispatch(postPlan());
+    dispatch(postPlan(data.date));
     return axios.post('/api/plan/post', {...data}).then((res) => {
-      dispatch(postPlanSuccess(res.data.row));
+      dispatch(postPlanSuccess(data.date, res.data.row));
     }).catch((err) => {
-      dispatch(postPlanFailure(err));
+      dispatch(postPlanFailure(data.date, err));
     });
   }
 } 
@@ -53,27 +56,26 @@ export function postPlanRequest(data){
 /* UPDATE */
 export function updatePlanRequest(title, exp, id, completed){
   return (dispatch) => {
-    dispatch(updatePlan());
+    dispatch(updatePlan(id));
     return axios.post('/api/plan/update', {title, exp, id, completed}).then((res) => {
-      console.log(res);
-      dispatch(updatePlanSuccess(res.data.row));
+      dispatch(updatePlanSuccess(id, res.data.row));
     }).catch((err) => {
-      dispatch(updatePlanFailure(err));
+      dispatch(updatePlanFailure(id, err));
     });
   }
 } 
 
-
+/* DELETE */ 
 export function deletePlanRequest(id){
   return (dispatch) => {
-    dispatch(deletePlan());
+    dispatch(deletePlan(id));
     axios.post('/api/plan/delete', {id}).then(() => {
       dispatch(deletePlanSuccess(id));
     }).catch(err => {
-      dispatch(deletePlanFailure(err));
+      dispatch(deletePlanFailure(id, err));
     });
   }
-} 
+}
 
 export function getPlanList() {
   return {
@@ -95,49 +97,52 @@ export function getPlanListFailure(error) {
   };
 }
 
-export function postPlan() {
+export function postPlan(date) {
   return {
-      type: PLAN_POST
+      type: PLAN_POST,
+      date
   };
 }
 
-export function postPlanSuccess(plan) {
+export function postPlanSuccess(date, plan) {
   return {
       type: PLAN_POST_SUCCESS,
-      plan
+      date, plan
   };
 }
 
-export function postPlanFailure(error) {
+export function postPlanFailure(date, error) {
   return {
       type: PLAN_POST_FAILURE,
-      error
+      date, error
   };
 }
 
-export function updatePlan() {
+export function updatePlan(id) {
   return {
-      type: PLAN_UPDATE
+      type: PLAN_UPDATE,
+      id
   };
 }
 
-export function updatePlanSuccess(plan) {
+export function updatePlanSuccess(id, plan) {
   return {
       type: PLAN_UPDATE_SUCCESS,
-      plan
+      id, plan
   };
 }
 
-export function updatePlanFailure(error) {
+export function updatePlanFailure(id, error) {
   return {
       type: PLAN_UPDATE_FAILURE,
-      error
+      id, error
   };
 }
 
-export function deletePlan() {
+export function deletePlan(id) {
   return {
-      type: PLAN_DELETE
+      type: PLAN_DELETE,
+      id
   };
 }
 
@@ -148,9 +153,9 @@ export function deletePlanSuccess(id) {
   };
 }
 
-export function deletePlanFailure(error) {
+export function deletePlanFailure(id, error) {
   return {
       type: PLAN_DELETE_FAILURE,
-      error
+      id, error
   };
 }

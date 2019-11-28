@@ -16,8 +16,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const Todo = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
-  const [planList, get] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get] , []);
+  const [planList, getStatus, postStatus, deleteStatus, updateStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
 
+  const onCompleteClick = (title, exp, id, completed) => {
+    dispatch(updatePlanRequest(title, exp, id, completed));
+  }
   const onEditCompleteClick = (title, exp, id, completed) => {
     dispatch(updatePlanRequest(title, exp, id, completed)).then(() => {
     });
@@ -27,7 +30,6 @@ const Todo = (props) => {
   }
   /* POST data = {title, exp, date, completed, month, year, ...} */
   const onCreateClick = (data) => {
-    console.log(data);
     data = {...data, title: "일정 설명", exp: 10};
     dispatch(postPlanRequest(data));
   }
@@ -40,17 +42,22 @@ const Todo = (props) => {
   const [date, setDate] = useState([getClearDate(new Date()), getClearDate(new Date())]);
   const [type, setType] = useState(planTypes.DAILY_PLAN);
 
-  
   const onDateChange = (date) => {
-    if((date[1] - date[0])  / (60 * 60 * 24) / 1000 >= 7){
-      toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
-      기간은 최대 7일까지 선택할 수 있습니다.
-      </div>);
-      return;
+    try{
+      if((date[1] - date[0])  / (60 * 60 * 24) / 1000 >= 7){
+        toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+        기간은 최대 7일까지 선택할 수 있습니다.
+        </div>);
+        return;
+      }
+      setDate(() => {
+        return [getClearDate(date[0]), getClearDate(date[1])];
+      });
+    }catch(e){
+      setDate(() => {
+        return [undefined, undefined];
+      });
     }
-    setDate(() => {
-      return [getClearDate(date[0]), getClearDate(date[1])];
-    });
   }
   useEffect(() => {
     setLoading(true);
@@ -85,7 +92,14 @@ const Todo = (props) => {
           date={date}
           onEditComplete={onEditCompleteClick} 
           onDelete={onDeleteClick}
-          onCreate={onCreateClick}/>}
+          onCreate={onCreateClick}
+          onComplete={onCompleteClick}
+          getStatus={getStatus}
+          postStatus={postStatus}
+          deleteStatus={deleteStatus}
+          updateStatus={updateStatus}
+
+          />}
       </div>
     </Paper>
   );

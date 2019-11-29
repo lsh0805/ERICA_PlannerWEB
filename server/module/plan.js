@@ -1,8 +1,12 @@
 const { Plan } = require('../models');
 const { Account } = require('../models');
 const { exp } = require('./exp.js');
+const moment = require('moment');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+require('moment-timezone');
+
+moment.tz.setDefault("Asia/Seoul");
 
 var response = function(res, err, row = undefined){
     this.res = res;
@@ -32,7 +36,7 @@ module.exports = {
           author: data.author,
           title: data.title,
           exp: data.exp,
-          date: data.date,
+          date: moment(data.date).add(9, 'h').toDate(),
           type: data.type,
         }
       ).then((row) => {
@@ -63,7 +67,6 @@ module.exports = {
     let user_level = user_res.row.level;
     let user_exp = user_res.row.exp + check_res.row.exp;
     let max_exp = exp.getMaxEXP(user_level);
-    console.log(email);
     // 일정을 완수한 경우
     if(check_res.row.completed === 0 && data.completed === 1){
       return new Promise((resolve, reject) => {
@@ -77,7 +80,6 @@ module.exports = {
             user_level++;
             user_exp -= max_exp;
           }
-          console.log("DSASAAAAAAAAAAAAAAAAAAAAAAAAAAAADSADSADSADS");
           Account.update({
             level: user_level,
             exp: user_exp,

@@ -13,18 +13,19 @@
 
 /* 제목 */
 .plan_item .plan_title{
-  flex-grow: 1;
   width: 30%;
   text-overflow: ellipsis;
   overflow: hidden;
+  white-space: nowrap;
 }
 .plan_item .plan_exp{
-  flex-grow: 1;
-  margin-left: 7px;
   width: 30%;
+  margin-left: 7px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .plan_item .plan_btn_container{
-  flex-grow: 1;
+  width: 30%;
   height: 40px;
   line-height: 40px;
   display: flex;
@@ -52,14 +53,12 @@
 
 /* 수정모드 */
 .plan_item .edit_title{
-  flex-grow: 1;
-  width: 30%;
+  width: 60%;
   font-family: 'Spoqa Han Sans', 'sans-serif';
   font-weight: bold;
   font-size: 18px;
 }
 .plan_item .edit_exp{
-  flex-grow: 1;
   margin-left: 7px;
   font-size: 18px;
   font-family: 'Spoqa Han Sans', 'sans-serif';

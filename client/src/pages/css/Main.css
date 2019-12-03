@@ -34,3 +34,10 @@
 .banner .link_btn:hover {
   background-color: rgba(11, 102, 35, 0.7);
 }
+
+@media (max-width: 600px){
+  .banner .link_btn{
+    width: 100px;
+    font-size: 13px;
+  }
+}

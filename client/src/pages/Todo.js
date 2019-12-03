@@ -20,10 +20,9 @@ const Todo = (props) => {
   const dispatch = useDispatch();
   const [planList, getStatus, postStatus, deleteStatus, updateStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
   
-  const onCompleteClick = (title, exp, id, completed) => {
-    dispatch(updatePlanRequest(title, exp, id, completed));
-    let [newLevel, newEXP] = getApplyLevel(props.userInfo.level, props.userInfo.exp + exp);
-    console.log(newEXP);
+  const onCompleteClick = (title, exp, id) => {
+    dispatch(updatePlanRequest(title, exp, id, true));
+    let [newLevel, newEXP] = getApplyLevel(parseInt(props.userInfo.level), parseInt(props.userInfo.exp) + parseInt(exp));
     dispatch(updateUserInfoRequest(props.userInfo.email, newLevel, newEXP));
   }
   const onEditCompleteClick = (title, exp, id, completed) => {

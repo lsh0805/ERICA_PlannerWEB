@@ -134,14 +134,13 @@ module.exports = {
   },
   getPlans: async function(data){
     return new Promise((resolve, reject) => {
-      console.log({...data});
       // Find id in DB
       Plan.findAll({
           where: {
             author: data.author,
             type: data.type,
-            date: { 
-              [Op.between]: [data.dateStart, data.dateEnd]
+            date: {
+              [Op.between]: [moment(data.dateStart).add(9, 'h').toDate(), moment(data.dateEnd).add(9, 'h').toDate()]
             }
           }
       }).then(function(rows){

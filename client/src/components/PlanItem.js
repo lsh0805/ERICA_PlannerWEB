@@ -72,7 +72,7 @@ const PlanItem = React.memo((props) => {
         <input type="text" className="edit_title" placeholder="일정 제목(설명)" name="title" value={contents.title} onChange={onContentsChange}/>
         <input type="number" className="edit_exp" placeholder="경험치(0~500)" name="exp" value={contents.exp} onChange={onContentsChange}/>
       </form>
-      <div className="plan_btn_container" style={{justifyContent: "flex-end", marginRight: "2.5px"}}>
+      <div className="plan_btn_container" style={{justifyContent: "flex-end", marginRight: "9.3px"}}>
         {props.updateStatus.id.filter(id => {return id === props.id}).length === 0 ? 
           <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id, contents.completed)}>
             확인

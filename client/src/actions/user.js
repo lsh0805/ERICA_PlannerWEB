@@ -38,10 +38,10 @@ export function getUserInfo() {
   };
 }
 
-export function getUserInfoSuccess(info) {
+export function getUserInfoSuccess(userInfo) {
   return {
       type: USER_INFO_GET_SUCCESS,
-      info
+      userInfo
   };
 }
 
@@ -58,10 +58,10 @@ export function updateUserInfo() {
   };
 }
 
-export function updateUserInfoSuccess(info) {
+export function updateUserInfoSuccess(userInfo) {
   return {
       type: USER_INFO_UPDATE_SUCCESS,
-      info
+      userInfo
   };
 }
 

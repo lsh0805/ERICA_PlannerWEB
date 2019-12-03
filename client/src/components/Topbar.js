@@ -79,19 +79,19 @@ const Topbar = (props) => {
             </div>
             <div className="user_stat">
               <div className="level">
-                Lv.{props.loginInfo.level}
+                Lv.{props.userInfo.level}
               </div>
               <div className="exp">
-                EXP: {getRateEXP(props.loginInfo.level, props.loginInfo.exp)}%
+                EXP: {getRateEXP(props.userInfo.level, props.userInfo.exp)}%
               </div>
             </div>
           </div>
           <div className="row2">
-            <LinearProgress variant="determinate" value={getRateEXP(props.loginInfo.level, props.loginInfo.exp)} className="exp_bar"/>
+            <LinearProgress variant="determinate" value={getRateEXP(props.userInfo.level, props.userInfo.exp)} className="exp_bar"/>
           </div>
         </Link>
         <div className="logout_btn">
-          <Button color="primary" variant="outlined" className={classes.button} onClick={props.handleLogout}>
+          <Button color="primary" variant="outlined" className={classes.button} onClick={handleLogout}>
               로그아웃
           </Button>
         </div>

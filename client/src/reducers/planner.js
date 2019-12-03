@@ -62,7 +62,7 @@ export default function planner(state = initialState, action) {
   const findIndexByPostDate = (date) => {
     let ret = -1;
     for(let i = 0; i < postDateList.size; i++)
-      if(ret === -1 && postDateList.get(i) == date){
+      if(ret === -1 && postDateList.get(i) === date){
         ret = i;
         return ret;
       }
@@ -71,7 +71,7 @@ export default function planner(state = initialState, action) {
   const findIndexByDeleteId = (id) => {
     let ret = -1;
     for(let i = 0; i < deleteIdList.size; i++)
-      if(ret === -1 && deleteIdList.get(i) == id){
+      if(ret === -1 && deleteIdList.get(i) === id){
         ret = i;
         return ret;
       }
@@ -80,7 +80,7 @@ export default function planner(state = initialState, action) {
   const findIndexByUpdateId = (id) => {
     let ret = -1;
     for(let i = 0; i < updateIdList.size; i++)
-      if(ret === -1 && updateIdList.get(i) == id){
+      if(ret === -1 && updateIdList.get(i) === id){
         ret = i;
         return ret;
       }

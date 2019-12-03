@@ -7,15 +7,9 @@ import { Topbar, Footer, AuthRoute } from 'components';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as cookie from '../module/cookie';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserInfoRequest } from 'actions/user';
 
-// Redux
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import reducers from 'reducers';
-import thunk  from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension'
-
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 toast.configure();
 
 export default function App() {
@@ -24,12 +18,15 @@ export default function App() {
     isLoggedIn : false,
     email: "",
     username: "",
-    level: 0,
-    exp: 0,
   });
+  const dispatch = useDispatch();
+  const userInfo = useSelector(state => state.user.toJS().userInfo);
+
   useEffect(() => {
-    axios.get('/api/account/getInfo').then((res) => {
-      setLoginInfo({loaded: true, isLoggedIn: true, email: res.data.info.email, username: res.data.info.username, level: res.data.info.level, exp: res.data.info.exp});
+    axios.get('/api/account/getSessionInfo').then((res) => {
+      console.log(res);
+      dispatch(getUserInfoRequest(res.data.info.email));
+      setLoginInfo({loaded: true, isLoggedIn: true, email: res.data.info.email, username: res.data.info.username});
     }).catch(err => {
       setLoginInfo({loaded: true});
     })
@@ -45,21 +42,19 @@ export default function App() {
   return (
       <div>
         {loginInfo.loaded ? 
-        <Provider store={store}>
           <BrowserRouter>
             {/* 라우팅 */}
-            <Route path="/" render={(props) => <Topbar {...props} loginInfo={loginInfo} handleLogout={handleLogout}/>} />
+            <Route path="/" render={(props) => <Topbar {...props} userInfo={userInfo} loginInfo={loginInfo} handleLogout={handleLogout}/>} />
             <div className="contents">
               <Route exact path="/" component={Main}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/info" render={props => <Info {...props} loginInfo={loginInfo} />}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/todo" render={props => <Todo {...props} loginInfo={loginInfo} />}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/achievement" render={props => <Achievement {...props} loginInfo={loginInfo} />}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/info" render={props => <Info {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/todo" render={props => <Todo {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/achievement" render={props => <Achievement {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
               <Route path="/register" component={Register}/>
               <Route path="/login" component={Login}/>
             </div>
             <Route path="/" component={Footer}/>
-          </BrowserRouter>
-        </Provider>: "" // empty
+          </BrowserRouter>: "" // empty
         }
         
       </div>

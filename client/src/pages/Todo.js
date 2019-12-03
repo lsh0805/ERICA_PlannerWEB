@@ -11,15 +11,20 @@ import '../components/css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPlanListRequest, postPlanRequest, deletePlanRequest, updatePlanRequest } from 'actions/planner';
+import { updateUserInfoRequest } from 'actions/user';
+import { getApplyLevel } from '../module/level';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Todo = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
   const [planList, getStatus, postStatus, deleteStatus, updateStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
-
+  
   const onCompleteClick = (title, exp, id, completed) => {
     dispatch(updatePlanRequest(title, exp, id, completed));
+    let [newLevel, newEXP] = getApplyLevel(props.userInfo.level, props.userInfo.exp + exp);
+    console.log(newEXP);
+    dispatch(updateUserInfoRequest(props.userInfo.email, newLevel, newEXP));
   }
   const onEditCompleteClick = (title, exp, id, completed) => {
     dispatch(updatePlanRequest(title, exp, id, completed)).then(() => {

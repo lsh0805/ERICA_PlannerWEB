@@ -11,9 +11,6 @@ import {
   PLAN_UPDATE,
   PLAN_UPDATE_SUCCESS,
   PLAN_UPDATE_FAILURE,
-  PLAN_COMPLETE,
-  PLAN_COMPLETE_FAILURE,
-  PLAN_COMPLETE_SUCCESS,
 } from './ActionTypes';
 import axios from 'axios';
 import * as planTypes from '../components/PlannerTypes';

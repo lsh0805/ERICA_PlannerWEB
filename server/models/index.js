@@ -35,5 +35,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.Account = require('./account')(sequelize, Sequelize);
 db.Plan = require('./plan')(sequelize, Sequelize);
+db.ExpLog = require('./explog')(sequelize, Sequelize);
 
 module.exports = db;

@@ -11,17 +11,17 @@ import axios from 'axios';
 /* LOGIN */
 export function loginRequest(email, password, keepLogin) {
   return (dispatch) => {
-      // Inform Login API is starting
-      dispatch(login());
-      // API REQUEST
-      return axios.post('/api/account/login', { email, password, keepLogin })
-      .then((response) => {
-          // SUCCEED
-          dispatch(loginSuccess(email));
-      }).catch((error) => {
-          // FAILED
-          dispatch(loginFailure(error.response.data.err));
-      });
+    // Inform Login API is starting
+    dispatch(login());
+    // API REQUEST
+    return axios.post('/api/account/login', { email, password, keepLogin })
+    .then((response) => {
+        // SUCCEED
+        dispatch(loginSuccess(email));
+    }).catch((error) => {
+        // FAILED
+        dispatch(loginFailure(error.response.data.err));
+    });
   };
 }
 

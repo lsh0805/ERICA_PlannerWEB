@@ -41,6 +41,7 @@ ul{
   font-family: 'Spoqa Han Sans', 'sans-serif';
   display: inline-block;
   margin-left: 10px;
+  margin-top: 5px;  
   background-color: #76BA1B;
   color: #FFF;
   width: 120px;
@@ -78,5 +79,8 @@ ul{
   }
   #todo .wrapper{
     width: 100%;
+  }
+  #todo .date_box_title{
+    font-size: 16px;
   }
 }

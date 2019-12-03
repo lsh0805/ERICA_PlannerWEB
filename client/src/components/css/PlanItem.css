@@ -65,3 +65,14 @@
   font-weight: bold;
   width: 30%;
 }
+
+@media (max-width: 600px){
+  .plan_item{
+    font-size: 13px;
+  }
+}
+@media (max-width: 380px){
+  .plan_item{
+    font-size: 11px;
+  }
+}

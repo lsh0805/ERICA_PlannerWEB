@@ -26,8 +26,7 @@ const Todo = (props) => {
     dispatch(updateUserInfoRequest(props.userInfo.email, newLevel, newEXP));
   }
   const onEditCompleteClick = (title, exp, id, completed) => {
-    dispatch(updatePlanRequest(title, exp, id, completed)).then(() => {
-    });
+    return dispatch(updatePlanRequest(title, exp, id, completed));
   }
   const onDeleteClick = (id) => {
     dispatch(deletePlanRequest(id));

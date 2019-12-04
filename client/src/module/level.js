@@ -6,7 +6,7 @@ export function getMaxEXP(level){
 }
 
 export function getRateEXP(level, exp){
-  return Math.round((exp / getMaxEXP(level)) * 100);;
+  return Math.round((exp / getMaxEXP(level)) * 100);
 }
 
 export function getApplyLevel(level, exp){

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { faTrashAlt, faCut, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import React, {useState, useEffect} from 'react';
+import { faTrashAlt, faCut, faCheckCircle, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { faEdit, faCopy } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './css/PlanItem.css';
@@ -9,10 +9,12 @@ import { toast } from 'react-toastify';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const PlanItem = React.memo((props) => {
-  const [contents, setContents] = useState({title: props.title, exp: props.exp, completed: props.completed});
+const PlanItem = (props) => {
+  const [contents, setContents] = useState({title: props.title, exp: props.exp});
   const [isEditable, setEditable] = useState(props.editable);
-
+  useEffect(() => {
+    setContents({title: props.title, exp: props.exp});
+  }, [props]);
   const onEditCompleteClick = (title, exp, id, completed) => {
     let error = undefined;
     if(title === ""){
@@ -27,69 +29,103 @@ const PlanItem = React.memo((props) => {
     if(error !== undefined)
       toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{error}</div>);
     else{
-      props.onEditComplete(title, exp, id, completed);
-      if(props.updateStatus.id.filter(id => {return id === props.id}).length === 0)
+      props.onEditComplete(title, exp, id, completed).then(() => {
         setEditable(false);
+      });
     }
   }
   const onDeleteClick = (id) =>{
     props.onDelete(id);
   }
-  const onCompleteClick = (title, exp, id, completed) =>{
-    props.onComplete(title, exp, id, completed);
+  const onCompleteClick = (title, exp, id) =>{
+    props.onComplete(title, exp, id);
   }
   function onContentsChange(e) {
     e.persist();
+    let copyContents = contents;
     setContents({
-      ...contents,
-      [e.target.name]: e.target.value
+      ...copyContents,
+      [e.target.name]: e.target.value,
     });
   }
   const planView = (
     <div className="plan_item">
-      <div className="plan_title">{contents.title}</div>
-      <div className="plan_exp"><FontAwesomeIcon icon={faTrophy} style={{color: "#F9A602", marginRight: "5px"}}/>{contents.exp}</div>
-      <div className="plan_btn_container">
-        <div className="plan_btn complete_btn" onClick={() => onCompleteClick(contents.title, contents.exp, props.id, 1)}>
-          완료
+      <div className="plan_item_row1">
+        <div className="plan_title">{props.title}</div>
+      </div>
+      <div className="plan_item_row2">
+        <div className="plan_exp"><FontAwesomeIcon icon={faTrophy} style={{color: "#F9A602", marginRight: "5px"}}/>{props.exp}</div>
+        <div className="plan_btn_container">
+          <div className="plan_btn complete_btn" onClick={() => onCompleteClick(props.title, props.exp, props.id)}>
+            완료
+            {props.completed}
+          </div>
+          <div className="plan_btn edit_btn" onClick={() => setEditable(true)}>
+            <FontAwesomeIcon icon={faEdit}/>
+          </div>
+          {props.deleteStatus.id.filter(id => {return id === props.id}).length === 0 ? 
+          <div className="plan_btn delete_btn" onClick={() => onDeleteClick(props.id)}>
+            <FontAwesomeIcon icon={faTrashAlt}/>
+          </div> : 
+          <div className="plan_btn delete_btn">
+            <CircularProgress size="2rem" style={{color:"#ffffff"}}/>
+          </div>}
         </div>
-        <div className="plan_btn edit_btn" onClick={() => setEditable(true)}>
-          <FontAwesomeIcon icon={faEdit}/>
-        </div>
-        {props.deleteStatus.id.filter(id => {return id === props.id}).length === 0 ? 
-        <div className="plan_btn delete_btn" onClick={() => onDeleteClick(props.id)}>
-          <FontAwesomeIcon icon={faTrashAlt}/>
-        </div> : 
-        <div className="plan_btn delete_btn">
-          <CircularProgress size="2rem" style={{color:"#ffffff"}}/>
-        </div>}
       </div>
     </div>
   );
   const editableView = (
     <div className="plan_item">
       <form action="">
-        <input type="text" className="edit_title" placeholder="일정 제목(설명)" name="title" value={contents.title} onChange={onContentsChange}/>
-        <input type="number" className="edit_exp" placeholder="경험치(0~500)" name="exp" value={contents.exp} onChange={onContentsChange}/>
+        <div className="plan_item_row1">
+          <input type="text" className="edit_title" placeholder="일정 제목(설명)" name="title" value={contents.title} onChange={onContentsChange}/>
+        </div>
+        <div className="plan_item_row2">
+          <input type="number" className="edit_exp" placeholder="경험치(0~500)" name="exp" value={contents.exp} onChange={onContentsChange}/>
+          <div className="plan_btn_container" style={{justifyContent: "flex-end"}}>
+            {props.updateStatus.id.filter(id => {return id === props.id}).length === 0 ? 
+              <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id)}>
+                확인
+              </div>
+              :
+              <div className="plan_btn complete_edit_btn">
+                <CircularProgress size="2rem" style={{color:"#ffffff"}}/>
+              </div>
+            }
+          </div>
+        </div>
       </form>
-      <div className="plan_btn_container" style={{justifyContent: "flex-end", marginRight: "9.3px"}}>
-        {props.updateStatus.id.filter(id => {return id === props.id}).length === 0 ? 
-          <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id, contents.completed)}>
-            확인
+    </div>
+  );
+  const completedView = (
+    <div className="plan_item_completed_layout">
+      <div className="plan_item">
+        <div className="plan_item_row1">
+          <div className="plan_title" style={{opacity: "0.4"}}>{contents.title}</div>
+        </div>
+        <div className="plan_item_row2">
+          <div className="plan_exp" style={{opacity: "0.4"}}><FontAwesomeIcon icon={faTrophy} style={{color: "#F9A602", marginRight: "5px"}}/>{contents.exp}</div>
+          <div className="plan_btn_container" style={{justifyContent: "flex-end"}}>
+            {props.deleteStatus.id.filter(id => {return id === props.id}).length === 0 ? 
+            <div className="plan_btn delete_btn" onClick={() => onDeleteClick(props.id)}>
+              <FontAwesomeIcon icon={faTrashAlt}/>
+            </div> : 
+            <div className="plan_btn delete_btn">
+              <CircularProgress size="2rem" style={{color:"#ffffff"}}/>
+            </div>}
           </div>
-          :
-          <div className="plan_btn complete_edit_btn">
-            <CircularProgress size="2rem" style={{color:"#ffffff"}}/>
-          </div>
-        }
+        </div>
+      </div>
+      <div className="plan_completed_view" style={{opacity: "1"}}>
+          <FontAwesomeIcon icon={faCheckCircle}/>
       </div>
     </div>
   );
   return (
     <React.Fragment>
-      {isEditable ? editableView: planView}
+      {isEditable ? editableView: (props.completed ? completedView : planView)}
     </React.Fragment>
   );
-});
+}
 
 export default PlanItem;

@@ -43,6 +43,7 @@ export function postPlanRequest(data){
   return (dispatch) => {
     dispatch(postPlan(data.date));
     return axios.post('/api/plan/post', {...data}).then((res) => {
+      console.log({...res.data.row});
       dispatch(postPlanSuccess(data.date, res.data.row));
     }).catch((err) => {
       dispatch(postPlanFailure(data.date, err));

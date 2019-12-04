@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
 
-const PlanList = React.memo(({author, planList, type, date, completed, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
+const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
 
   const [isOpenedItemBox, setOpenedItemBox] = useState(true);
 
@@ -19,10 +19,11 @@ const PlanList = React.memo(({author, planList, type, date, completed, onEditCom
   }
   const mapToComponents = planList => {
     return planList.map((plan, i) => {
+      console.log(plan.completed);
       return (<PlanItem key={i} author={author} title={plan.title} exp={plan.exp} 
-        id={plan.id} type={type} date={date} onDelete={onDelete} completed={completed}
+        id={plan.id} type={type} date={date} onDelete={onDelete} completed={plan.completed}
         onEditComplete={onEditComplete} onCreate={onCreate} 
-        onComplete={onComplete}
+        onComplete={onComplete} idx={i}
         deleteStatus={deleteStatus} updateStatus={updateStatus} />);
     });
   };
@@ -49,7 +50,7 @@ const PlanList = React.memo(({author, planList, type, date, completed, onEditCom
       <Button className="plan_box_sizing_row" onClick={handleOnClickSizingBox}>
         <FontAwesomeIcon icon={isOpenedItemBox ? faWindowMinimize : faChevronDown} className="tool plan_box_sizing_btn"/>
       </Button>
-      <ul className="plan_item_container" style={{maxHeight: isOpenedItemBox ? "1000px" : "0px"}}>
+      <ul className="plan_item_container" style={{maxHeight: isOpenedItemBox ? "100000px" : "0px"}}>
          {mapToComponents(planList)}
       </ul>
     </div>

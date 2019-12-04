@@ -31,42 +31,42 @@ module.exports = (sequelize, DataTypes) => {
     cycleMonday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleTuesday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleWednesday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleThursday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleFriday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleSaturday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     cycleSunday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: sequelize.literal(0),
+      defaultValue: 0,
     },
     completed:{
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: sequelize.literal(0),
+      allowNull: false,
+      defaultValue: 0,
     },
   }, {
       timestamps: true,

@@ -112,7 +112,7 @@ export default function planner(state = initialState, action) {
     case types.PLAN_DELETE:
       return state.setIn(['delete', 'status'], 'WAITING').setIn(['delete', 'id'], deleteIdList.push(action.id));
     case types.PLAN_DELETE_SUCCESS:
-      return state.set('planList', planList.delete(findPlanIndexByID(action.id))).setIn(['delete', 'status'], "SUCCESS").setIn(['delete', 'id'], deleteIdList.delete(findIndexByDeleteId(action.id)));
+      return state.deleteIn(['planList', findPlanIndexByID(action.id)]).setIn(['delete', 'status'], "SUCCESS").setIn(['delete', 'id'], deleteIdList.delete(findIndexByDeleteId(action.id)));
     case types.PLAN_DELETE_FAILURE:
       return state.mergeIn(['delete'], { status: "FAILURE", error: action.error}).setIn(['delete', 'id'], deleteIdList.delete(findIndexByDeleteId(action.id)));
     default:

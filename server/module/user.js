@@ -1,5 +1,5 @@
 const { Account } = require('../models');
-
+const explog = require('./explog.js');
 var response = function(res, err, row = undefined){
   this.res = res;
   this.err = err;
@@ -19,12 +19,12 @@ module.exports = {
     });
   },
   updateUserInfo: async function (data){
-    console.log(data);
     let getUserRowResponse = await this.getUserInfo(data);
     return new Promise((resolve, reject) => {
       if(getUserRowResponse.res === true){
-        getUserRowResponse.row.update({level: data.newLevel, exp: data.newEXP})
+        return getUserRowResponse.row.update({level: data.newLevel, exp: data.newEXP})
         .then(row => {
+          explog.updateExpLog(data);
           return resolve(new response(true, null, row));
         }).catch(err => {
           return reject(new response(false, err));

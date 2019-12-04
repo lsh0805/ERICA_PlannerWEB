@@ -14,6 +14,7 @@ import { getPlanListRequest, postPlanRequest, deletePlanRequest, updatePlanReque
 import { updateUserInfoRequest } from 'actions/user';
 import { getApplyLevel } from '../module/level';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import moment from 'moment';
 
 const Todo = (props) => {
   // Redux hooks
@@ -45,13 +46,53 @@ const Todo = (props) => {
   const [date, setDate] = useState([getClearDate(new Date()), getClearDate(new Date())]);
   const [type, setType] = useState(planTypes.DAILY_PLAN);
 
-  const onDateChange = (date) => {
+  const onTypeChange = (type) => {
+    setType(() => type);
+    let newDate;
+    if(type === planTypes.DAILY_PLAN)
+      newDate = [getClearDate(new Date()), getClearDate(new Date())];
+    else if(type === planTypes.MONTHLY_PLAN){
+      let tempDate = new Date();
+      let startDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
+      let endDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
+      endDate = moment(endDate).add(1, 'month').subtract(1, 'days').toDate();
+      newDate = [startDate, endDate];
+    }else if(type === planTypes.YEARLY_PLAN){
+      let tempDate = new Date();
+      let startDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
+      let endDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
+      endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
+      newDate = [startDate, endDate];
+    }
+    setDate(() => newDate);
+  }
+  const onDateChange = (date, type) => {
     try{
-      if((date[1] - date[0])  / (60 * 60 * 24) / 1000 >= 7){
-        toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
-        기간은 최대 7일까지 선택할 수 있습니다.
-        </div>);
-        return;
+      switch(type){
+        case planTypes.DAILY_PLAN:
+          if(moment(date[1], 'YYYY-MM-DD').diff(date[0], 'days') >= 7){
+            toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+            기간은 최대 7일까지 선택할 수 있습니다.
+            </div>);
+            return;
+          }
+          break;
+        case planTypes.MONTHLY_PLAN:
+          if(moment(date[1], 'YYYY-MM-DD').diff(date[0], 'month') >= 12){
+            toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+            기간은 최대 12달까지 선택할 수 있습니다.
+            </div>);
+            return;
+          }
+          break;
+        case planTypes.YEARLY_PLAN:
+            if(moment(date[1], 'YYYY-MM-DD').diff(date[0], 'year') >= 5){
+              toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+              기간은 최대 5년까지 선택할 수 있습니다.
+              </div>);
+              return;
+            }
+            break;
       }
       setDate(() => {
         return [getClearDate(date[0]), getClearDate(date[1])];
@@ -73,6 +114,7 @@ const Todo = (props) => {
       console.log(err);
     });
   }, [date]);
+
   const periodView = (
     <Paper className="section period_section">
       <div className="section_title">기간 일정</div>
@@ -82,7 +124,7 @@ const Todo = (props) => {
             기간 설정
           </div>
           <DateRangePicker
-            onChange={onDateChange}
+            onChange={(date) => onDateChange(date, planTypes.DAILY_PLAN)}
             value={date}
             className="date_range_picker"
           />
@@ -101,7 +143,6 @@ const Todo = (props) => {
           postStatus={postStatus}
           deleteStatus={deleteStatus}
           updateStatus={updateStatus}
-
           />}
       </div>
     </Paper>
@@ -129,7 +170,28 @@ const Todo = (props) => {
           <div className="date_box_title">
             월 설정
           </div>
+          <DateRangePicker
+            onChange={(date) => onDateChange(date, planTypes.MONTHLY_PLAN)}
+            value={date}
+            className="date_range_picker"
+            maxDetail="year"
+          />
         </div>
+        {loading ? <CircularProgress/> : 
+          <PlanListContainer 
+          author={props.loginInfo.email} 
+          planList={planList} 
+          type={planTypes.MONTHLY_PLAN}  
+          date={date}
+          onEditComplete={onEditCompleteClick} 
+          onDelete={onDeleteClick}
+          onCreate={onCreateClick}
+          onComplete={onCompleteClick}
+          getStatus={getStatus}
+          postStatus={postStatus}
+          deleteStatus={deleteStatus}
+          updateStatus={updateStatus}
+          />}
       </div>
     </Paper>
   );
@@ -141,7 +203,28 @@ const Todo = (props) => {
           <div className="date_box_title">
             연 설정
           </div>
+          <DateRangePicker
+            onChange={(date) => onDateChange(date, planTypes.YEARLY_PLAN)}
+            value={date}
+            className="date_range_picker"
+            maxDetail="decade"
+          />
         </div>
+        {loading ? <CircularProgress/> : 
+          <PlanListContainer 
+          author={props.loginInfo.email} 
+          planList={planList} 
+          type={planTypes.YEARLY_PLAN}  
+          date={date}
+          onEditComplete={onEditCompleteClick} 
+          onDelete={onDeleteClick}
+          onCreate={onCreateClick}
+          onComplete={onCompleteClick}
+          getStatus={getStatus}
+          postStatus={postStatus}
+          deleteStatus={deleteStatus}
+          updateStatus={updateStatus}
+          />}
       </div>
     </Paper>
   );
@@ -156,13 +239,16 @@ const Todo = (props) => {
           <Paper className="section type_section">
            <div className="section_title">타입 선택</div>
             <div className="section_content">
-              <Button className="type_btn type1">기간 일정</Button>
-              <Button className="type_btn type2">요일 반복 일정</Button>
-              <Button className="type_btn type3">월 목표</Button>
-              <Button className="type_btn type4">연 목표</Button>
+              <Button className="type_btn type1" onClick={() => onTypeChange(planTypes.DAILY_PLAN)}>기간 일정</Button>
+              <Button className="type_btn type2" onClick={() => onTypeChange(planTypes.LOOP_PLAN)}>요일 반복 일정</Button>
+              <Button className="type_btn type3" onClick={() => onTypeChange(planTypes.MONTHLY_PLAN)}>월 목표</Button>
+              <Button className="type_btn type4" onClick={() => onTypeChange(planTypes.YEARLY_PLAN)}>연 목표</Button>
             </div>
           </Paper>
-          {periodView}
+          {type === planTypes.DAILY_PLAN ? periodView :
+          type === planTypes.LOOP_PLAN ? dayloopView :
+          type === planTypes.MONTHLY_PLAN ? monthlyView :
+          type === planTypes.YEARLY_PLAN ? yearlyView : undefined}
         </div>
       </div>
     </div>

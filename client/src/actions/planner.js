@@ -21,17 +21,15 @@ export function getPlanListRequest(author, type, where){
     dispatch(getPlanList());
     switch (type){
       case planTypes.DAILY_PLAN:
+      case planTypes.MONTHLY_PLAN:
+      case planTypes.YEARLY_PLAN:
         return axios.post('/api/plan/getPlans/', {...where, author, type}).then(planList => {
           dispatch(getPlanListSuccess(planList.data.row));
         }).catch(error => {
           dispatch(getPlanListFailure(error));
         });
-      case planTypes.MONTHLY_PLAN:
-        break;
-      case planTypes.YEARLY_PLAN:
-        break;
       case planTypes.LOOP_PLAN:
-          break;
+        break;
       default:
         break;
     }

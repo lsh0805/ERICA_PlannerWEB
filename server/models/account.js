@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     alarm: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: sequelize.literal(0),
+        defaultValue: 0,
     },
     level: {
       type: DataTypes.INTEGER,

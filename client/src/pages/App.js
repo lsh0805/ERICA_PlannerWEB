@@ -24,7 +24,6 @@ export default function App() {
 
   useEffect(() => {
     axios.get('/api/account/getSessionInfo').then((res) => {
-      console.log(res);
       dispatch(getUserInfoRequest(res.data.info.email));
       setLoginInfo({loaded: true, isLoggedIn: true, email: res.data.info.email, username: res.data.info.username});
     }).catch(err => {

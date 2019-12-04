@@ -20,14 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: true,
     },
-    month: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    year: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
     cycleMonday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,

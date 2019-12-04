@@ -6,6 +6,7 @@ import {faWindowMinimize} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
+import * as planTypes from './PlannerTypes';
 
 const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
 
@@ -36,10 +37,18 @@ const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDe
     const week = ['일', '월', '화', '수', '목', '금', '토'];
     return week[date.getDay()];
   }
+  const getDateTitleFormat = (date, type) => {
+    if(type === planTypes.DAILY_PLAN)
+      return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " (" + getDayOfWeek(date) + ")";
+    else if(type === planTypes.MONTHLY_PLAN)
+      return date.getFullYear() + "년 " + (date.getMonth() + 1) + "월";
+    else if(type === planTypes.YEARLY_PLAN)
+      return date.getFullYear() + "년";
+  }
   return (
     <div className="plan_box">
       <div className="plan_header">
-        <div className="date">{date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " (" + getDayOfWeek(date) + ")" }</div>
+        <div className="date">{getDateTitleFormat(date, type)}</div>
         <div className="right_toolbox">
           {postStatus.date.filter(dateVal => { return dateVal.getTime() === date.getTime()}).length === 0 ? 
           <Button className="tool plan_add_btn" onClick={() => createNewPlan()}><FontAwesomeIcon icon={faPlus}/></Button>

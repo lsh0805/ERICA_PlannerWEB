@@ -5,6 +5,13 @@ const { exp } = require('./exp.js');
 const moment = require('moment');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+/* PlanTypes */
+const DAILY_PLAN = 0;
+const MONTHLY_PLAN = 1;
+const YEARLY_PLAN = 2;
+const LOOP_PLAN = 3;
+
 require('moment-timezone');
 
 moment.tz.setDefault("Asia/Seoul");

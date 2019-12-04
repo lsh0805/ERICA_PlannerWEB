@@ -8,6 +8,7 @@ import '../components/css/Toast.css';
 import { toast } from 'react-toastify';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import * as planTypes from './PlannerTypes';
 
 const PlanItem = (props) => {
   const [contents, setContents] = useState({title: props.title, exp: props.exp});
@@ -15,7 +16,18 @@ const PlanItem = (props) => {
   useEffect(() => {
     setContents({title: props.title, exp: props.exp});
   }, [props]);
-  const onEditCompleteClick = (title, exp, id, completed) => {
+
+  const getCanSetMaxEXP = (type) => {
+    let canMaxExp;
+    if(type === planTypes.DAILY_PLAN)
+      canMaxExp = 500;
+    if(type === planTypes.MONTHLY_PLAN)
+      canMaxExp = 5000;
+    if(type === planTypes.YEARLY_PLAN)
+      canMaxExp = 50000;
+    return canMaxExp;
+  }
+  const onEditCompleteClick = (title, exp, id, completed, type) => {
     let error = undefined;
     if(title === ""){
       error = "일정 제목을 입력해주세요.";
@@ -23,8 +35,8 @@ const PlanItem = (props) => {
       error = "보상 경험치를 입력해주세요.";
     }else if(exp < 0 || (exp % 1) !== 0){
       error = "경험치는 0이상의 정수여야 합니다.";
-    }else if(exp > 500){
-      error = "경험치는 최대 500까지 설정할 수 있습니다.";
+    }else if(exp > getCanSetMaxEXP(type)){
+      error = "경험치는 최대 " + getCanSetMaxEXP(type) + "까지 설정할 수 있습니다.";
     }
     if(error !== undefined)
       toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{error}</div>);
@@ -56,7 +68,7 @@ const PlanItem = (props) => {
       <div className="plan_item_row2">
         <div className="plan_exp"><FontAwesomeIcon icon={faTrophy} style={{color: "#F9A602", marginRight: "5px"}}/>{props.exp}</div>
         <div className="plan_btn_container">
-          <div className="plan_btn complete_btn" onClick={() => onCompleteClick(props.title, props.exp, props.id)}>
+          <div className="plan_btn complete_btn" onClick={() => onCompleteClick(props.title, props.exp, props.id, true, props.type)}>
             완료
             {props.completed}
           </div>
@@ -81,10 +93,10 @@ const PlanItem = (props) => {
           <input type="text" className="edit_title" placeholder="일정 제목(설명)" name="title" value={contents.title} onChange={onContentsChange}/>
         </div>
         <div className="plan_item_row2">
-          <input type="number" className="edit_exp" placeholder="경험치(0~500)" name="exp" value={contents.exp} onChange={onContentsChange}/>
+          <input type="number" className="edit_exp" placeholder={"경험치(0~" + getCanSetMaxEXP(props.type) + ")"} name="exp" value={contents.exp} onChange={onContentsChange}/>
           <div className="plan_btn_container" style={{justifyContent: "flex-end"}}>
             {props.updateStatus.id.filter(id => {return id === props.id}).length === 0 ? 
-              <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id)}>
+              <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id, false, props.type)}>
                 확인
               </div>
               :

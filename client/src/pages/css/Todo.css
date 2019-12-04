@@ -63,6 +63,27 @@ ul{
   font-size: 22px;
 }
 
+/* 반복 요일 버튼 */
+#todo .date_box .date_box_btn_container{
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  font-weight: bold;
+}
+#todo .date_box .date_box_btn_container .btn_toggle_day{
+  border: 2px solid #5E8BF2;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+}
+#todo .date_box .date_box_btn_container .btn_toggle_day:hover{
+  border: 2px solid #0048ff;
+  color: #333;
+  background-color: #A5F2F3;
+}
+
 /* 미디어 쿼리 */
 @media (max-width: 600px){
   #todo .type_btn{

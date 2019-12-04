@@ -16,6 +16,16 @@ import { getApplyLevel } from '../module/level';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 
+
+const POPERTY_MONDAY      = "cycleMonday";
+const POPERTY_TUESDAY     = "cycleTuesday";
+const POPERTY_WEDNESDAY   = "cycleWednesday";
+const POPERTY_THURSDAY    = "cycleThursday";
+const POPERTY_FRIDAY      = "cycleFriday";
+const POPERTY_SATURDAY    = "cycleSaturday";
+const POPERTY_SUNDAY      = "cycleSunday";
+
+
 const Todo = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
@@ -44,6 +54,15 @@ const Todo = (props) => {
   // State
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState([getClearDate(new Date()), getClearDate(new Date())]);
+  const [cycleDays, setCycleDays] = useState({
+    cycleMonday: false,
+    cycleTuesday: false,
+    cycleWednesday: false,
+    cycleThursday: false,
+    cycleFriday: false,
+    cycleSaturday: false,
+    cycleSunday: false,
+  });
   const [type, setType] = useState(planTypes.DAILY_PLAN);
 
   const onTypeChange = (type) => {
@@ -63,6 +82,8 @@ const Todo = (props) => {
       let endDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
       endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
       newDate = [startDate, endDate];
+    }else if(type === planTypes.LOOP_PLAN){
+      newDate = [getClearDate(new Date()), getClearDate(new Date())];
     }
     setDate(() => newDate);
   }
@@ -103,9 +124,16 @@ const Todo = (props) => {
       });
     }
   }
+  const handleToggleCycleDay = (dayProperty) => {
+    console.log(cycleDays[dayProperty]);
+    let copy_cycleDays = {...cycleDays};
+    copy_cycleDays[dayProperty] = !copy_cycleDays[dayProperty];
+    setCycleDays(copy_cycleDays);
+  }
   useEffect(() => {
     setLoading(true);
-    dispatch(getPlanListRequest(props.loginInfo.email, type, {
+    dispatch(getPlanListRequest(props.loginInfo.email, type,
+      type === planTypes.LOOP_PLAN ? cycleDays : {
       dateStart: date[0],
       dateEnd: date[1],
     })).then(() => {
@@ -113,7 +141,7 @@ const Todo = (props) => {
     }).catch(err => {
       console.log(err);
     });
-  }, [date]);
+  }, [date, cycleDays]);
 
   const periodView = (
     <Paper className="section period_section">
@@ -155,6 +183,43 @@ const Todo = (props) => {
           <div className="date_box_title">
             요일 설정
           </div>
+          <div className="date_box_btn_container">
+            <div className="btn_toggle_day btn_monday"
+              style={cycleDays[POPERTY_MONDAY] === true ? {backgroundColor: "#ddd"} : {}}
+              onClick={() => handleToggleCycleDay(POPERTY_MONDAY)}>
+              월
+            </div>
+            <div className="btn_toggle_day btn_tuesday" 
+              style={cycleDays[POPERTY_TUESDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+              onClick={() => handleToggleCycleDay(POPERTY_TUESDAY)}>
+              화
+            </div>
+            <div className="btn_toggle_day btn_wednesday" 
+            style={cycleDays[POPERTY_WEDNESDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            onClick={() => handleToggleCycleDay(POPERTY_WEDNESDAY)}>
+              수
+            </div>
+            <div className="btn_toggle_day btn_thursday" 
+            style={cycleDays[POPERTY_THURSDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            onClick={() => handleToggleCycleDay(POPERTY_THURSDAY)}>
+              목
+            </div>
+            <div className="btn_toggle_day btn_friday" 
+            style={cycleDays[POPERTY_FRIDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            onClick={() => handleToggleCycleDay(POPERTY_FRIDAY)}>
+              금
+            </div>
+            <div className="btn_toggle_day btn_saturday" 
+            style={cycleDays[POPERTY_SATURDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            onClick={() => handleToggleCycleDay(POPERTY_SATURDAY)}>
+              토
+            </div>
+            <div className="btn_toggle_day btn_sunday" 
+            style={cycleDays[POPERTY_SUNDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            onClick={() => handleToggleCycleDay(POPERTY_SUNDAY)}>
+              일
+            </div>
+          </div>
         </div>
         <div className="planner_box">
           
@@ -183,6 +248,7 @@ const Todo = (props) => {
           planList={planList} 
           type={planTypes.MONTHLY_PLAN}  
           date={date}
+          cycleDays={cycleDays}
           onEditComplete={onEditCompleteClick} 
           onDelete={onDeleteClick}
           onCreate={onCreateClick}

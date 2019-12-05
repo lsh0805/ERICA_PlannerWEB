@@ -1,0 +1,9 @@
+.infoContainer {
+  text-align: center;
+}
+
+.chartContainer{
+  overflow: auto;
+  width: 250px;
+  background-color: #A5F2F3;
+}

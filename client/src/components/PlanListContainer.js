@@ -3,7 +3,7 @@ import * as planTypes from './PlannerTypes';
 import {PlanList} from 'components';
 import moment from 'moment';
 
-const PlanListContainer = ({author, planList, type, date, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
+const PlanListContainer = ({author, planList, type, date, cycleDays, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
   const getDateFormat = (d) => {
     let year = d.getFullYear();
     let month = d.getMonth() + 1;
@@ -52,7 +52,24 @@ const PlanListContainer = ({author, planList, type, date, onEditComplete, onDele
         console.log(arr);
         return arr;
       }else if(type === planTypes.LOOP_PLAN){
-        return undefined;
+        const WEEK = 7;
+        let arr = [];
+        console.log(cycleDays);
+        // cycleDays 객체 property 순회 cycleDayOfWeek = 객체 Key값(cycleMonday, cycleTuesday...)
+        let i = 0;
+        for(let cycleDayOfWeek in cycleDays){
+          if(cycleDays[cycleDayOfWeek] === false) continue;
+          let plans = planList.filter(plan => {return plan[cycleDayOfWeek] === cycleDays[cycleDayOfWeek]});
+          arr.push(<PlanList key={i} author={author} date={date[0]} cycleDay={cycleDayOfWeek} planList={plans} type={type} 
+          onEditComplete={onEditComplete}
+          onComplete={onComplete}
+          onDelete={onDelete} onCreate={onCreate}
+          postStatus={postStatus}
+          deleteStatus={deleteStatus}
+          updateStatus={updateStatus}/>);
+          i++;
+        }
+        return arr;
       }
     } catch(e){
       return;

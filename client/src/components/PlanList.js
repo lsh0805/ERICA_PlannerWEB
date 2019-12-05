@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
 import * as planTypes from './PlannerTypes';
 
-const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
+const PlanList = React.memo(({author, planList, type, date, cycleDay, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
 
   const [isOpenedItemBox, setOpenedItemBox] = useState(true);
 
@@ -20,7 +20,6 @@ const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDe
   }
   const mapToComponents = planList => {
     return planList.map((plan, i) => {
-      console.log(plan.completed);
       return (<PlanItem key={i} author={author} title={plan.title} exp={plan.exp} 
         id={plan.id} type={type} date={date} onDelete={onDelete} completed={plan.completed}
         onEditComplete={onEditComplete} onCreate={onCreate} 
@@ -28,10 +27,12 @@ const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDe
         deleteStatus={deleteStatus} updateStatus={updateStatus} />);
     });
   };
-  const createNewPlan = () => {
+  const createNewPlan = (author, type, date, cycleDay) => {
     if(isOpenedItemBox === false)
       setOpenedItemBox(true);
-    onCreate({author, type, date});
+    let data = {author, type, date, title: "일정 설명", exp: 10};
+    data[cycleDay] = true;
+    onCreate(data);
   }
   const getDayOfWeek = (date) => {
     const week = ['일', '월', '화', '수', '목', '금', '토'];
@@ -44,6 +45,18 @@ const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDe
       return date.getFullYear() + "년 " + (date.getMonth() + 1) + "월";
     else if(type === planTypes.YEARLY_PLAN)
       return date.getFullYear() + "년";
+    else if(type === planTypes.LOOP_PLAN){
+      const cycleDayToKorObj = {
+        cycleMonday: "월요일",
+        cycleTuesday: "화요일",
+        cycleWednesday: "수요일",
+        cycleThursday: "목요일",
+        cycleFriday: "금요일",
+        cycleSaturday: "토요일",
+        cycleSunday: "일요일",
+      }
+      return cycleDayToKorObj[cycleDay];
+    }
   }
   return (
     <div className="plan_box">
@@ -51,7 +64,7 @@ const PlanList = React.memo(({author, planList, type, date, onEditComplete, onDe
         <div className="date">{getDateTitleFormat(date, type)}</div>
         <div className="right_toolbox">
           {postStatus.date.filter(dateVal => { return dateVal.getTime() === date.getTime()}).length === 0 ? 
-          <Button className="tool plan_add_btn" onClick={() => createNewPlan()}><FontAwesomeIcon icon={faPlus}/></Button>
+          <Button className="tool plan_add_btn" onClick={() => createNewPlan(author, type, date, cycleDay)}><FontAwesomeIcon icon={faPlus}/></Button>
           : 
           <Button className="tool plan_add_btn"><CircularProgress size="1rem" style={{color:"#000000"}}/></Button>}
         </div>

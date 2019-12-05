@@ -44,7 +44,6 @@ const Todo = (props) => {
   }
   /* POST data = {title, exp, date, completed, month, year, ...} */
   const onCreateClick = (data) => {
-    data = {...data, title: "일정 설명", exp: 10};
     dispatch(postPlanRequest(data));
   }
 
@@ -185,45 +184,58 @@ const Todo = (props) => {
           </div>
           <div className="date_box_btn_container">
             <div className="btn_toggle_day btn_monday"
-              style={cycleDays[POPERTY_MONDAY] === true ? {backgroundColor: "#ddd"} : {}}
+              style={cycleDays[POPERTY_MONDAY] === true ? {backgroundColor: "#BBB"} : {}}
               onClick={() => handleToggleCycleDay(POPERTY_MONDAY)}>
               월
             </div>
             <div className="btn_toggle_day btn_tuesday" 
-              style={cycleDays[POPERTY_TUESDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+              style={cycleDays[POPERTY_TUESDAY] === true ? {backgroundColor: "#BBB"} : {}} 
               onClick={() => handleToggleCycleDay(POPERTY_TUESDAY)}>
               화
             </div>
             <div className="btn_toggle_day btn_wednesday" 
-            style={cycleDays[POPERTY_WEDNESDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            style={cycleDays[POPERTY_WEDNESDAY] === true ? {backgroundColor: "#BBB"} : {}} 
             onClick={() => handleToggleCycleDay(POPERTY_WEDNESDAY)}>
               수
             </div>
             <div className="btn_toggle_day btn_thursday" 
-            style={cycleDays[POPERTY_THURSDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            style={cycleDays[POPERTY_THURSDAY] === true ? {backgroundColor: "#BBB"} : {}} 
             onClick={() => handleToggleCycleDay(POPERTY_THURSDAY)}>
               목
             </div>
             <div className="btn_toggle_day btn_friday" 
-            style={cycleDays[POPERTY_FRIDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            style={cycleDays[POPERTY_FRIDAY] === true ? {backgroundColor: "#BBB"} : {}} 
             onClick={() => handleToggleCycleDay(POPERTY_FRIDAY)}>
               금
             </div>
             <div className="btn_toggle_day btn_saturday" 
-            style={cycleDays[POPERTY_SATURDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            style={cycleDays[POPERTY_SATURDAY] === true ? {backgroundColor: "#BBB"} : {}} 
             onClick={() => handleToggleCycleDay(POPERTY_SATURDAY)}>
               토
             </div>
             <div className="btn_toggle_day btn_sunday" 
-            style={cycleDays[POPERTY_SUNDAY] === true ? {backgroundColor: "#ddd"} : {}} 
+            style={cycleDays[POPERTY_SUNDAY] === true ? {backgroundColor: "#BBB"} : {}} 
             onClick={() => handleToggleCycleDay(POPERTY_SUNDAY)}>
               일
             </div>
           </div>
         </div>
-        <div className="planner_box">
-          
-        </div>
+        {loading ? <CircularProgress/> : 
+          <PlanListContainer 
+          author={props.loginInfo.email} 
+          planList={planList} 
+          type={planTypes.LOOP_PLAN}  
+          date={date}
+          cycleDays={cycleDays}
+          onEditComplete={onEditCompleteClick} 
+          onDelete={onDeleteClick}
+          onCreate={onCreateClick}
+          onComplete={onCompleteClick}
+          getStatus={getStatus}
+          postStatus={postStatus}
+          deleteStatus={deleteStatus}
+          updateStatus={updateStatus}
+          />}
       </div>
     </Paper>
   );

@@ -19,20 +19,11 @@ import * as planTypes from '../components/PlannerTypes';
 export function getPlanListRequest(author, type, where){
   return (dispatch) => {
     dispatch(getPlanList());
-    switch (type){
-      case planTypes.DAILY_PLAN:
-      case planTypes.MONTHLY_PLAN:
-      case planTypes.YEARLY_PLAN:
-        return axios.post('/api/plan/getPlans/', {...where, author, type}).then(planList => {
-          dispatch(getPlanListSuccess(planList.data.row));
-        }).catch(error => {
-          dispatch(getPlanListFailure(error));
-        });
-      case planTypes.LOOP_PLAN:
-        break;
-      default:
-        break;
-    }
+    return axios.post('/api/plan/getPlans/', {...where, author, type}).then(planList => {
+      dispatch(getPlanListSuccess(planList.data.row));
+    }).catch(error => {
+      dispatch(getPlanListFailure(error));
+    });
   }
 } 
 

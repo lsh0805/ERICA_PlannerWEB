@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    completedAt: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
     date: {
       type: DataTypes.DATEONLY,
       allowNull: true,
@@ -53,11 +57,6 @@ module.exports = (sequelize, DataTypes) => {
     cycleSunday:{
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: 0,
-    },
-    completed:{
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: 0,
     },
   }, {

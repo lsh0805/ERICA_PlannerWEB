@@ -73,8 +73,9 @@ ul{
 #todo .date_box .date_box_btn_container .btn_toggle_day{
   border: 2px solid #5E8BF2;
   text-align: center;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   cursor: pointer;
   transition: 0.3s all ease;
 }

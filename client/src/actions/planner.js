@@ -27,7 +27,7 @@ export function getPlanListRequest(author, type, where){
   }
 } 
 
-/* POST data = {title, exp, date, completed, month, year, ...} */
+/* POST data = {title, exp, date, completedAt, month, year, ...} */
 export function postPlanRequest(data){
   return (dispatch) => {
     dispatch(postPlan(data.date));
@@ -41,10 +41,10 @@ export function postPlanRequest(data){
 } 
 
 /* UPDATE */
-export function updatePlanRequest(title, exp, id, completed){
+export function updatePlanRequest(title, exp, id, completedAt){
   return (dispatch) => {
     dispatch(updatePlan(id));
-    return axios.post('/api/plan/update', {title, exp, id, completed}).then((res) => {
+    return axios.post('/api/plan/update', {title, exp, id, completedAt}).then((res) => {
       dispatch(updatePlanSuccess(id, res.data.row));
     }).catch((err) => {
       dispatch(updatePlanFailure(id, err));

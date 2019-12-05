@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { faTrashAlt, faCut, faCheckCircle, faTrophy } from "@fortawesome/free-solid-svg-icons";
-import { faEdit, faCopy } from "@fortawesome/free-regular-svg-icons";
+import { faTrashAlt, faCheckCircle, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { faEdit} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './css/PlanItem.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as planTypes from './PlannerTypes';
+import moment from 'moment';
 
 const PlanItem = (props) => {
   const [contents, setContents] = useState({title: props.title, exp: props.exp});
@@ -21,13 +22,15 @@ const PlanItem = (props) => {
     let canMaxExp;
     if(type === planTypes.DAILY_PLAN)
       canMaxExp = 500;
-    if(type === planTypes.MONTHLY_PLAN)
+    else if(type === planTypes.LOOP_PLAN)
+      canMaxExp = 500;
+    else if(type === planTypes.MONTHLY_PLAN)
       canMaxExp = 5000;
-    if(type === planTypes.YEARLY_PLAN)
+    else if(type === planTypes.YEARLY_PLAN)
       canMaxExp = 50000;
     return canMaxExp;
   }
-  const onEditCompleteClick = (title, exp, id, completed, type) => {
+  const onEditCompleteClick = (title, exp, id, completedAt, type) => {
     let error = undefined;
     if(title === ""){
       error = "일정 제목을 입력해주세요.";
@@ -41,7 +44,7 @@ const PlanItem = (props) => {
     if(error !== undefined)
       toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{error}</div>);
     else{
-      props.onEditComplete(title, exp, id, completed).then(() => {
+      props.onEditComplete(title, exp, id, completedAt).then(() => {
         setEditable(false);
       });
     }
@@ -51,6 +54,17 @@ const PlanItem = (props) => {
   }
   const onCompleteClick = (title, exp, id) =>{
     props.onComplete(title, exp, id);
+  }
+  const checkCompleted = (type, completedAt) => {
+    console.log(completedAt);
+    if(completedAt !== null && completedAt !== undefined){
+      if(type === planTypes.LOOP_PLAN){
+        console.log(moment(completedAt).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+        return moment(completedAt).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
+      }else
+        return true;
+    }else
+      return false;
   }
   function onContentsChange(e) {
     e.persist();
@@ -68,9 +82,8 @@ const PlanItem = (props) => {
       <div className="plan_item_row2">
         <div className="plan_exp"><FontAwesomeIcon icon={faTrophy} style={{color: "#F9A602", marginRight: "5px"}}/>{props.exp}</div>
         <div className="plan_btn_container">
-          <div className="plan_btn complete_btn" onClick={() => onCompleteClick(props.title, props.exp, props.id, true, props.type)}>
+          <div className="plan_btn complete_btn" onClick={() => onCompleteClick(props.title, props.exp, props.id)}>
             완료
-            {props.completed}
           </div>
           <div className="plan_btn edit_btn" onClick={() => setEditable(true)}>
             <FontAwesomeIcon icon={faEdit}/>
@@ -96,7 +109,7 @@ const PlanItem = (props) => {
           <input type="number" className="edit_exp" placeholder={"경험치(0~" + getCanSetMaxEXP(props.type) + ")"} name="exp" value={contents.exp} onChange={onContentsChange}/>
           <div className="plan_btn_container" style={{justifyContent: "flex-end"}}>
             {props.updateStatus.id.filter(id => {return id === props.id}).length === 0 ? 
-              <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id, false, props.type)}>
+              <div className="plan_btn complete_edit_btn" onClick={() => onEditCompleteClick(contents.title, contents.exp, props.id, props.completedAt, props.type)}>
                 확인
               </div>
               :
@@ -128,14 +141,14 @@ const PlanItem = (props) => {
           </div>
         </div>
       </div>
-      <div className="plan_completed_view" style={{opacity: "1"}}>
+      <div className="plan_completed_view">
           <FontAwesomeIcon icon={faCheckCircle}/>
       </div>
     </div>
   );
   return (
     <React.Fragment>
-      {isEditable ? editableView: (props.completed ? completedView : planView)}
+      {isEditable ? editableView: (checkCompleted(props.type, props.completedAt) ? completedView : planView)}
     </React.Fragment>
   );
 }

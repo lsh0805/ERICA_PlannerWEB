@@ -21,7 +21,7 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, onEditComp
   const mapToComponents = planList => {
     return planList.map((plan, i) => {
       return (<PlanItem key={i} author={author} title={plan.title} exp={plan.exp} 
-        id={plan.id} type={type} date={date} onDelete={onDelete} completed={plan.completed}
+        id={plan.id} type={type} date={date} onDelete={onDelete} completedAt={plan.completedAt}
         onEditComplete={onEditComplete} onCreate={onCreate} 
         onComplete={onComplete} idx={i}
         deleteStatus={deleteStatus} updateStatus={updateStatus} />);

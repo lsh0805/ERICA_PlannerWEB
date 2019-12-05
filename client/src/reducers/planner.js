@@ -20,7 +20,7 @@ const initialState = Map({
       cycleFriday: false,
       cycleSaturday: false,
       cycleSunday: false,
-      completed: false,
+      completedAt: null,
       editable: false,
     }
   ]),

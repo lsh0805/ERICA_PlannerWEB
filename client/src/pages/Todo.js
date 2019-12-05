@@ -32,17 +32,17 @@ const Todo = (props) => {
   const [planList, getStatus, postStatus, deleteStatus, updateStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
   
   const onCompleteClick = (title, exp, id) => {
-    dispatch(updatePlanRequest(title, exp, id, true));
+    dispatch(updatePlanRequest(title, exp, id, moment().toDate()));
     let [newLevel, newEXP] = getApplyLevel(parseInt(props.userInfo.level), parseInt(props.userInfo.exp) + parseInt(exp));
     dispatch(updateUserInfoRequest(props.userInfo.email, newLevel, newEXP));
   }
-  const onEditCompleteClick = (title, exp, id, completed) => {
-    return dispatch(updatePlanRequest(title, exp, id, completed));
+  const onEditCompleteClick = (title, exp, id, completedAt) => {
+    return dispatch(updatePlanRequest(title, exp, id, completedAt));
   }
   const onDeleteClick = (id) => {
     dispatch(deletePlanRequest(id));
   }
-  /* POST data = {title, exp, date, completed, month, year, ...} */
+  /* POST data = {title, exp, date, completedAt, month, year, ...} */
   const onCreateClick = (data) => {
     dispatch(postPlanRequest(data));
   }
@@ -50,17 +50,20 @@ const Todo = (props) => {
   const getClearDate = (d) => {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
+
+  let todayDate = moment().toDate();
   // State
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState([getClearDate(new Date()), getClearDate(new Date())]);
+  const [date, setDate] = useState([getClearDate(todayDate), getClearDate(todayDate)]);
   const [cycleDays, setCycleDays] = useState({
-    cycleMonday: false,
-    cycleTuesday: false,
-    cycleWednesday: false,
-    cycleThursday: false,
-    cycleFriday: false,
-    cycleSaturday: false,
-    cycleSunday: false,
+    // 오늘 요일에 해당하는 day true값으로 설정
+    cycleMonday: todayDate.getDay() === 1,
+    cycleTuesday: todayDate.getDay() === 2,
+    cycleWednesday: todayDate.getDay() === 3,
+    cycleThursday: todayDate.getDay() === 4,
+    cycleFriday: todayDate.getDay() === 5,
+    cycleSaturday: todayDate.getDay() === 6,
+    cycleSunday: todayDate.getDay() === 0,
   });
   const [type, setType] = useState(planTypes.DAILY_PLAN);
 

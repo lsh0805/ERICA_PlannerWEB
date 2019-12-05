@@ -1,0 +1,33 @@
+{
+  "options": {
+    "host": "localhost",
+    "port": 3306 ,
+    "user": "자신의 DB 유저 이름을 여기에 입력해주세요. (DB username)",
+    "password": "자신의 DB 비밀번호를 여기에 입력해주세요. (DB password)", 
+    "database": "자신의 DB 이름을 여기에 입력해주세요. (DB name)"
+  },
+  "development": {
+    "username": "자신의 DB 유저 이름을 여기에 입력해주세요. (DB username)",
+    "password": "자신의 DB 비밀번호를 여기에 입력해주세요. (DB password)", 
+    "database": "자신의 DB 이름을 여기에 입력해주세요. (DB name)",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}

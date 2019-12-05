@@ -1,0 +1,3 @@
+{
+  "secret": "session 값을 암호화하기 위한 값입니다. 아무렇게나 입력해주세요. ex) AS!#!#@#SdsadsDW"
+}

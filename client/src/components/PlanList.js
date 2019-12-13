@@ -7,11 +7,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
 import * as planTypes from './PlannerTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { postPlanRequest } from 'actions/planner';
 
-const PlanList = React.memo(({author, planList, type, date, cycleDay, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
+const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton, turnOnTaskRatio}) => {
+  // Redux hooks
+  const dispatch = useDispatch();
+  const [postStatus] = useSelector(state => [state.planner.toJS().post] , []);
+
+  /* POST data = {title, exp, date, completedAt, month, year, ...} */
+  const onCreateClick = (author, type, date, cycleDay) => {
+    if(isOpenedItemBox === false)
+      setOpenedItemBox(true);
+    let data = {author, type, date, title: "일정 설명", exp: 10};
+    data[cycleDay] = true;
+    dispatch(postPlanRequest(data));
+  }
 
   const [isOpenedItemBox, setOpenedItemBox] = useState(true);
-
+  const [completedPlansCount, setcompletedPlansCount] = useState(0);
   const handleOnClickSizingBox = () => {
     if(isOpenedItemBox)
       setOpenedItemBox(false);
@@ -19,21 +33,20 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, onEditComp
       setOpenedItemBox(true);
   }
   const mapToComponents = planList => {
-    return planList.map((plan, i) => {
+    let planItems = planList.map((plan, i) => {
       return (<PlanItem key={i} author={author} title={plan.title} exp={plan.exp} 
-        id={plan.id} type={type} date={date} onDelete={onDelete} completedAt={plan.completedAt}
-        onEditComplete={onEditComplete} onCreate={onCreate} 
-        onComplete={onComplete} idx={i}
-        deleteStatus={deleteStatus} updateStatus={updateStatus} />);
+        id={plan.id} type={type} date={date} completedAt={plan.completedAt} idx={i}/>);
     });
+    return planItems;
   };
-  const createNewPlan = (author, type, date, cycleDay) => {
-    if(isOpenedItemBox === false)
-      setOpenedItemBox(true);
-    let data = {author, type, date, title: "일정 설명", exp: 10};
-    data[cycleDay] = true;
-    onCreate(data);
-  }
+  useEffect(()=> {
+    let count = 0;
+    planList.map((plan, i) => {
+      if(plan.completedAt !== undefined && plan.completedAt !== null)
+        count++;
+    });
+    setcompletedPlansCount(count);
+  }, [planList]);
   const getDayOfWeek = (date) => {
     const week = ['일', '월', '화', '수', '목', '금', '토'];
     return week[date.getDay()];
@@ -58,15 +71,21 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, onEditComp
       return cycleDayToKorObj[cycleDay];
     }
   }
+  const getTaskCompletedRatio = (completedPlansCount, planListLength) => {
+    if(planListLength === 0)
+      return 0;
+    return (completedPlansCount / planListLength) * 100;
+  }
   return (
     <div className="plan_box">
       <div className="plan_header">
-        <div className="date">{getDateTitleFormat(date, type)}</div>
+        <div className="date">{getDateTitleFormat(date, type)} </div>
+        {turnOnTaskRatio ? <div className="completedRatio">수행률: {getTaskCompletedRatio(completedPlansCount, planList.length)}% ({completedPlansCount} / {planList.length})</div> : undefined}
         <div className="right_toolbox">
-          {postStatus.date.filter(dateVal => { return dateVal.getTime() === date.getTime()}).length === 0 ? 
-          <Button className="tool plan_add_btn" onClick={() => createNewPlan(author, type, date, cycleDay)}><FontAwesomeIcon icon={faPlus}/></Button>
+          {addButton ? postStatus.date.filter(dateVal => { return dateVal.getTime() === date.getTime()}).length === 0 ? 
+          <Button className="tool plan_add_btn" onClick={() => onCreateClick(author, type, date, cycleDay)}><FontAwesomeIcon icon={faPlus}/></Button>
           : 
-          <Button className="tool plan_add_btn"><CircularProgress size="1rem" style={{color:"#000000"}}/></Button>}
+          <Button className="tool plan_add_btn"><CircularProgress size="1rem" style={{color:"#000000"}}/></Button> : undefined}
         </div>
       </div>
       <Button className="plan_box_sizing_row" onClick={handleOnClickSizingBox}>

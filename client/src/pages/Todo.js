@@ -10,9 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../components/css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPlanListRequest, postPlanRequest, deletePlanRequest, updatePlanRequest } from 'actions/planner';
-import { updateUserInfoRequest } from 'actions/user';
-import { getApplyLevel } from '../module/level';
+import { getPlanListRequest } from 'actions/planner';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 
@@ -29,23 +27,7 @@ const POPERTY_SUNDAY      = "cycleSunday";
 const Todo = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
-  const [planList, getStatus, postStatus, deleteStatus, updateStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
-  
-  const onCompleteClick = (title, exp, id) => {
-    dispatch(updatePlanRequest(title, exp, id, moment().toDate()));
-    let [newLevel, newEXP] = getApplyLevel(parseInt(props.userInfo.level), parseInt(props.userInfo.exp) + parseInt(exp));
-    dispatch(updateUserInfoRequest(props.userInfo.email, newLevel, newEXP));
-  }
-  const onEditCompleteClick = (title, exp, id, completedAt) => {
-    return dispatch(updatePlanRequest(title, exp, id, completedAt));
-  }
-  const onDeleteClick = (id) => {
-    dispatch(deletePlanRequest(id));
-  }
-  /* POST data = {title, exp, date, completedAt, month, year, ...} */
-  const onCreateClick = (data) => {
-    dispatch(postPlanRequest(data));
-  }
+  const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
 
   const getClearDate = (d) => {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -134,7 +116,7 @@ const Todo = (props) => {
   }
   useEffect(() => {
     setLoading(true);
-    dispatch(getPlanListRequest(props.loginInfo.email, type,
+    dispatch(getPlanListRequest(props.loginInfo.email,
       type === planTypes.LOOP_PLAN ? cycleDays : {
       dateStart: date[0],
       dateEnd: date[1],
@@ -165,14 +147,6 @@ const Todo = (props) => {
           planList={planList} 
           type={planTypes.DAILY_PLAN}  
           date={date}
-          onEditComplete={onEditCompleteClick} 
-          onDelete={onDeleteClick}
-          onCreate={onCreateClick}
-          onComplete={onCompleteClick}
-          getStatus={getStatus}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}
           />}
       </div>
     </Paper>
@@ -230,14 +204,6 @@ const Todo = (props) => {
           type={planTypes.LOOP_PLAN}  
           date={date}
           cycleDays={cycleDays}
-          onEditComplete={onEditCompleteClick} 
-          onDelete={onDeleteClick}
-          onCreate={onCreateClick}
-          onComplete={onCompleteClick}
-          getStatus={getStatus}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}
           />}
       </div>
     </Paper>
@@ -264,14 +230,6 @@ const Todo = (props) => {
           type={planTypes.MONTHLY_PLAN}  
           date={date}
           cycleDays={cycleDays}
-          onEditComplete={onEditCompleteClick} 
-          onDelete={onDeleteClick}
-          onCreate={onCreateClick}
-          onComplete={onCompleteClick}
-          getStatus={getStatus}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}
           />}
       </div>
     </Paper>
@@ -297,14 +255,7 @@ const Todo = (props) => {
           planList={planList} 
           type={planTypes.YEARLY_PLAN}  
           date={date}
-          onEditComplete={onEditCompleteClick} 
-          onDelete={onDeleteClick}
-          onCreate={onCreateClick}
-          onComplete={onCompleteClick}
-          getStatus={getStatus}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}
+          cycleDays={cycleDays}
           />}
       </div>
     </Paper>

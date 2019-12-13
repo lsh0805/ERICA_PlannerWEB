@@ -3,7 +3,9 @@ import * as planTypes from './PlannerTypes';
 import {PlanList} from 'components';
 import moment from 'moment';
 
-const PlanListContainer = ({author, planList, type, date, cycleDays, onEditComplete, onDelete, onCreate, onComplete, postStatus, deleteStatus, updateStatus}) => {
+const PlanListContainer = ({author, planList, type, date, addButton, cycleDays, turnOnTaskRatio, title}) => {
+  if(addButton === undefined)
+    addButton = true;
   const getDateFormat = (d) => {
     let year = d.getFullYear();
     let month = d.getMonth() + 1;
@@ -40,14 +42,8 @@ const PlanListContainer = ({author, planList, type, date, cycleDays, onEditCompl
             newDate.setMonth(date[0].getMonth() + i);
           else if(type === planTypes.YEARLY_PLAN)
             newDate.setFullYear(date[0].getFullYear() + i);
-          let plans = planList.filter(plan => {return plan.date === getDateFormat(newDate)});
-          planListArr.push(<PlanList key={i} author={author} date={newDate} planList={plans} type={type} 
-          onEditComplete={onEditComplete}
-          onComplete={onComplete}
-          onDelete={onDelete} onCreate={onCreate}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}/>);
+          let plans = planList.filter(plan => {return plan.type === type && plan.date === getDateFormat(newDate)});
+          planListArr.push(<PlanList key={i} author={author} date={newDate} planList={plans} type={type} addButton={addButton} turnOnTaskRatio={turnOnTaskRatio}/>);
         }
       }else if(type === planTypes.LOOP_PLAN){
         // cycleDays 객체 property 순회 cycleDayOfWeek = 객체 Key값(cycleMonday, cycleTuesday...)
@@ -55,13 +51,7 @@ const PlanListContainer = ({author, planList, type, date, cycleDays, onEditCompl
         for(let cycleDayOfWeek in cycleDays){
           if(cycleDays[cycleDayOfWeek] === false) continue;
           let plans = planList.filter(plan => {return plan[cycleDayOfWeek] === cycleDays[cycleDayOfWeek]});
-          planListArr.push(<PlanList key={i} author={author} date={date[0]} cycleDay={cycleDayOfWeek} planList={plans} type={type} 
-          onEditComplete={onEditComplete}
-          onComplete={onComplete}
-          onDelete={onDelete} onCreate={onCreate}
-          postStatus={postStatus}
-          deleteStatus={deleteStatus}
-          updateStatus={updateStatus}/>);
+          planListArr.push(<PlanList key={i} author={author} date={date[0]} cycleDay={cycleDayOfWeek} planList={plans} type={type} turnOnTaskRatio={turnOnTaskRatio}/>);
           i++;
         }
       }

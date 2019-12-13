@@ -104,38 +104,31 @@ module.exports = {
     });
   },
   getPlans: async function(data){
-    let wherePlanObj;
-    if(data.type === DAILY_PLAN || data.type === MONTHLY_PLAN
-      || data.type === YEARLY_PLAN){
-      wherePlanObj = {
-        author: data.author,
-        type: data.type,
-        date: {
-          [Op.between]: [moment(data.dateStart).add(9, 'h').toDate(), moment(data.dateEnd).add(9, 'h').toDate()]
-        }
-      };
-    }else if(data.type === LOOP_PLAN){
-      /* data로 date값이 같이 들어오기 때문에 객체 분해 할당으로(...data) 객체 만들면
-        date값이 where에 적용되므로 요일반복 일정은 일일이 객체값을 할당해줘야함.
-        client에서 where에 필요한 data값만 request를 하도록 고쳐야 할지 고려하기. */
-      wherePlanObj = {
-        author: data.author,
-        type: data.type,
-        [Op.or]: [
-          {cycleMonday: data.cycleMonday},
-          {cycleTuesday: data.cycleTuesday},
-          {cycleWednesday: data.cycleWednesday},
-          {cycleThursday: data.cycleThursday},
-          {cycleFriday: data.cycleFriday},
-          {cycleSaturday: data.cycleSaturday},
-          {cycleSunday: data.cycleSunday},
-        ],
-      };
-    }
     return new Promise((resolve, reject) => {
-      // Find id in DB
+      // Find plans in DB
       Plan.findAll({
-          where: wherePlanObj
+          where: {
+            [Op.or]: [
+              {
+                author: data.author,
+                date: {
+                  [Op.between]: [moment(data.dateStart).add(9, 'h').toDate(), moment(data.dateEnd).add(9, 'h').toDate()]
+                },
+              },
+              {
+                author: data.author,
+                [Op.or]: [
+                  {cycleMonday: data.cycleMonday === true},
+                  {cycleTuesday: data.cycleTuesday === true},
+                  {cycleWednesday: data.cycleWednesday === true},
+                  {cycleThursday: data.cycleThursday === true},
+                  {cycleFriday: data.cycleFriday === true},
+                  {cycleSaturday: data.cycleSaturday === true},
+                  {cycleSunday: data.cycleSunday === true},
+                ],
+              }
+            ],
+          }
       }).then(function(rows){
         return resolve(new response(true, null, rows));
       }).catch(function(error) {

@@ -14,12 +14,9 @@ var response = function(res, err, row = undefined){
 module.exports = {
   getExpLog: async function (data){
     return new Promise((resolve, reject) => {
-      ExpLog.findOne({
+      ExpLog.findAll({
         where: {
           email: data.email,
-          date: {
-            [Op.between]: [moment(data.dateStart).add(9, 'h').toDate(), moment(data.dateEnd).add(9, 'h').toDate()]
-          }
         }
       }).then(rows => {
         return resolve(new response(true, null, rows));

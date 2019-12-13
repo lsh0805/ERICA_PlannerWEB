@@ -16,10 +16,10 @@ import axios from 'axios';
 import * as planTypes from '../components/PlannerTypes';
 
 /* GET where = mysql where 값 */
-export function getPlanListRequest(author, type, where){
+export function getPlanListRequest(author, where){
   return (dispatch) => {
     dispatch(getPlanList());
-    return axios.post('/api/plan/getPlans/', {...where, author, type}).then(planList => {
+    return axios.post('/api/plan/getPlans/', {...where, author}).then(planList => {
       dispatch(getPlanListSuccess(planList.data.row));
     }).catch(error => {
       dispatch(getPlanListFailure(error));

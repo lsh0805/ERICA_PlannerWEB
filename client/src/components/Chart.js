@@ -29,14 +29,13 @@ const Chart = () => {
     ]
   };
   const options = {
+    maintainAspectRatio: false,
     tooltips: {
       mode: 'nearest',
     },
   };
   return (
-    <div style={{width: "400px"}}>
-      <Line data={data} options={options} />
-    </div>
+    <Line data={data} options={options} />
   );
 }
 export default Chart;

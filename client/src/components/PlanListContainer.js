@@ -3,7 +3,7 @@ import * as planTypes from './PlannerTypes';
 import {PlanList} from 'components';
 import moment from 'moment';
 
-const PlanListContainer = ({author, planList, type, date, addButton, cycleDays, turnOnTaskRatio, title}) => {
+const PlanListContainer = ({author, planList, type, date, addButton, cycleDays, turnOnTaskRatio}) => {
   if(addButton === undefined)
     addButton = true;
   const getDateFormat = (d) => {

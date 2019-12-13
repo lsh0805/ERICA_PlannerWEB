@@ -12,23 +12,29 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import {PlanListContainer} from 'components';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../components/css/Toast.css';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const Info = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
   const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
 
-  const [chartPeriod, setChartPeriod] = useState([new Date(), new Date()]);
+  const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(30, 'day'), new Date()]);
   const [logList, setLogList] = useState([]);
 
   const onPeriodChange = (date) => {
+    if(moment(date[1], 'YYYY-MM-DD').diff(new Date(), 'day') > 0){
+      toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+      기간은 오늘 이후로 설정할 수 없습니다.
+      </div>);
+      return;
+    }
     setChartPeriod(date);
   }
 
-  useEffect(() => {
-    getListLog(chartPeriod[0], chartPeriod[1]);
-  }, [logList, chartPeriod]);
-  
   useEffect(() => {
     dispatch(getPlanListRequest(props.loginInfo.email,
     {
@@ -46,9 +52,10 @@ const Info = (props) => {
   // 해당 날짜에 플레이어의 경험치 값을 가져오는 함수
   const getLogExp = (currentDate) => {
     let resultExp = 0;
+    // 현재 날짜와 가장 근접한 날짜에 대한 차이를 저장하는 변수임. 최솟값을 찾기위해 초기값을 큰 수로 저장
     let closestDiff = 100000000000;
     for(let i = 0; i < logList.length; i++){
-      let diff = moment(currentDate).diff(logList[i].date, 'days');
+      let diff = moment(currentDate).diff(logList[i].date, 'day');
       if(diff < 0)
         return resultExp;
       if(diff < closestDiff){
@@ -60,31 +67,25 @@ const Info = (props) => {
   }
 
   // 사용자가 설정한 기간에 해당하는 로그값들을 가져오는 함수
-  const getListLog = (startDate, endDate) => {
-    let retListLog = [];
+  const getChartLabels = (startDate, endDate) => {
+    let resultLabels = [];
     
-    // 리스트값은 최대 30개까지 표현할 수 있도록 구현
-    
-    let diffDate = moment(endDate, 'YYYY-MM-DD').diff(startDate, 'date');
-    
-    // 로그 날짜 수열 공차
-    let diff = diffDate / 30; 
-    let tempDate = moment(startDate).toDate();
-
-
-    for(let i = 0; i < diffDate; i+=diff){
-      tempDate = moment(tempDate).add(diff, 'days').toDate();
-      retListLog.push({date: tempDate, exp: getLogExp(tempDate)});
+    let diffDate = moment(endDate).diff(startDate, 'day');
+    for(let i = 0; i <= diffDate; i++){
+      let tempDate = moment(startDate).add(i, 'day');
+      resultLabels.push(moment(tempDate).format('YYYY년 MM월 DD일'));
     }
-    retListLog.push({date: endDate, exp: getLogExp(endDate)});
-
-    console.log(retListLog);
-
-    return retListLog;
+    return resultLabels;
   };
 
-
-
+  // 각 label에 해당하는 날짜의 유저의 경험치 로그 값 배열 반환
+  const getChartData = (labels) =>{
+    let resultData = [];
+    for (let label of labels)
+      resultData.push(getLogExp(moment(label, 'YYYY년 MM월 DD일').toDate()));
+    return resultData;
+  };
+  
   let tempDate = new Date();
   let startDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
   let endDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
@@ -163,7 +164,7 @@ const Info = (props) => {
               />
             </div>
             <div className="userExpChartContainer">
-              <Chart/>
+              <Chart labels={getChartLabels(chartPeriod[0], chartPeriod[1])} data={getChartData(getChartLabels(chartPeriod[0], chartPeriod[1]))}/>
             </div>
           </Paper>
         </div>

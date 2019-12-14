@@ -8,21 +8,20 @@ import Paper from '@material-ui/core/Paper';
 import * as planTypes from '../components/PlannerTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPlanListRequest } from 'actions/planner';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
-import {PlanListContainer} from 'components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import {PlanList} from 'components';
 
 const Info = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
   const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
 
-  const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(30, 'day'), new Date()]);
+  const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(40, 'day'), new Date()]);
   const [logList, setLogList] = useState([]);
 
   const onPeriodChange = (date) => {
@@ -85,7 +84,8 @@ const Info = (props) => {
       resultData.push(getLogExp(moment(label, 'YYYY년 MM월 DD일').toDate()));
     return resultData;
   };
-  
+
+
   let tempDate = new Date();
   let startDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
   let endDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
@@ -96,6 +96,23 @@ const Info = (props) => {
   endDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
   endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
   let yearDate = [startDate, endDate];
+
+  const mapPlanList = (author, planList, type, date, color, title, turnOnTaskRatio, addButton) => {
+    try{
+      let planListArr = [];
+      let cycleDayOfWeek = ["cycleSunday", "cycleMonday", "cycleTuesday", "cycleWednesday", "cycleThursday", "cycleFriday","cycleSaturday"]
+      let plans = planList.filter( plan => {
+        // DAILY PLAN에 오늘에 해당하는 요일 반복 일정 추가함
+        if(type === planTypes.DAILY_PLAN)
+          return plan.date === moment(date[0]).format('YYYY-MM-DD') || plan[cycleDayOfWeek[date[0].getDay()]];
+        return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
+      });
+      planListArr.push(<PlanList author={author} date={date} planList={plans} type={type} addButton={addButton} turnOnTaskRatio={turnOnTaskRatio} color={color} title={title} color={color}/>);
+      return planListArr;
+    } catch(e){
+      return;
+    }
+  };
 
   return (
     <React.Fragment>
@@ -122,41 +139,28 @@ const Info = (props) => {
             </div>
           </Paper>
           <Paper className="userInfoSection userPlanSection">
-            <div className="planInfoContainer todayPlanContainer">
-              <div className="containerTitle">오늘 일정</div>
-              <PlanListContainer 
-              author={props.loginInfo.email} 
-              planList={planList} 
-              type={planTypes.DAILY_PLAN}  
-              date={todayDate}
-              addButton={false}
-              turnOnTaskRatio={true}
-              />
+            <div className="sectionTitle">
+              플래너
             </div>
-            <div className="planInfoContainer monthPlanContainer">
-              <div className="containerTitle">이번 달 목표</div>
-              <PlanListContainer 
-              author={props.loginInfo.email} 
-              planList={planList} 
-              type={planTypes.MONTHLY_PLAN}  
-              date={monthDate}
-              addButton={false}
-              turnOnTaskRatio={true}
-              />
-            </div>
-            <div className="planInfoContainer yearPlanContainer">
-              <div className="containerTitle">올해 목표</div>
-              <PlanListContainer 
-              author={props.loginInfo.email} 
-              planList={planList} 
-              type={planTypes.YEARLY_PLAN}  
-              date={yearDate}
-              addButton={false}
-              turnOnTaskRatio={true}
-              />
+            <div className="planListContainer">
+              <div className="planList todayPlanContainer">
+                {mapPlanList(props.loginInfo.email, planList, planTypes.DAILY_PLAN,
+                  todayDate, "#00cec9", "오늘 일정", true, false)}
+              </div>
+              <div className="planList monthPlanContainer">
+                {mapPlanList(props.loginInfo.email, planList, planTypes.MONTHLY_PLAN,
+                  monthDate, "#81ecec", "이번 달 목표", true, false)}
+              </div>
+              <div className="planList yearPlanContainer">
+                {mapPlanList(props.loginInfo.email, planList, planTypes.YEARLY_PLAN,
+                  yearDate, "#fab1a0", "올해 목표", true, false)}
+              </div>
             </div>
           </Paper>
           <Paper className="userInfoSection userExpChartSection">
+            <div className="sectionTitle">
+              성장 그래프
+            </div>
             <div>
               <DateRangePicker
                 onChange={onPeriodChange}

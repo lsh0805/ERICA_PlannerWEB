@@ -25,6 +25,7 @@ const POPERTY_SUNDAY      = "cycleSunday";
 
 
 const Todo = (props) => {
+
   // Redux hooks
   const dispatch = useDispatch();
   const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
@@ -109,7 +110,6 @@ const Todo = (props) => {
     }
   }
   const handleToggleCycleDay = (dayProperty) => {
-    console.log(cycleDays[dayProperty]);
     let copy_cycleDays = {...cycleDays};
     copy_cycleDays[dayProperty] = !copy_cycleDays[dayProperty];
     setCycleDays(copy_cycleDays);
@@ -127,6 +127,7 @@ const Todo = (props) => {
     });
   }, [date, cycleDays]);
 
+  
   const periodView = (
     <Paper className="section period_section">
       <div className="section_title">기간 일정</div>
@@ -147,6 +148,7 @@ const Todo = (props) => {
           planList={planList} 
           type={planTypes.DAILY_PLAN}  
           date={date}
+          color={"#A5F2F3"}
           />}
       </div>
     </Paper>
@@ -204,6 +206,7 @@ const Todo = (props) => {
           type={planTypes.LOOP_PLAN}  
           date={date}
           cycleDays={cycleDays}
+          color={"#81d4fa"}
           />}
       </div>
     </Paper>
@@ -230,6 +233,7 @@ const Todo = (props) => {
           type={planTypes.MONTHLY_PLAN}  
           date={date}
           cycleDays={cycleDays}
+          color={"#64b5f6"}
           />}
       </div>
     </Paper>
@@ -256,6 +260,7 @@ const Todo = (props) => {
           type={planTypes.YEARLY_PLAN}  
           date={date}
           cycleDays={cycleDays}
+          color={"#ffcdd2"}
           />}
       </div>
     </Paper>

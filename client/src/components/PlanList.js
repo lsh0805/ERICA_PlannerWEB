@@ -10,7 +10,7 @@ import * as planTypes from './PlannerTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import { postPlanRequest } from 'actions/planner';
 
-const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton, turnOnTaskRatio}) => {
+const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton, turnOnTaskRatio, color, title}) => {
   // Redux hooks
   const dispatch = useDispatch();
   const [postStatus] = useSelector(state => [state.planner.toJS().post] , []);
@@ -52,6 +52,8 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
     return week[date.getDay()];
   }
   const getDateTitleFormat = (date, type) => {
+    if(title !== undefined)
+      return title;
     if(type === planTypes.DAILY_PLAN)
       return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " (" + getDayOfWeek(date) + ")";
     else if(type === planTypes.MONTHLY_PLAN)
@@ -74,11 +76,11 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
   const getTaskCompletedRatio = (completedPlansCount, planListLength) => {
     if(planListLength === 0)
       return 0;
-    return Math.round((completedPlansCount / planListLength) * 100);
+    return (completedPlansCount / planListLength) * 100;
   }
   return (
     <div className="plan_box">
-      <div className="plan_header">
+      <div className="plan_header" style={{backgroundColor: color}}> 
         <div className="date">{getDateTitleFormat(date, type)} </div>
         {turnOnTaskRatio ? <div className="completedRatio">수행률: {getTaskCompletedRatio(completedPlansCount, planList.length)}% ({completedPlansCount} / {planList.length})</div> : undefined}
         <div className="right_toolbox">
@@ -88,7 +90,7 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
           <Button className="tool plan_add_btn"><CircularProgress size="1rem" style={{color:"#000000"}}/></Button> : undefined}
         </div>
       </div>
-      <Button className="plan_box_sizing_row" onClick={handleOnClickSizingBox}>
+      <Button className="plan_box_sizing_row" style={{backgroundColor: color}} onClick={handleOnClickSizingBox}>
         <FontAwesomeIcon icon={isOpenedItemBox ? faWindowMinimize : faChevronDown} className="tool plan_box_sizing_btn"/>
       </Button>
       <ul className="plan_item_container" style={{maxHeight: isOpenedItemBox ? "100000px" : "0px"}}>

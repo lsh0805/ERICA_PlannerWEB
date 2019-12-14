@@ -125,13 +125,12 @@ const Topbar = (props) => {
       <nav id="nav" style={{width: (isOpenedSideNav ? "170px" : "0px")}}>
         <Link to="/" className="item">설명</Link>
         <Link to="/" className="item">사용법</Link>
-        <Link to="/" className="item">공지사항</Link>
         <Link to="/planner/info" className="item">내 정보</Link>
         <Link to="/planner/todo" className="item">일정</Link>
         <Link to="/planner/achievement" className="item">과제</Link>
       </nav>
     </React.Fragment>
   );
-  }
+}
 
 export default Topbar;

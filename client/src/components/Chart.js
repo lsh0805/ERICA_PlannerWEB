@@ -9,26 +9,29 @@ const Chart = (props) => {
         label: 'EXP',
         fill: false,
         lineTension: 0.05,
-        backgroundColor: 'rgba(75,192,192,0.4)',
+        backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'rgba(134,136,138,1)',
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
         pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#A5F2F3',
+        pointBackgroundColor: '#6c5ce7',
         pointHoverBackgroundColor: 'rgba(94,139,242,1)',
         pointHoverBorderColor: 'rgba(220,220,220,1)',
         pointHoverBorderWidth: 3,
         pointHoverRadius: 6,
         pointRadius: 0,
-        pointHitRadius: 1000,
         data: props.data,
       }
     ]
   };
   const options = {
     maintainAspectRatio: false,
+    tooltips: {
+      mode: 'nearest',
+      intersect: false
+    },
     layout: {
       padding: {
         top: 40
@@ -46,11 +49,21 @@ const Chart = (props) => {
             else if(value > 1000000)
               return Math.round(parseFloat(value / 1000000)) + "M";
           },
-        }
+        },
+        gridLines:{
+          color: "#CCC",
+          lineWidth:1,
+        },
+      }],
+      xAxes: [{
+        gridLines:{
+          color: "#CCC",
+          lineWidth:1,
+        },
       }],
     },
     hover: {
-      mode: 'index',
+      mode: 'nearest',
       intersect: false
     }
   };

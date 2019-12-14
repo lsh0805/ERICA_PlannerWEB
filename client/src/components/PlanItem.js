@@ -52,7 +52,7 @@ const PlanItem = (props) => {
   const [isEditable, setEditable] = useState(props.editable);
   useEffect(() => {
     setContents({title: props.title, exp: props.exp});
-  }, [props]);
+  }, [props.title, props.exp]);
 
   const getCanSetMaxEXP = (type) => {
     let canMaxExp;

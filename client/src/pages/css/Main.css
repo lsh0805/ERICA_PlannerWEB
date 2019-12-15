@@ -1,21 +1,32 @@
-/* banner 레이아웃 */
+/*  레이아웃 */
 .banner {
-  height: 200px;
-  background-color: #ddd;
-  padding: 50px 0px 50px 0px;
+  height: 384px;
+  background-image: url('../../img/banner_background.png');
+  background-size: cover;
+  border-bottom: 4px solid #000;
 }
 
 /* banner 컨테이너 */
 .banner .container {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+  overflow: hidden;
+  height: 100%;
 }
 .banner .title{
   font-size: 30px;
   font-weight: bold;
+  color: #fff;
+  text-shadow: 3px 3px 3px black;
 }
 .banner .describe{
   margin-top: 20px;
-  font-size: 25px;
+  font-size: 26px;
+  color: #fff;
+  text-shadow: 3px 3px 3px black;
 }
 .banner .item{
   margin-top: 40px;
@@ -32,12 +43,45 @@
 }
 
 .banner .link_btn:hover {
-  background-color: rgba(11, 102, 35, 0.7);
+  background-color: rgba(11, 102, 35, 1);
 }
 
+/* 컨텐츠 컨테이너 */
+.container .wrapper{
+  text-align: center;
+  margin: 50px 0px 50px 0px;
+}
+.container .wrapper .introduceTitle{
+  font-size: 30px;
+  font-weight: 400;
+}
+.container .wrapper .introduceContainer{
+  margin: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: left;
+}
+.container .wrapper .introduceContainer .introduceSection{
+  width: 25%;
+}
+.container .wrapper .introduceContainer .introduceSection .sectionTitle{
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom: 1px #ddd solid;
+}
 @media (max-width: 600px){
   .banner .link_btn{
     width: 100px;
     font-size: 13px;
+  }
+  .container .wrapper .introduceContainer .introduceSection:nth-child(1){
+    width: 100%;
+  }
+  .container .wrapper .introduceContainer .introduceSection:nth-child(2){
+    width: 100%;
+  }
+  .container .wrapper .introduceContainer .introduceSection:nth-child(3){
+    width: 100%;
   }
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
+import {getApplyLevel} from '../module/level.js';
 
 const Chart = (props) => {
   const data = {
     labels: props.labels,
     datasets: [
       {
-        label: 'EXP',
+        label: '총 경험치',
         fill: false,
         lineTension: 0.05,
         backgroundColor: 'rgba(75,192,192,1)',
@@ -30,7 +31,19 @@ const Chart = (props) => {
     maintainAspectRatio: false,
     tooltips: {
       mode: 'nearest',
-      intersect: false
+      intersect: false,
+      callbacks: {
+        label: function(tooltipItem, data) {
+            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+            if (label) {
+                label += ': ';
+            }
+            let [level, exp] = getApplyLevel(1, tooltipItem.yLabel);
+            label += tooltipItem.yLabel + " Lv." + level + " EXP:" + exp;
+            return label;
+        },
+      }
     },
     layout: {
       padding: {

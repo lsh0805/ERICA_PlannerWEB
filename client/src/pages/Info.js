@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { Chart } from 'components';
 import './css/Info.css';
-import { getMaxEXP, getRateEXP } from '../module/level';
+import { getMaxEXP, getRateEXP, getTotalEXP } from '../module/level';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
 import * as planTypes from '../components/PlannerTypes';
@@ -129,7 +129,7 @@ const Info = (props) => {
             </div>
             <div className="row_container2">
               <div className="userExp">
-                EXP: {getRateEXP(props.userInfo.level, props.userInfo.exp)}%  ( {props.userInfo.exp} / {getMaxEXP(props.userInfo.level)} ) 
+                EXP: {getRateEXP(props.userInfo.level, props.userInfo.exp)}%  ( {props.userInfo.exp} / {getMaxEXP(props.userInfo.level)} ) TotalEXP: {getTotalEXP(props.userInfo.level, props.userInfo.exp)}
               </div>
             </div>
             <div className="row_container3">

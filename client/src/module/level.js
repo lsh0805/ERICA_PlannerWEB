@@ -18,5 +18,5 @@ export function getApplyLevel(level, exp){
 }
 
 export function getTotalEXP(level, exp){
-  return (75 * ((level * level) - level) + 500 * level) + exp;
+  return (75 * ((level - 1)*(level - 2)) + 500 * (level-1)) + exp;
 }

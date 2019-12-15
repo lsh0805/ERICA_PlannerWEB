@@ -48,7 +48,6 @@ export default function App() {
               <Route exact path="/" component={Main}/>
               <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/info" render={props => <Info {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
               <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/todo" render={props => <Todo {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/achievement" render={props => <Achievement {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
               <Route path="/register" component={Register}/>
               <Route path="/login" component={Login}/>
             </div>

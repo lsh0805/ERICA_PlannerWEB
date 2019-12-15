@@ -109,11 +109,9 @@ const Topbar = (props) => {
               </a>
           </div>
           <nav className="bar_nav">
-              <Link to="/" className="item">설명</Link>
               <Link to="/" className="item">사용법</Link>
               <Link to="/planner/info" className="item">내 정보</Link>
               <Link to="/planner/todo" className="item">일정</Link>
-              <Link to="/planner/achievement" className="item">과제</Link>
           </nav>
           <div className="bar_right">
               { props.loginInfo.isLoggedIn ? logoutUI : loginUI }
@@ -123,11 +121,10 @@ const Topbar = (props) => {
       <div id="bar_space"></div>
       
       <nav id="nav" style={{width: (isOpenedSideNav ? "170px" : "0px")}}>
-        <Link to="/" className="item">설명</Link>
+        <Link to="/" className="item">홈</Link>
         <Link to="/" className="item">사용법</Link>
         <Link to="/planner/info" className="item">내 정보</Link>
         <Link to="/planner/todo" className="item">일정</Link>
-        <Link to="/planner/achievement" className="item">과제</Link>
       </nav>
     </React.Fragment>
   );

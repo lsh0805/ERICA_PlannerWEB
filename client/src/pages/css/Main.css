@@ -70,6 +70,9 @@
   font-weight: bold;
   border-bottom: 1px #ddd solid;
 }
+.container .wrapper .introduceContainer .introduceSection .sectionContents{
+  font-size: 16px;
+}
 @media (max-width: 600px){
   .banner .link_btn{
     width: 100px;

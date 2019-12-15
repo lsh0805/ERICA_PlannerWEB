@@ -109,7 +109,7 @@ const Topbar = (props) => {
               </a>
           </div>
           <nav className="bar_nav">
-              <Link to="/" className="item">사용법</Link>
+              <Link to="/description" className="item">사용법</Link>
               <Link to="/planner/info" className="item">내 정보</Link>
               <Link to="/planner/todo" className="item">일정</Link>
           </nav>
@@ -122,7 +122,7 @@ const Topbar = (props) => {
       
       <nav id="nav" style={{width: (isOpenedSideNav ? "170px" : "0px")}}>
         <Link to="/" className="item">홈</Link>
-        <Link to="/" className="item">사용법</Link>
+        <Link to="/description" className="item">사용법</Link>
         <Link to="/planner/info" className="item">내 정보</Link>
         <Link to="/planner/todo" className="item">일정</Link>
       </nav>

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './css/App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import { Main, Login, Register, Info, Todo, Achievement} from 'pages';
+import { Main, Login, Register, Info, Todo, Description} from 'pages';
 import { Topbar, Footer, AuthRoute } from 'components';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -46,6 +46,7 @@ export default function App() {
             <Route path="/" render={(props) => <Topbar {...props} userInfo={userInfo} loginInfo={loginInfo} handleLogout={handleLogout}/>} />
             <div className="contents">
               <Route exact path="/" component={Main}/>
+              <Route path="/description" component={Description}/>
               <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/info" render={props => <Info {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
               <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/todo" render={props => <Todo {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
               <Route path="/register" component={Register}/>

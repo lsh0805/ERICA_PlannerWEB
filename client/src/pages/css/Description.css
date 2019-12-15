@@ -1,0 +1,51 @@
+/* 레이아웃 */
+.container{
+  text-align: center;
+}
+.container .wrapper{
+  display: inline-block;
+  width: 80%;
+}
+
+/* 섹션 영역 */
+.container .sectionContainer{
+  text-align: left;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.container .sectionTitle{
+  font-size: 30px;
+  font-weight: bold;
+  display: inline-block;
+  border-bottom: 2px solid #ddd;
+}
+.container .sectionContents{
+  margin-top: 30px;
+  font-size: 25px;
+}
+.container .sectionContents .contentsExplaination{
+  font-size: 16px;
+  font-weight: normal;
+}
+/* 서브 섹션 */
+.container .subSection{
+  margin-left: 15px;
+}
+.container .subSection .subSectionTitle{
+  font-size: 25px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* 이미지 컨테이너 */
+.container .sectionContents .imgContainer{
+  display: flex;
+  align-items: center;
+}
+.container .sectionContents .imgContainer .descImg{
+  width: 50%;
+}
+.container .sectionContents .imgContainer .descImgExplain{
+  margin-left: 10px;
+  font-size: 20px;
+}

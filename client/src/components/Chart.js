@@ -57,10 +57,12 @@ const Chart = (props) => {
       yAxes: [{
         ticks: {      
           callback: function(value, index, values){
-            if(value > 1000)
+            if(value >= 1000)
               return Math.round(parseFloat(value / 1000)) + "K";
-            else if(value > 1000000)
+            else if(value >= 1000000)
               return Math.round(parseFloat(value / 1000000)) + "M";
+            else
+              return value;
           },
         },
         gridLines:{

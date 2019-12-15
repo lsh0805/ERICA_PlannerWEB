@@ -16,6 +16,6 @@ module.exports = {
     return {level: level, exp: exp};
   },
   getTotalEXP: function(level, exp){
-    return (75 * ((level * level) - level) + 500 * level) + exp;
+    return (75 * ((level - 1)*(level - 2)) + 500 * (level-1)) + exp;
   }
 }

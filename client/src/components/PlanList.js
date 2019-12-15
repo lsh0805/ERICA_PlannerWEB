@@ -76,7 +76,7 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
   const getTaskCompletedRatio = (completedPlansCount, planListLength) => {
     if(planListLength === 0)
       return 0;
-    return (completedPlansCount / planListLength) * 100;
+    return Math.round((completedPlansCount / planListLength) * 100);
   }
   return (
     <div className="plan_box">

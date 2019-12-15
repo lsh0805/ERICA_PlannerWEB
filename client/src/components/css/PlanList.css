@@ -1,6 +1,7 @@
 /* Plan box 영역 */
 .plan_box{
   margin-bottom: 10px;
+  font-family: Moris, sans-serif;
 }
 /* Plan box Header */
 .plan_box .plan_header{
@@ -8,6 +9,8 @@
   background-color: #A5F2F3;
 }
 .plan_box .plan_header .date{
+  margin-top: 10px;
+  display: inline-block;
   font-size: 25px;
   font-weight: bold;
 }

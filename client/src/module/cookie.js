@@ -7,7 +7,6 @@ export function getCookie(name) {
   let loginData = undefined;
   if (parts.length === 2)
     loginData = JSON.parse(atob(parts.pop().split(";").shift()));
-  console.log(parts.pop().split(";").shift());
   return loginData;
 }
 export const NOT_LOGIN = 0;
@@ -27,14 +26,14 @@ export async function checkValidSession() {
   let loginData = getCookie('key');
   
   // 로그인 정보가 없을 시 종료
-  if(typeof loginData === "undefined"){ console.log(2); return NOT_LOGIN; }
+  if(typeof loginData === "undefined"){return NOT_LOGIN; }
 
   // 로그인 하지 않았다면 종료.
-  if(!loginData.isLoggedIn){ console.log(3); return NOT_LOGIN; }
+  if(!loginData.isLoggedIn){ return NOT_LOGIN; }
   let result = INVALID_SESSION;
   // 쿠키 값이 유효한지 판단함.
   await axios.get('/api/account/getInfo')
-  .then(() => {console.log(5); result = VALID_SESSION;})
+  .then(() => { result = VALID_SESSION;})
   .catch((err) => { result = INVALID_SESSION; });
   return result;
 }

@@ -24,6 +24,17 @@ const Info = (props) => {
   const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(40, 'day').toDate(), new Date()]);
   const [logList, setLogList] = useState([]);
 
+  let tempDate = new Date();
+  let startDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
+  let endDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
+  endDate = moment(endDate).add(1, 'month').subtract(1, 'days').toDate();
+  let todayDate = [moment().toDate(), moment().toDate()];
+  let monthDate = [startDate, endDate];
+  startDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
+  endDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
+  endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
+  let yearDate = [startDate, endDate];
+
   const onPeriodChange = (date) => {
     if(moment(date[1], 'YYYY-MM-DD').diff(new Date(), 'day') > 0){
       toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
@@ -41,12 +52,11 @@ const Info = (props) => {
       dateEnd: todayDate[1],
     }));
     axios.post('/api/explog/getLog/', {email: props.loginInfo.email}).then(explog => {
-      console.log(explog.data.row);
       setLogList(explog.data.row);
     }).catch(error => {
       console.log(error);
     });
-  }, []);
+  }, [dispatch, props.loginInfo.email, todayDate]);
 
   // 해당 날짜에 플레이어의 경험치 값을 가져오는 함수
   const getLogExp = (currentDate) => {
@@ -84,18 +94,6 @@ const Info = (props) => {
       resultData.push(getLogExp(moment(label, 'YYYY년 MM월 DD일').toDate()));
     return resultData;
   };
-
-
-  let tempDate = new Date();
-  let startDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
-  let endDate = moment([tempDate.getFullYear(), tempDate.getMonth(), 1]).toDate();
-  endDate = moment(endDate).add(1, 'month').subtract(1, 'days').toDate();
-  let todayDate = [moment().toDate(), moment().toDate()];
-  let monthDate = [startDate, endDate];
-  startDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
-  endDate = moment([tempDate.getFullYear(), 0, 1]).toDate();
-  endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
-  let yearDate = [startDate, endDate];
 
   const getPlans = (date, planList, type) => {
     let cycleDayOfWeek = ["cycleSunday", "cycleMonday", "cycleTuesday", "cycleWednesday", "cycleThursday", "cycleFriday","cycleSaturday"]

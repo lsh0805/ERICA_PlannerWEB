@@ -21,19 +21,18 @@ const sessionData = fs.readFileSync('./config/session.json');
 const sessionSecret = JSON.parse(sessionData);
 
 app.use(session({
-    key: 'connect.sid',
-    secret: sessionSecret.secret,
-    resave: false,
-    store: sessionStore,
-    saveUninitialized: true,
-    httpOnly: true,
-    secure: false
+  key: 'connect.sid',
+  secret: sessionSecret.secret,
+  resave: false,
+  store: sessionStore,
+  saveUninitialized: true,
+  httpOnly: true,
+  secure: false
 }));
 
 
 app.get('/', (req, res) =>{
-    console.log(req.session.id);
-    res.send(req.session.id);
+  res.send(req.session.id);
 });
 
 app.use('/api', api);

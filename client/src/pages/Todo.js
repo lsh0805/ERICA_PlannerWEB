@@ -28,7 +28,7 @@ const Todo = (props) => {
 
   // Redux hooks
   const dispatch = useDispatch();
-  const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
+  const planList = useSelector(state => state.planner.toJS().planList , []);
 
   const getClearDate = (d) => {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -92,13 +92,15 @@ const Todo = (props) => {
           }
           break;
         case planTypes.YEARLY_PLAN:
-            if(moment(date[1], 'YYYY-MM-DD').diff(date[0], 'year') >= 5){
-              toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
-              기간은 최대 5년까지 선택할 수 있습니다.
-              </div>);
-              return;
-            }
-            break;
+          if(moment(date[1], 'YYYY-MM-DD').diff(date[0], 'year') >= 5){
+            toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>
+            기간은 최대 5년까지 선택할 수 있습니다.
+            </div>);
+            return;
+          }
+          break;
+        default:
+          break;
       }
       setDate(() => {
         return [getClearDate(date[0]), getClearDate(date[1])];
@@ -125,7 +127,7 @@ const Todo = (props) => {
     }).catch(err => {
       console.log(err);
     });
-  }, [date, cycleDays]);
+  }, [date, cycleDays, dispatch, props.loginInfo.email, type]);
 
   
   const periodView = (

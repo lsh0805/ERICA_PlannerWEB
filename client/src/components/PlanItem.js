@@ -23,7 +23,6 @@ const PlanItem = (props) => {
   const onCompleteClick = (title, exp, id) => {
     dispatch(updatePlanRequest(title, exp, id, moment().toDate()));
     let [newLevel, newEXP] = getApplyLevel(parseInt(userInfo.level), parseInt(userInfo.exp) + parseInt(exp));
-    console.log(userInfo.email);
     dispatch(updateUserInfoRequest(userInfo.email, newLevel, newEXP));
   }
   const onEditCompleteClick = (title, exp, id, completedAt) => {
@@ -68,10 +67,9 @@ const PlanItem = (props) => {
   }
   const checkCompleted = (type, completedAt) => {
     if(completedAt !== null && completedAt !== undefined){
-      if(type === planTypes.LOOP_PLAN){
-        console.log(moment(completedAt).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+      if(type === planTypes.LOOP_PLAN)
         return moment(completedAt).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
-      }else
+      else
         return true;
     }else
       return false;

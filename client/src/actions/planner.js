@@ -13,7 +13,6 @@ import {
   PLAN_UPDATE_FAILURE,
 } from './ActionTypes';
 import axios from 'axios';
-import * as planTypes from '../components/PlannerTypes';
 
 /* GET where = mysql where 값 */
 export function getPlanListRequest(author, where){
@@ -32,7 +31,6 @@ export function postPlanRequest(data){
   return (dispatch) => {
     dispatch(postPlan(data.date));
     return axios.post('/api/plan/post', {...data}).then((res) => {
-      console.log({...res.data.row});
       dispatch(postPlanSuccess(data.date, res.data.row));
     }).catch((err) => {
       dispatch(postPlanFailure(data.date, err));

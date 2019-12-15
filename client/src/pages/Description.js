@@ -3,7 +3,7 @@ import './css/Description.css';
 import mainpage from '../img/main_page.png';
 import todopage from '../img/todo_page.png';
 import infopage from '../img/info_page.png';
-import { faTrashAlt, faCheckCircle, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEdit} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -58,16 +58,16 @@ const Description = () => {
                   기간 설정에있는 UI에 달력 아이콘을 클릭하면 기간을 설정할 수 있는 뷰가 나옵니다.<br/>
                   기간을 설정하면 일정 설정 뷰들이 나오게 됩니다.<br/>
                   일정 설정 뷰에있는 <strong>+</strong> 버튼을 누르면 일정이 생성됩니다.<br/>
-                  생성된 일정을 수정할 때에는 <div style={planBtnStyle}><FontAwesomeIcon icon={faEdit}/></div> 버튼을 눌러서 일정 제목과 경험치를 수정할 수 있습니다.<br/>
-                  일정을 수행했을 경우 <div style={planBtnStyle}>완료</div> 버튼을 눌러서 설정한 경험치를 얻을 수 있습니다.<br/>
-                  일정을 삭제하고 싶다면 <div style={planBtnStyle}><FontAwesomeIcon icon={faTrashAlt}/></div> 버튼을 눌러서 삭제할 수 있습니다.
+                  생성된 일정을 수정할 때에는 <span style={planBtnStyle}><FontAwesomeIcon icon={faEdit}/></span> 버튼을 눌러서 일정 제목과 경험치를 수정할 수 있습니다.<br/>
+                  일정을 수행했을 경우 <span style={planBtnStyle}>완료</span> 버튼을 눌러서 설정한 경험치를 얻을 수 있습니다.<br/>
+                  일정을 삭제하고 싶다면 <span style={planBtnStyle}><FontAwesomeIcon icon={faTrashAlt}/></span> 버튼을 눌러서 삭제할 수 있습니다.
                 </p>
             </div>
             <div className="subSection">
               <div className="subSectionTitle subtitle2-2">
                 {subTitleList[1][1]}
               </div>
-                <p className="contentsExplaination">
+                <div className="contentsExplaination">
                   <p><strong>기간 일정</strong>에서는 날짜 기간을 선택해서 각 날짜에 해당하는 일정을 설정할 수 있습니다.<br/>
                   또한 날짜 기간을 최대 7일까지 선택할 수 있고 일정당 최대 경험치 500까지 설정 가능합니다.</p>
                   <p><strong>요일 반복 일정</strong>에서는 요일 별로 선택해서 각 요일에 해당하는 일정을 설정할 수 있습니다.<br/>
@@ -77,7 +77,7 @@ const Description = () => {
                   <p><strong>월 목표, 연 목표</strong>에서는 월, 연 기간을 선택해서 각 월, 연에 해당하는 목표를 설정할 수 있습니다.<br/>
                   월 목표에서 목표당 경험치는 5000까지 설정 가능하고 연 목표에서는 50000까지 설정할 수 있습니다.
                   </p>
-                </p>
+                </div>
             </div>
           </div>
         </div>
@@ -95,17 +95,17 @@ const Description = () => {
               <div className="subSectionTitle subtitle3-1">
                 {subTitleList[2][0]}
               </div>
-                <p className="contentsExplaination">
+                <div className="contentsExplaination">
                   <p>내 정보에 있는 일정 현황에서는 새로운 일정을 등록할 수 없습니다. 일정 페이지에서 등록해주세요.<br/></p>
-                </p>
+                </div>
             </div>
             <div className="subSection">
               <div className="subSectionTitle subtitle3-2">
                 {subTitleList[2][1]}
               </div>
-                <p className="contentsExplaination">
+                <div className="contentsExplaination">
                   <p><strong>성장 그래프</strong>에서 기간을 선택해 해당 기간에 해당하는 자신의 경험치 성장 그래프를 확인할 수 있습니다.<br/></p>
-                </p>
+                </div>
             </div>
           </div>
         </div>
@@ -118,11 +118,11 @@ const Description = () => {
               <div className="subSectionTitle subtitle4-1">
                 {subTitleList[3][0]}
               </div>
-                <p className="contentsExplaination">
+                <div className="contentsExplaination">
                   <p><strong>각 레벨별 최대 경험치</strong>는 다음 공식을 통해 설정됩니다.<br/>
                   <strong>500 + (150 * (레벨 - 1))</strong>
                   </p>
-                </p>
+                </div>
             </div>
           </div>
         </div>

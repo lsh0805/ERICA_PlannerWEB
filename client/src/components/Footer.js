@@ -38,7 +38,7 @@ const Footer = () => {
       <ul className="other_link">
         <li><a href="https://github.com/lolmc00/ERICA_PlannerWEB"><FontAwesomeIcon icon={faGithub} /><span>Github</span></a></li>
         <li><a href="https://blog.naver.com/lkaiou2226"><FontAwesomeIcon icon={faBlogger} /><span>Blog</span></a></li>
-        <li><a href="#"><FontAwesomeIcon icon={faGooglePlay} /><span>Playstore</span></a></li>
+        <li><a href="/"><FontAwesomeIcon icon={faGooglePlay} /><span>Playstore</span></a></li>
       </ul>
       <ul className="author_info">
         <li>이름: 임승현</li>

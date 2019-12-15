@@ -29,7 +29,7 @@ export default function App() {
     }).catch(err => {
       setLoginInfo({loaded: true});
     })
-  }, []);
+  }, [dispatch]);
   const handleLogout = () =>{
     axios.get('/api/account/logout').then(() => {
       cookie.setCookie(false, '');

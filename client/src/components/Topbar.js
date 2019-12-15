@@ -94,10 +94,10 @@ const Topbar = (props) => {
         <Toolbar id="topBar">
           <div className="bar_left">
               <Link to="/" className="logo"><img src={logo} style={{width: 80}} alt="로고"/></Link>
-              <a href="#" className="menu_button">
+              <div style={{cursor:"pointer"}} className="menu_button">
                 {isOpenedSideNav ? <CloseIcon variant="text" color="primary" onClick={toggleSideNav(false)}/>: 
                 <MenuIcon variant="text" color="primary" onClick={toggleSideNav(true)}/>}
-              </a>
+              </div>
           </div>
           <nav className="bar_nav">
               <Link to="/description" className="item">사용법</Link>

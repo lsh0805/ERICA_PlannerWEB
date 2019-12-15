@@ -49,3 +49,11 @@
   margin-left: 10px;
   font-size: 20px;
 }
+@media (max-width:600px){
+  .container .sectionContents .imgContainer{
+    display: block;
+  }
+  .container .sectionContents .imgContainer .descImg{
+    width: 100%;
+  }
+}

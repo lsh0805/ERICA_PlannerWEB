@@ -9,7 +9,10 @@ import { CircularProgress } from '@material-ui/core';
 import * as planTypes from './PlannerTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import { postPlanRequest } from 'actions/planner';
+import moment from 'moment';
 
+/* addButton이 true일 경우 type값이 undefined이면 안됨.
+Plan을 생성할 때 해당 type으로 생성되기 때문 */ 
 const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton, turnOnTaskRatio, color, title}) => {
   // Redux hooks
   const dispatch = useDispatch();
@@ -35,15 +38,22 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
   const mapToComponents = planList => {
     let planItems = planList.map((plan, i) => {
       return (<PlanItem key={i} author={author} title={plan.title} exp={plan.exp} 
-        id={plan.id} type={type} date={date} completedAt={plan.completedAt} idx={i}/>);
+        id={plan.id} type={plan.type} date={date} completedAt={plan.completedAt} idx={i}/>);
     });
     return planItems;
   };
   useEffect(()=> {
     let count = 0;
     planList.map((plan, i) => {
-      if(plan.completedAt !== undefined && plan.completedAt !== null)
-        count++;
+      if(plan.completedAt !== undefined && plan.completedAt !== null){
+        // LOOP_PLAN은 여러 번 반복해서 깰 수 있으므로, 수행한 날짜가 오늘인지 아닌지 판단해야함.
+        if(plan.type === planTypes.LOOP_PLAN){
+          if(moment(plan.completedAt).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'))
+            count++;
+        }else{
+          count++;
+        }
+      }
     });
     setcompletedPlansCount(count);
   }, [planList]);

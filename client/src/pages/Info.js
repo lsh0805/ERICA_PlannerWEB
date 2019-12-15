@@ -19,9 +19,9 @@ import {PlanList} from 'components';
 const Info = (props) => {
   // Redux hooks
   const dispatch = useDispatch();
-  const [planList, getStatus] = useSelector(state => [state.planner.toJS().planList, state.planner.toJS().get, state.planner.toJS().post, state.planner.toJS().delete, state.planner.toJS().update] , []);
+  const [planList] = useSelector(state => [state.planner.toJS().planList] , []);
 
-  const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(40, 'day'), new Date()]);
+  const [chartPeriod, setChartPeriod] = useState([moment(new Date()).subtract(40, 'day').toDate(), new Date()]);
   const [logList, setLogList] = useState([]);
 
   const onPeriodChange = (date) => {
@@ -97,21 +97,15 @@ const Info = (props) => {
   endDate = moment(endDate).add(1, 'year').subtract(1, 'days').toDate();
   let yearDate = [startDate, endDate];
 
-  const mapPlanList = (author, planList, type, date, color, title, turnOnTaskRatio, addButton) => {
-    try{
-      let planListArr = [];
-      let cycleDayOfWeek = ["cycleSunday", "cycleMonday", "cycleTuesday", "cycleWednesday", "cycleThursday", "cycleFriday","cycleSaturday"]
-      let plans = planList.filter( plan => {
-        // DAILY PLAN에 오늘에 해당하는 요일 반복 일정 추가함
-        if(type === planTypes.DAILY_PLAN)
-          return plan.date === moment(date[0]).format('YYYY-MM-DD') || plan[cycleDayOfWeek[date[0].getDay()]];
-        return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
-      });
-      planListArr.push(<PlanList author={author} date={date} planList={plans} type={type} addButton={addButton} turnOnTaskRatio={turnOnTaskRatio} color={color} title={title} color={color}/>);
-      return planListArr;
-    } catch(e){
-      return;
-    }
+  const getPlans = (date, planList, type) => {
+    let cycleDayOfWeek = ["cycleSunday", "cycleMonday", "cycleTuesday", "cycleWednesday", "cycleThursday", "cycleFriday","cycleSaturday"]
+    let plans = planList.filter( plan => {
+      // DAILY PLAN에 오늘에 해당하는 요일 반복 일정 추가함
+      if(type === planTypes.DAILY_PLAN)
+        return plan.date === moment(date[0]).format('YYYY-MM-DD') || plan[cycleDayOfWeek[date[0].getDay()]];
+      return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
+    });
+    return plans;
   };
 
   return (
@@ -144,16 +138,16 @@ const Info = (props) => {
             </div>
             <div className="planListContainer">
               <div className="planList todayPlanContainer">
-                {mapPlanList(props.loginInfo.email, planList, planTypes.DAILY_PLAN,
-                  todayDate, "#00cec9", "오늘 일정", true, false)}
+                <PlanList author={props.loginInfo.email} date={todayDate} planList={getPlans(todayDate, planList, planTypes.DAILY_PLAN)} 
+                addButton={false} turnOnTaskRatio={true} title={"오늘 일정"} color={"#00cec9"}/>
               </div>
               <div className="planList monthPlanContainer">
-                {mapPlanList(props.loginInfo.email, planList, planTypes.MONTHLY_PLAN,
-                  monthDate, "#81ecec", "이번 달 목표", true, false)}
+                <PlanList author={props.loginInfo.email} date={monthDate} planList={getPlans(monthDate, planList, planTypes.MONTHLY_PLAN)} 
+                addButton={false} turnOnTaskRatio={true} title={"이번 달 목표"} color={"#81ecec"}/>
               </div>
               <div className="planList yearPlanContainer">
-                {mapPlanList(props.loginInfo.email, planList, planTypes.YEARLY_PLAN,
-                  yearDate, "#fab1a0", "올해 목표", true, false)}
+                <PlanList author={props.loginInfo.email} date={yearDate} planList={getPlans(yearDate, planList, planTypes.YEARLY_PLAN)} 
+                addButton={false} turnOnTaskRatio={true} title={"올해 목표"} color={"#fab1a0"}/>
               </div>
             </div>
           </Paper>

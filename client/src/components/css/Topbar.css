@@ -2,6 +2,7 @@ body {background: #ffffff;}
 Link {text-decoration: none;}
 
 /* Top bar 레이아웃 */
+#topBar {display: flex; justify-content: space-between;}
 #bar_space {height: 64px;}
 .bar_right {width: 25%; text-align: center;}
 .bar_left {width: 25%; display: flex; align-items: center; justify-content: space-around;}
@@ -52,6 +53,7 @@ Link {text-decoration: none;}
 .logoutUI{
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
 }
 .logoutUI .userUI{
   font-family: Moris, sans-serif;
@@ -82,12 +84,15 @@ Link {text-decoration: none;}
 
 
 @media (max-width: 960px){
+  .bar_right {justify-content: flex-end; width: auto;}
+  .bar_left {justify-content: flex-start; width: auto;}
   .bar_left .menu_button { margin-left: 30px; display: block;}
-  #top_bar .bar_nav {display: none;}
+  #topBar .bar_nav {display: none;}
 }
 @media (max-width: 600px){
+  .bar_left .menu_button { margin-left: 12px;}
   #bar_space {height: 56px;}
-  .logoutUI .userUI{
+  .userUI{
     display: none;
   }
   @media (max-height: 600px){

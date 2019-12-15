@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,15 +15,6 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     zIndex: theme.zIndex.drawer + 1000,
-  },
-  menuIcon: {
-    verticalAlign: 'center',
-    margin: theme.spacing(0, 4, 0, 0),
-  },
-  topBar: {
-    justifyContent: `space-between`,
-    alignItems: 'center',
-    flexWrap: 'wrap',
   },
   button: {
     width: 65,
@@ -100,7 +91,7 @@ const Topbar = (props) => {
     return (
     <React.Fragment>
       <AppBar position="fixed" color="default" elevation={0} className={classes.appBar}>
-        <Toolbar id="top_bar" className={classes.topBar}>
+        <Toolbar id="topBar">
           <div className="bar_left">
               <Link to="/" className="logo"><img src={logo} style={{width: 80}} alt="로고"/></Link>
               <a href="#" className="menu_button">

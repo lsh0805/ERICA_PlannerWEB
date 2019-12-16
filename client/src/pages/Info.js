@@ -48,15 +48,15 @@ const Info = (props) => {
   useEffect(() => {
     dispatch(getPlanListRequest(props.loginInfo.email,
     {
-      dateStart: todayDate[0],
-      dateEnd: todayDate[1],
+      dateStart: moment().toDate(),
+      dateEnd: moment().toDate(),
     }));
     axios.post('/api/explog/getLog/', {email: props.loginInfo.email}).then(explog => {
       setLogList(explog.data.row);
     }).catch(error => {
       console.log(error);
     });
-  }, [dispatch, props.loginInfo.email, todayDate]);
+  }, [dispatch, props.loginInfo.email]);
 
   // 해당 날짜에 플레이어의 경험치 값을 가져오는 함수
   const getLogExp = (currentDate) => {

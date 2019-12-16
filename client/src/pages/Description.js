@@ -34,8 +34,7 @@ const Description = () => {
           <div className="sectionContents contents1">
             <div className="imgContainer">
               <img className="descImg"src={mainpage} alt="메인화면"/>
-              <p className="descImgExplain"><strong>메인 화면</strong>에서 <strong>상단 바</strong>에 있는 메뉴를 통해 <strong>내 정보 페이지</strong>와 
-              <strong>일정 관리 페이지</strong>로 이동이 가능합니다.<br/>
+              <p className="descImgExplain"><strong>메인 화면</strong>에서 <strong>상단 바</strong>에 있는 메뉴를 통해 <strong>내 정보 페이지</strong>와<strong> 일정 관리 페이지</strong>로 이동이 가능합니다.<br/>
               또한 현재 자신의 정보를 UI를 통해 간단하게 확인할 수 있습니다.</p>
             </div>
           </div>
@@ -47,7 +46,7 @@ const Description = () => {
           <div className="sectionContents contents2">
             <div className="imgContainer">
               <img className="descImg"src={todopage} alt="일정화면"/>
-              <p className="descImgExplain"><strong>일정페이지</strong>에서는 <strong>일정을 등록</strong>하고<br/><strong>일정을 수행했을 경우, 완료하여 경험치를 획득</strong>할 수 있습니다.<br/>
+              <p className="descImgExplain"><strong>일정페이지</strong>에서는 <strong>일정을 등록</strong>하고<br/><strong>일정을 수행했을 경우에는, 일정을 완료하여 경험치를 획득</strong>할 수 있습니다.<br/>
               </p>
             </div>
             <div className="subSection">

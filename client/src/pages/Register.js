@@ -18,7 +18,6 @@ class Register extends React.Component {
           };
   
           document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-          console.log("회원가입 완료");
           window.location.replace('/');
           return {success: true};
         } else {

@@ -99,9 +99,13 @@ const Info = (props) => {
     let cycleDayOfWeek = ["cycleSunday", "cycleMonday", "cycleTuesday", "cycleWednesday", "cycleThursday", "cycleFriday","cycleSaturday"]
     let plans = planList.filter( plan => {
       // DAILY PLAN에 오늘에 해당하는 요일 반복 일정 추가함
-      if(type === planTypes.DAILY_PLAN)
-        return plan.date === moment(date[0]).format('YYYY-MM-DD') || plan[cycleDayOfWeek[date[0].getDay()]];
-      return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
+      if(type === planTypes.DAILY_PLAN){
+        if(plan.type === planTypes.DAILY_PLAN)
+          return plan.date === moment(date[0]).format('YYYY-MM-DD')
+        else if(plan.type === planTypes.LOOP_PLAN)
+          return plan[cycleDayOfWeek[date[0].getDay()]];
+      }else
+        return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
     });
     return plans;
   };

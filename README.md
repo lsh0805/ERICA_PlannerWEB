@@ -35,9 +35,11 @@
 15. 디렉토리 (`./server/config`)에서 (`config.json`)을 생성하고 [config.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/configForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요. **(DB 이름은 위에 9번에서 DB를 생성할 때 입력한 db이름을 적어주세요.)**
 16. 디렉토리 (`./server/config`)에서 (`session.json`)을 생성하고 [session.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/sessionForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요.
 17. 디렉토리 (`./server/config`)에서 (`email.json`)을 생성하고 [email.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/emailForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요.
-18. 디렉토리 (`./server`)에서 `sudo npm install`을 입력하여 서버에 필요한 패키지들을 설치합니다.
-19. 디렉토리 (`./client`)에서 `sudo npm install`을 입력하여 클라이언트에 필요한 패키지들을 설치합니다.
-20. `sudo npm install -g nodemon`을 입력해 [nodemon](https://nodemon.io/)을 설치합니다.
-21. 디렉토리 (`./server`)에서 `sudo npm run-script dev`를 입력하여 클라이언트와 서버를 동시에 가동시킵니다.
+18. 외부 접속을 허용했을 경우에는 디렉토리 (`./server/config`)에 있는 (`clientAddress.json`)에 localhost 부분을 외부 접속용 IP로 수정해주세요.
+19. 디렉토리 (`./server`)에서 `sudo npm install`을 입력하여 서버에 필요한 패키지들을 설치합니다.
+20. 디렉토리 (`./client`)에서 `sudo npm install`을 입력하여 클라이언트에 필요한 패키지들을 설치합니다.
+21. `sudo npm install -g nodemon`을 입력해 [nodemon](https://nodemon.io/)을 설치합니다.
+22. 구글 계정으로 인증 메일을 보내기 위해서 https://myaccount.google.com/lesssecureapps 에 접속해 보안 수준이 낮은 앱을 허용합니다.
+23. 디렉토리 (`./server`)에서 `sudo npm run-script dev`를 입력하여 클라이언트와 서버를 동시에 가동시킵니다.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -8,9 +8,10 @@ const verifyTokenTypes = require('../module/verifyTokenTypes.js');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 
-// 파일경로는 server.js 기준인듯
 const emailData = fs.readFileSync('./config/email.json');
 const email = JSON.parse(emailData);
+const clientAddressData = fs.readFileSync('./config/clientAddress.json');
+const clientAddress = JSON.parse(clientAddressData);
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -65,6 +66,7 @@ router.post('/verify', (req, res) => {
         }).catch(err => {
           return res.status(401).json({message: "Invalid Verification"});
         });
+        break;
       case verifyTokenTypes.TOKEN_TYPE_RESET_PASSWORD:
         verifyToken.resetPassword(row).then(() => {
           return res.json({message: "성공적으로 비밀번호를 초기화하였습니다. 서비스를 이용하기 위해서 로그인 해주세요."});
@@ -72,6 +74,7 @@ router.post('/verify', (req, res) => {
           console.log(err);
           return res.status(401).json({message: "Invalid Verification"});
         });
+        break;
       default:
         break;
     }
@@ -91,7 +94,7 @@ router.post('/checkAvailiableRegisterData', (req, res) =>{
         to: email ,                     // 수신 메일 주소
         subject: '[Next level] 회원가입을 위한 인증 메일입니다.',   // 제목
         html: '<p>아래의 링크를 클릭해주세요 !</p>' +
-        "<a href='http://localhost:3000/verify/" + row.token +"'>인증하기</a>"
+        "<a href=" + clientAddress.address + "/verify/" + row.token +">인증하기</a>"
       };
       transporter.sendMail(mailOptions, function(error, info){
         if (error)
@@ -139,7 +142,7 @@ router.post("/forgetPasswordSendMail", (req, res) => {
         to: email ,                     // 수신 메일 주소
         subject: '[Next level] 비밀번호 초기화를 위한 인증 메일입니다.',   // 제목
         html: '<p>아래의 링크를 클릭해주세요 !</p>' +
-        "<a href='http://localhost:3000/verify/" + row.token +"'>인증하기</a>"
+        "<a href=" + clientAddress.address + "/verify/" + row.token +">인증하기</a>"
       };
     
       transporter.sendMail(mailOptions, function(error, info){

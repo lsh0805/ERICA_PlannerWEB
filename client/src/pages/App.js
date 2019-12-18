@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import './css/App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import { Main, Login, Register, Info, Todo, Description} from 'pages';
+import { Main, Login, Register, ForgetPassword, Info,
+   Todo, Description, Privacy, Verify} from 'pages';
 import { Topbar, Footer, AuthRoute } from 'components';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -23,11 +24,11 @@ export default function App() {
   const userInfo = useSelector(state => state.user.toJS().userInfo);
 
   useEffect(() => {
-    axios.get('/api/account/getSessionInfo').then((res) => {
+    axios.post('/api/account/getSessionInfo').then((res) => {
       dispatch(getUserInfoRequest(res.data.info.email));
       setLoginInfo({loaded: true, isLoggedIn: true, email: res.data.info.email, username: res.data.info.username});
     }).catch(err => {
-      setLoginInfo({loaded: true});
+      setLoginInfo({loaded: true, isLoggedIn: false, email: "", username: ""});
     })
   }, [dispatch]);
   const handleLogout = () =>{
@@ -47,10 +48,13 @@ export default function App() {
             <div className="contents">
               <Route exact path="/" component={Main}/>
               <Route path="/description" component={Description}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/info" render={props => <Info {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
-              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} path="/planner/todo" render={props => <Todo {...props} userInfo={userInfo}  loginInfo={loginInfo} />}/>
-              <Route path="/register" component={Register}/>
-              <Route path="/login" component={Login}/>
+              <Route path="/privacy" component={Privacy}/>
+              <Route path={`/verify/:token`} component={Verify}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} isToAuthentication={false} path="/planner/info" render={props => <Info {...props} userInfo={userInfo} loginInfo={loginInfo} />}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} isToAuthentication={false} path="/planner/todo" render={props => <Todo {...props} userInfo={userInfo} loginInfo={loginInfo} />}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} isToAuthentication={true} path="/register" component={Register}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} isToAuthentication={true} path="/login" component={Login}/>
+              <AuthRoute isLoggedIn={loginInfo.isLoggedIn} isToAuthentication={true} path="/forget" component={ForgetPassword}/>
             </div>
             <Route path="/" component={Footer}/>
           </BrowserRouter>: "" // empty

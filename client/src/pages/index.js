@@ -6,4 +6,5 @@ export { default as Info } from './Info';
 export { default as Todo } from './Todo';
 export { default as Description } from './Description';
 export { default as Privacy } from './Privacy';
+export { default as Verify } from './Verify';
 export { default as App } from './App';

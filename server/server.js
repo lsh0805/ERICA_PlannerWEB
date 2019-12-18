@@ -32,7 +32,6 @@ app.use(session({
 
 
 app.get('/', (req, res) =>{
-  res.send(req.session.id);
 });
 
 app.use('/api', api);

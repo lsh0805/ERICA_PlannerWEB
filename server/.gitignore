@@ -27,3 +27,6 @@ config.json
 
 # session secret
 session.json
+
+# email data
+email.json

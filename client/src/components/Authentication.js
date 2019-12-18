@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
+import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -14,7 +14,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './css/Toast.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
- 
+import * as AuthenticationTypes from './AuthenticationTypes';
+
 const useStyles = makeStyles(theme => ({
     paper: {
       marginTop: theme.spacing(8),
@@ -103,6 +104,9 @@ const Authentication = (props) => {
     if(key.keyCode === 13)
         props.mode ? handleLogin() : handleRegister();
   }
+  const sendMail = () => {
+    props.onSendMail(input_state.email, input_state.password);
+  }
   const classes = useStyles();
   const loginView = (
     <div>
@@ -146,12 +150,12 @@ const Authentication = (props) => {
       </Button>
       <Grid container>
         <Grid item xs>
-          <Link href="#" variant="body2">
+          <Link to="/forget">
             비밀번호를 잊으셨나요?
           </Link>
         </Grid>
         <Grid item>
-          <Link href="/register" variant="body2">
+          <Link to="/register">
             회원가입
           </Link>
         </Grid>
@@ -174,7 +178,6 @@ const Authentication = (props) => {
             autoComplete="nope"
             onChange={ handleChange }
           />
-        {/* <div id="input_nickname_error" class="error_help" className={classes.error_help}>{error_box.nickname}</div> */}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -237,13 +240,65 @@ const Authentication = (props) => {
       </Button>
       <Grid container justify="flex-end">
         <Grid item>
-          <Link href="/login" variant="body2">
+          <Link to="/login">
             이미 가입을 하셨나요? 로그인 하기
           </Link>
         </Grid>
       </Grid>
     </div>
   );
+
+  const findView = (
+    <div>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="이메일주소"
+        name="email"
+        autoComplete="true"
+        onChange={ handleChange }
+        autoFocus
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="새로운 비밀번호"
+        type="password"
+        id="password"
+        onChange={ handleChange }
+        autoComplete="true"
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        name="password_check"
+        label="새로운 비밀번호 (확인)"
+        type="password"
+        id="password"
+        onChange={ handleChange }
+        autoComplete="true"
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={sendMail}
+        className={classes.submit}
+      >
+        인증메일 발송
+      </Button>
+    </div>
+  );
+
   return (
     <div>
       <Container component="main" xs={20} maxWidth="xs">
@@ -252,10 +307,14 @@ const Authentication = (props) => {
           <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-          { props.mode ? "로그인" : "회원가입" }
+          { props.mode === AuthenticationTypes.LOGIN ? "로그인" : 
+          props.mode === AuthenticationTypes.REGISTER ? "회원가입" :
+          "비밀번호 초기화" }
           </Typography>
           <div className={classes.form} onKeyDown={enterKey}>
-            { props.mode ? loginView : registerView }
+            { props.mode === AuthenticationTypes.LOGIN ? loginView : 
+            props.mode === AuthenticationTypes.REGISTER ? registerView :
+            findView }
           </div>
         </div>
       </Container>

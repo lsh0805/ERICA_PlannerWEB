@@ -104,6 +104,8 @@ const Info = (props) => {
           return plan.date === moment(date[0]).format('YYYY-MM-DD')
         else if(plan.type === planTypes.LOOP_PLAN)
           return plan[cycleDayOfWeek[date[0].getDay()]];
+        else
+          return false;
       }else
         return plan.type === type && plan.date === moment(date[0]).format('YYYY-MM-DD')
     });

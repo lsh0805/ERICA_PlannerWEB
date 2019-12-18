@@ -50,7 +50,7 @@ export function registerRequest(email, nickname, password, password_check, alarm
       // Inform Register API is starting
       dispatch(register());
 
-      return axios.post('/api/account/register', { email, nickname, password, password_check, alarm })
+      return axios.post('/api/account/checkAvailiableRegisterData', { email, nickname, password, password_check, alarm })
       .then((response) => {
           dispatch(registerSuccess(email));
       }).catch((error) => {

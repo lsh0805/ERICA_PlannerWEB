@@ -34,10 +34,10 @@ module.exports = {
         var re = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
         if(re.test(nickname))
             return new response(false, "닉네임에는 특수문자를 포함시킬 수 없습니다.");
-        else if(nickname.length < 3)
-            return new response(false, "닉네임은 3글자 이상이어야 합니다.");
-        else if(nickname.length > 8)
-            return new response(false, "닉네임은 8글자 이하이어야 합니다.");
+        else if(nickname.length <= 0)
+            return new response(false, "닉네임은 1글자 이상이어야 합니다.");
+        else if(nickname.length > 10)
+            return new response(false, "닉네임은 10글자 이하이어야 합니다.");
         let err = null;
         await Account.findOne({
             where: {nickname: nickname}
@@ -64,43 +64,31 @@ module.exports = {
     },
 
     check: async function(data){
+      return new Promise(async (resolve, reject) => {
         var res_arr = 
         [await this.validateNickname(data.nickname), 
-            await this.validateEmail(data.email), 
-            this.validatePassword(data.password), 
-            this.equalPassword(data.password, data.password_check)];
+          await this.validateEmail(data.email), 
+          this.validatePassword(data.password), 
+          this.equalPassword(data.password, data.password_check)];
         for(i = 0; i < res_arr.length; i++){
             if(res_arr[i].res == false)
-                return new response(false, res_arr[i].err);
+                return reject(res_arr[i].err);
         }
-        return new response(true, null);
+        return resolve();
+      });
     },
 
     execute: async function(data){
-        var check_res = await this.check(data);
-        return new Promise(function(resolve, reject) {
-            if(check_res.res == true){
-                bcrypt.genSalt(10, function(err, salt){
-                    bcrypt.hash(data.password, salt, function(err, hash){
-                        if(err)
-                            reject(err);
-                        Account.create({
-                            nickname: data.nickname,
-                            password: hash,
-                            email: data.email,
-                            alarm: data.alarm
-                        }).then(account => {
-                            resolve(account);
-                        });
-                    });
-                    if(err){
-                        reject(err);
-                    }
-                });
-            }else{
-                reject(check_res.err);
-            }
+      return new Promise(function(resolve, reject) {
+        Account.create({
+            nickname: data.nickname,
+            password: data.password,
+            email: data.email,
+            alarm: data.alarm
+        }).then(account => {
+            resolve(account);
         });
+      });
     }
 }
 // // compares the password

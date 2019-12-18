@@ -2,8 +2,12 @@ import React from 'react';
 import { Authentication } from 'components';
 import { connect } from 'react-redux';
 import { registerRequest } from 'actions/authentication';
+import * as AuthenticationTypes from '../components/AuthenticationTypes';
 
 class Register extends React.Component {
+  state = {
+    emailSubmited: false,
+  }
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);    
@@ -16,9 +20,8 @@ class Register extends React.Component {
             isLoggedIn: true,
             userName: this.props.nickName
           };
-  
           document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-          window.location.replace('/');
+          this.setState({emailSubmited: true}); 
           return {success: true};
         } else {
           return {success: false, error: this.props.errorMessage};
@@ -28,8 +31,19 @@ class Register extends React.Component {
   }
   render(){
     return (
-        <div>
-          <Authentication mode={false} onRegister={this.handleRegister}/>
+      this.state.emailSubmited ? 
+      <div className="container" style={{textAlign: "center"}}>
+        <div className="wrapper" style={{width: "80%", textAlign: "left"}}>
+          <div className="title" style={{display: "inline-block", fontSize:"24px", fontWeight: "bold", borderBottom:"2px #ddd solid"}}>
+            회원가입
+          </div>
+          <div className="contents" style={{marginTop: "20px"}}>
+            이메일로 인증 메일이 전송되었습니다. 회원가입을 위해 메일을 확인하여 링크를 클릭해주세요.
+          </div>
+        </div>
+      </div>
+        :<div>
+          <Authentication mode={AuthenticationTypes.REGISTER} onRegister={this.handleRegister}/>
         </div>
     );    
   }

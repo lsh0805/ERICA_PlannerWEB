@@ -3,6 +3,7 @@ import { Authentication } from '../components';
 import { connect } from 'react-redux';
 import { loginRequest } from 'actions/authentication';
 import * as cookie from '../module/cookie';
+import * as AuthenticationTypes from '../components/AuthenticationTypes';
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Login extends React.Component {
   render(){
     return (
       <div>
-        <Authentication mode={true} onLogin={this.handleLogin}/>
+        <Authentication mode={AuthenticationTypes.LOGIN} onLogin={this.handleLogin}/>
       </div>
     );
   }

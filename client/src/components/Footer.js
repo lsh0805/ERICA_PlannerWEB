@@ -1,6 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import {Link as LinkRouter} from 'react-router-dom';
 import { faGithub, faGooglePlay, faBlogger } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './css/Footer.css'
@@ -45,6 +46,7 @@ const Footer = () => {
         <li>학번: 2019044211</li>
         <li>이메일: lkaiou2226@naver.com</li>
       </ul>
+      <LinkRouter to="/privacy" style={{display: "block", color: "#aaa", fontWeight:"bold"}}> 개인정보처리방침 </LinkRouter>
       <Copyright/>
     </div>);
 }

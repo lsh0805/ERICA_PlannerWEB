@@ -12,23 +12,22 @@ module.exports = (sequelize, DataTypes) => {
     },
     nickname: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(350),
-      allowNull: false,
-      unique: true,
-    },
     alarm: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0,
     },
+    type: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    }
   }, {
       timestamps: true,
       charset: 'utf8',

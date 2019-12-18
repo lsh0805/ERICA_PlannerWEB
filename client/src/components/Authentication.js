@@ -66,7 +66,7 @@ const Authentication = (props) => {
       toast.dismiss();
     }
   }, []);
-  const [ERROR_LOGIN, ERROR_REGISTER] = [1, 2];
+  const [ERROR_LOGIN, ERROR_REGISTER, ERROR_FORGET_PASSWORD] = [1, 2, 3];
   const getToastAttr = (type) => {
     return {
       toastId: type,
@@ -105,8 +105,20 @@ const Authentication = (props) => {
         props.mode ? handleLogin() : handleRegister();
   }
   const sendMail = () => {
-    props.onSendMail(input_state.email, input_state.password);
-  }
+    if(input_state.password !== input_state.password_check){
+      toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{"비밀번호가 일치하지 않습니다."}</div>, {
+        ...getToastAttr(ERROR_FORGET_PASSWORD)
+      });
+      return;
+    }
+    props.onSendMail(input_state.email, input_state.password).then((response) => {
+      if(!toast.isActive(ERROR_FORGET_PASSWORD) && !response.success){
+      toast.error(<div className="toast_wrapper"><ErrorOutlineIcon className="toast"/>{response.error}</div>, {
+          ...getToastAttr(ERROR_FORGET_PASSWORD)
+        });
+      }
+    });
+  };
   const classes = useStyles();
   const loginView = (
     <div>

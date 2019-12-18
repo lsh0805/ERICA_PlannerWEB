@@ -5,7 +5,7 @@ const Verify = ({match}) => {
   const [message, setMessage] = useState("Invalid Verification");
   
   useEffect(() => {
-    axios.post('/api/account/registerVerify', {token: match.params.token})
+    axios.post('/api/account/verify', {token: match.params.token})
     .then(response => {
       setMessage(response.data.message);
     }).catch(err => {

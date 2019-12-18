@@ -7,8 +7,6 @@
 **[NEXT LEVEL 웹 페이지 접속 하기](http://54.180.83.108:3000/)**
 
 ### Notice
-* 해당 웹은 [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 방식으로 다음과 같이 비밀번호가 암호화되어 운영자 또한 유저들의 비밀번호를 확인할 수 없습니다.<br>
-![DB 비밀번호 이미지](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/.github/img/database_table_hash.png)
 * 해당 프로젝트는 아직 개발단계에 있습니다.
 
 ## NEXT LEVEL 프로젝트 소개
@@ -34,11 +32,12 @@
 12. `FLUSH PRIVILEGES`를 입력해 유저 변경사항을 업데이트합니다.
 13. `exit`를 입력해 mysql에서 빠져나옵니다.
 14. 디렉토리 (`./server`)에서 `sudo mkdir config`를 입력해 config 디렉토리를 생성합니다.
-15. 디렉토리 (`./server/config`)에서 (`config.json`)을 생성하고 [config.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/configForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요. **(DB 이름은 위에 8번에서 DB를 생성할 때 입력한 db이름을 적어주세요.)**
+15. 디렉토리 (`./server/config`)에서 (`config.json`)을 생성하고 [config.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/configForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요. **(DB 이름은 위에 9번에서 DB를 생성할 때 입력한 db이름을 적어주세요.)**
 16. 디렉토리 (`./server/config`)에서 (`session.json`)을 생성하고 [session.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/sessionForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요.
-17. 디렉토리 (`./server`)에서 `sudo npm install`을 입력하여 서버에 필요한 패키지들을 설치합니다.
-18. 디렉토리 (`./client`)에서 `sudo npm install`을 입력하여 클라이언트에 필요한 패키지들을 설치합니다.
-19. `sudo npm install -g nodemon`을 입력해 [nodemon](https://nodemon.io/)을 설치합니다.
-20. 디렉토리 (`./server`)에서 `sudo npm run-script dev`를 입력하여 클라이언트와 서버를 동시에 가동시킵니다.
+17. 디렉토리 (`./server/config`)에서 (`email.json`)을 생성하고 [email.json 형식](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/server/config/emailForm.json)의 내용을 복사하여 붙여넣은 뒤 **수정이 필요하다고 쓰여있는 곳을 수정**해주세요.
+18. 디렉토리 (`./server`)에서 `sudo npm install`을 입력하여 서버에 필요한 패키지들을 설치합니다.
+19. 디렉토리 (`./client`)에서 `sudo npm install`을 입력하여 클라이언트에 필요한 패키지들을 설치합니다.
+20. `sudo npm install -g nodemon`을 입력해 [nodemon](https://nodemon.io/)을 설치합니다.
+21. 디렉토리 (`./server`)에서 `sudo npm run-script dev`를 입력하여 클라이언트와 서버를 동시에 가동시킵니다.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

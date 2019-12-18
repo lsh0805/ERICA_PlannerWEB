@@ -1,0 +1,4 @@
+module.exports = {
+  TOKEN_TYPE_MAKE_ACCOUNT: 0,
+  TOKEN_TYPE_RESET_PASSWORD: 1,
+}

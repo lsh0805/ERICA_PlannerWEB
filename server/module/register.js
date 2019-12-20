@@ -3,7 +3,6 @@
     BODY SAMPLE: { "email": "test@test.com", "password": "test", "nickname": "test_name", "alarm": false }
 */
 const { Account } = require('../models');
-const bcrypt = require('bcryptjs');
 var response = function(res, err){
     this.res = res;
     this.err = err;
@@ -12,7 +11,6 @@ var response = function(res, err){
 module.exports = {  
     validateEmail: async function (email) {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let row = undefined;
         if(!re.test(email))
             return new response(false, "올바른 이메일 형식이 아닙니다.");
         else if(email.length > 320)
@@ -91,7 +89,3 @@ module.exports = {
       });
     }
 }
-// // compares the password
-// bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-//     // res == true
-// });

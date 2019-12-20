@@ -5,15 +5,24 @@ const bcrypt = require('bcryptjs');
 const login = require('../module/login.js');
 
 module.exports = {
-  generateToken: function() {
+  generateToken: async function() {
     let token = "";
     let hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
     for(let i = 0; i < 30; i++)
       token += String(hex[Math.round(Math.random() * 15)]);
-    return token; 
+    return VerifyToken.findOne({where: {token}})
+    .then((row) => {
+      if(row)
+        return this.generateToken();
+      else
+        return token;
+    }).catch(err => {
+      console.log(err);
+      return err;
+    });
   },
   createResetPasswordToken: async function(data){
-    let token = this.generateToken();
+    let token = await this.generateToken();
     return new Promise(function(resolve, reject) {
       bcrypt.genSalt(10, function(err, salt){
         bcrypt.hash(data.password, salt, function(err, hash){
@@ -34,7 +43,7 @@ module.exports = {
     });
   },
   createMakeAccountToken: async function(data){
-    let token = this.generateToken();
+    let token = await this.generateToken();
     return new Promise(function(resolve, reject) {
       bcrypt.genSalt(10, function(err, salt){
         bcrypt.hash(data.password, salt, function(err, hash){

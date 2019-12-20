@@ -44,7 +44,7 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
   };
   useEffect(()=> {
     let count = 0;
-    for(let plan in planList){
+    planList.forEach(plan => {
       if(plan.completedAt !== undefined && plan.completedAt !== null){
         // LOOP_PLAN은 여러 번 반복해서 깰 수 있으므로, 수행한 날짜가 오늘인지 아닌지 판단해야함.
         if(plan.type === planTypes.LOOP_PLAN){
@@ -54,7 +54,7 @@ const PlanList = React.memo(({author, planList, type, date, cycleDay, addButton,
           count++;
         }
       }
-    }
+    });
     setcompletedPlansCount(count);
   }, [planList]);
   const getDayOfWeek = (date) => {

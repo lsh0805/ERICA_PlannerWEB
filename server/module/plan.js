@@ -1,7 +1,5 @@
 const { Plan } = require('../models');
 const { Account } = require('../models');
-const { ExpLog } = require('../models');
-const { exp } = require('./exp.js');
 const moment = require('moment');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;

@@ -6,9 +6,6 @@
 ## 웹 접속
 **[NEXT LEVEL 웹 페이지 접속 하기](http://54.180.83.108:3000/)**
 
-### Notice
-* 해당 프로젝트는 아직 개발단계에 있습니다.
-
 ## NEXT LEVEL 프로젝트 소개
 ![로고_이미지](https://github.com/lolmc00/ERICA_PlannerWEB/blob/master/client/src/img/logo.png)  
 
@@ -39,7 +36,7 @@
 19. 디렉토리 (`./server`)에서 `sudo npm install`을 입력하여 서버에 필요한 패키지들을 설치합니다.
 20. 디렉토리 (`./client`)에서 `sudo npm install`을 입력하여 클라이언트에 필요한 패키지들을 설치합니다.
 21. `sudo npm install -g nodemon`을 입력해 [nodemon](https://nodemon.io/)을 설치합니다.
-22. 구글 계정으로 인증 메일을 보내기 위해서 https://myaccount.google.com/lesssecureapps 에 접속해 보안 수준이 낮은 앱을 허용합니다.
+22. 웹 사용자들이 회원가입, 비밀번호 초기화시 인증 메일을 보내기 위해서 17번에서 등록한 구글 계정으로 로그인하여 https://myaccount.google.com/lesssecureapps 에 접속해 보안 수준이 낮은 앱을 허용합니다.
 23. 디렉토리 (`./server`)에서 `sudo npm run-script dev`를 입력하여 클라이언트와 서버를 동시에 가동시킵니다.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

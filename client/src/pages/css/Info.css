@@ -73,6 +73,9 @@
   } 
 }
 @media (max-width: 800px){
+  .infoContainer .infoContents{
+    width: 100%;
+  }
   .infoContainer .infoContents .planList:nth-child(1){
     width: 100%;
   }
